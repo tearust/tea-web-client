@@ -1,17 +1,22 @@
 <template>
   <div id="app">
+    <PageHeader />
+    <section class="tea-section">
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
+    </section>
     
-    <HelloWorld />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PageHeader from './components/PageHeader';
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    PageHeader
   }
 }
 </script>
@@ -23,6 +28,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+#app .tea-section{
+  margin: 0 auto;
+  width: 960px;
+  padding: 24px 0;
 }
 </style>
