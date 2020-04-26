@@ -16,9 +16,14 @@ const C = {};
 new Vue({
   router,
   methods: {
-    loading(f){
+    loading(f, text='Loading...'){
       if(f){
-        C._loading = Loading.service({fullscreen: true});
+        C._loading = Loading.service({
+          fullscreen: true,
+          text,
+          background: 'rgba(0, 0, 0, 0.7)',
+          customClass: 'tea-loading'
+        });
       }
       else{
         C._loading && C._loading.close();

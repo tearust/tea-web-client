@@ -26,6 +26,8 @@ export default class {
 
     this.client.onConnect(()=>{
       this.ready = 2;
+
+      console.log('nkn connect network success.');
     });
   }
 

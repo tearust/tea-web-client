@@ -32,7 +32,7 @@
 </template>
 
 <script>
-
+import tea from '../tea';
 
 
 export default {
@@ -47,7 +47,24 @@ export default {
     }
   },
 
+  created() {
+    this.tea = null;
+  },
+
+  async mounted() {
+    this.$root.loading(true);
+    await this.init();
+    this.$root.loading(false);
+  },
+
   methods: {
+    async init(){
+      this.tea = new tea();
+      await this.tea.connect();
+
+      console.log(this.tea);
+    },
+
     fileChangeHandler(file){
       console.log(file);
     },

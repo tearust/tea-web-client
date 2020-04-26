@@ -2,3 +2,14 @@ html, body{
   margin: 0;
   padding: 0;
 }
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}
+.tea-loading{
+  .el-loading-spinner .el-loading-text{
+    color: #fff;
+  }
+  .el-loading-spinner .path{
+    stroke: #fff;
+  }
+}
