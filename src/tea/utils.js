@@ -1,10 +1,14 @@
-
+import * as uuid from 'uuid';
 
 export default {
   getBootstrapNodes(){
     return [
       '127.0.0.1'
     ];
+  },
+
+  uuid(){
+    return uuid.v4();
   },
 
   async requestForActiveNodes(node_list){
@@ -16,10 +20,12 @@ export default {
     return new Promise((resolve)=>{
       resolve([
         {
-          websocket: 'websocket_address',
-          nkn: 'nkn_address',
-          public_key: 'tea_public_key',
-          weight: 1
+          tea_id: 'tea_id',
+          nkn_id: 'nkn_id',
+          http: 'http://127.0.0.1:8000',
+          ws: 'ws://127.0.0.1:8001', 
+          ping: 'ping',
+          credit: 0
         }
       ]);
     });

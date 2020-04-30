@@ -23,7 +23,7 @@
     </el-form-item>
     
     <el-form-item>
-      <el-button :disabled="!(form.public_key && form.gas && form.wasm)" style="width:100%;" round type="success" @click="clickSubmitHandler()">Start Caculate</el-button>
+      <el-button :disabled="!(form.public_key && form.gas && wasm_buf)" style="width:100%;" round type="success" @click="clickSubmitHandler()">Start Caculate</el-button>
     </el-form-item>
     
 
@@ -41,8 +41,9 @@ export default {
       form: {
         public_key: '',
         gas: '10',
-        wasm: null
+        wasm: null,
       },
+      wasm_buf : null,
       file_error: null,
     }
   },
@@ -69,16 +70,44 @@ export default {
       console.log(file);
     },
     beforeUploadHandler(file){
-      // if(!/wasm$/.test(file.type)){
-      //   this.file_error = 'Only accept wasm file.';
-      // }
+      if(!/wasm$/.test(file.type)){
+        this.file_error = 'Only accept wasm file.';
+        return false;
+      }
 
       this.form.wasm = file;
 
+      const fr = new FileReader();
+      fr.onload = (e)=>{
+        this.wasm_buf = e.target.result;
+        console.log(this.wasm_buf);
+      };
+
+      fr.readAsArrayBuffer(file);
       return false;
     },
-    clickSubmitHandler(){
+    async clickSubmitHandler(){
       this.$root.loading(true);
+
+      try{
+        const rs = await this.tea.sendTask({
+          ...this.form,
+          wasm: this.wasm_buf,
+        });
+        this.$message.success(rs);
+      }catch(e){
+        this.$message.error(e);
+      }finally{
+        this.$root.loading(false);
+        this.form = {
+          public_key: '',
+          gas: '10',
+          wasm: null,
+        };
+        this.wasm_buf = null;
+        this.file_error = null;
+      }
+      
     }
   },
 
