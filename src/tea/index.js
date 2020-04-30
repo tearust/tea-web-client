@@ -56,12 +56,11 @@ export default class {
       this.ws = new ws(this.channel.address);
     }
     else {
-      this.nkn = new nkn();
+      this.nkn = new nkn(null, this.channel.address);
     }
   }
 
   async sendTask({public_key, gas, wasm}){
-    const node = this.active_nodes[0];
 
     const param = {
       public_key,

@@ -92,7 +92,8 @@ export default {
       try{
         const rs = await this.tea.sendTask({
           ...this.form,
-          wasm: this.wasm_buf,
+          wasm: 11,
+          // wasm: this.wasm_buf,
         });
         this.$message.success(rs);
       }catch(e){
