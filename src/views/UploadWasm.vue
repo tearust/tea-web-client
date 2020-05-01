@@ -79,11 +79,11 @@ export default {
 
       const fr = new FileReader();
       fr.onload = (e)=>{
-        this.wasm_buf = e.target.result;
+        this.wasm_buf = (e.target.result.replace('data:application/wasm;base64,', ''));
         console.log(this.wasm_buf);
       };
 
-      fr.readAsArrayBuffer(file);
+      fr.readAsDataURL(file);
       return false;
     },
     async clickSubmitHandler(){
@@ -92,8 +92,8 @@ export default {
       try{
         const rs = await this.tea.sendTask({
           ...this.form,
-          wasm: 11,
-          // wasm: this.wasm_buf,
+          // wasm: 11,
+          wasm: this.wasm_buf,
         });
         this.$message.success(rs);
       }catch(e){
