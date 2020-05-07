@@ -70,10 +70,10 @@ export default {
       console.log(file);
     },
     beforeUploadHandler(file){
-      if(!/wasm$/.test(file.type)){
-        this.file_error = 'Only accept wasm file.';
-        return false;
-      }
+      // if(!/wasm$/.test(file.type)){
+      //   this.file_error = 'Only accept wasm file.';
+      //   return false;
+      // }
 
       this.form.wasm = file;
 
