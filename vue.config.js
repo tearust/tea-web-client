@@ -6,7 +6,7 @@ module.exports = {
     modules: false,
     loaderOptions: {
       sass: {
-        data: `
+        prependData: `
           
         `
       }
