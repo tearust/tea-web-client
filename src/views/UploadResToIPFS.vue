@@ -49,11 +49,18 @@
     <div slot="tip" class="el-upload__tip">Only receive [wasm]</div>
   </el-upload>
   
-  <el-button style="width:100%;margin-top: 40px;" 
+  <div style="display:flex; justify-content: space-between; margin-top: 40px;">
+    <el-button style="width:40%;" 
+      round 
+      @click="clickPrev()">Prev Step</el-button>
+
+    <el-button style="width:40%;" 
     type="primary" 
     round 
     :disabled="!res.image || !res.checker || !res.wasm || !res.wasm_fest"
     @click="clickNext()">Next Step</el-button>
+  </div>
+  
 </div> 
 </template>
 <script>
@@ -173,8 +180,11 @@ export default {
     },
 
     clickNext(){
-      this.$router.push('/upload_task')
-    }
+      this.$router.push('/upload_task');
+    },
+    clickPrev(){
+      this.$router.push('/');
+    },
   }
 }
 </script>

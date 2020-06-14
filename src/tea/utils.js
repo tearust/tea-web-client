@@ -31,7 +31,7 @@ const F = {
   cache,
   crypto,
   getBootstrapNodes(){
-    return '127.0.0.1:8000';
+    return 'http://127.0.0.1:8000';
   },
 
   getHttpBaseUrl() {
@@ -39,7 +39,7 @@ const F = {
       _http_base_url = F.getBootstrapNodes();
     }
 
-    return `http://${_http_base_url}/`;
+    return _http_base_url;
   },
   setHttpBaseUrl(url) {
     _http_base_url = url;

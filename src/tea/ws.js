@@ -2,9 +2,8 @@
 export default class {
   constructor(url){
     this.url = url;
-
+console.log(this.url)
     this.ws = null;
-    // this.connect(url);
 
     this.callback = null;
   }

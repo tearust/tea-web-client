@@ -56,17 +56,15 @@ export default class {
     }
   }
 
-  async sendTask({public_key, gas, wasm}){
+  async sendTask(task_param){
 
     const param = {
-      public_key,
-      gas,
-      wasm,
+      ...task_param,
       nonce: utils.uuid(),
     };
 
     const payload = {
-      __tea_subject: 'api.wasm_task',
+      __tea_subject: 'api.actor_task',
       __tea_object: param
     };
 

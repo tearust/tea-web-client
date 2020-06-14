@@ -19,7 +19,10 @@
       
   </el-table>
 
-  <el-button style="width:100%;margin-top: 40px;" type="primary" round @click="clickNext()">Next Step</el-button>
+  <div style="display:flex; justify-content: flex-end;">
+    <el-button style="width:40%;margin-top: 40px;" type="primary" round @click="clickNext()">Next Step</el-button>
+  </div>
+  
 </div>
 </template>
 <script>
