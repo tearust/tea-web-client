@@ -8,9 +8,15 @@ import { Loading } from 'element-ui';
 import router from './router';
 import './style.scss';
 
+import http from './tea/http';
+import utils from './tea/utils';
+
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
+const tmp = utils.cache.get('select-node');
+tmp && utils.setHttpBaseUrl(tmp.http);
+http.initBaseUrl();
 
 const C = {};
 new Vue({
@@ -31,4 +37,4 @@ new Vue({
     }
   },
   render: h => h(App),
-}).$mount('#app')
+}).$mount('#app');

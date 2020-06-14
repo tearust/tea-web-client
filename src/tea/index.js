@@ -3,22 +3,18 @@ import nkn from './nkn';
 import ws from './ws';
 
 export default class {
-  constructor(){
+  constructor(active_nodes){
     this.ready = 0;
 
     this.nkn = null;
     this.ws = null;
-    this.active_nodes = [];
+    this.active_nodes = [active_nodes];
   }
 
   async connect(){
     if(this.ready > 0) return false;
     this.ready = 1;
     
-
-    const bootstrap_nodes = utils.getBootstrapNodes();
-    const active_nodes = await utils.requestForActiveNodes(bootstrap_nodes);
-    this.active_nodes = this.sortActiveNodes(active_nodes);
 
     this.channel = this.configChannelByActiveNode(this.active_nodes[0]);
     

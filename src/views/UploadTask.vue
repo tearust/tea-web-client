@@ -1,4 +1,7 @@
 <template>
+<div class="tea-page">
+  <TaskStep :step="3" />
+
   <el-form :model="form" label-width="80px" class="p-uploadwasm">
 
     <el-form-item label="Public Key">
@@ -28,14 +31,19 @@
     
 
   </el-form>
-    
+
+</div> 
 </template>
 
 <script>
 import tea from '../tea';
-
+import TaskStep from '../components/TaskStep';
+import utils from '../tea/utils';
 
 export default {
+  components: {
+    TaskStep
+  },
   data(){
     return {
       form: {
@@ -60,7 +68,8 @@ export default {
 
   methods: {
     async init(){
-      this.tea = new tea();
+      const node = utils.cache.get('select-node');
+      this.tea = new tea(node);
       await this.tea.connect();
 
       console.log(this.tea);
