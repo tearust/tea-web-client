@@ -1,6 +1,8 @@
 import * as uuid from 'uuid';
 import _ from 'lodash';
 import http from './http';
+import CryptoJS from 'crypto-js';
+import SHA256 from 'crypto-js/sha256';
 
 const cache = {
   put(id, data) {
@@ -16,12 +18,22 @@ const cache = {
   }
 };
 
+
+const _secret = '__secret_password__';
 const crypto = {
+  get_secret(){
+    return _secret;
+  },
   encode(data) {
-    return data;
+    const tmp = CryptoJS.AES.encrypt(data, _secret).toString();
+    return {
+      code: tmp,
+      hash: SHA256(tmp).toString()
+    };
   },
   decode(data) {
-    return data;
+    const bytes  = CryptoJS.AES.decrypt(data, _secret);
+    return bytes.toString(CryptoJS.enc.Utf8);
   }
 };
 

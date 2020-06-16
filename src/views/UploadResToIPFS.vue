@@ -160,20 +160,21 @@ export default {
       this.$root.loading(true);
       const fr = new FileReader();
       fr.onload = (e)=>{
-        const buf = (e.target.result.replace(`data:${file.type};base64,`, ''));
-        
+        // const buf = (e.target.result.replace(`data:${file.type};base64,`, ''));
+        const buf = e.target.result;
         // crypto
-        const crypto_str = utils.crypto.encode(buf);
-
+        // const crypto_str = utils.crypto.encode(buf);
+        console.log(222, buf);
+        window.buf = buf;
         // put to ipfs
-        http.putToIpfs(crypto_str).then((cid)=>{
+        http.putToIpfs(buf).then((cid)=>{
           console.log('cid', cid);
           callback(cid);
           this.$root.loading(false);
         });
       };
 
-      fr.readAsDataURL(file);
+      fr.readAsArrayBuffer(file);
 
 
       return false;

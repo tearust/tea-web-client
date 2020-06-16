@@ -3,7 +3,7 @@ module.exports = {
   outputDir : 'dist',
   css: {
     extract: true,
-    modules: false,
+    requireModuleExtension: true,
     loaderOptions: {
       sass: {
         prependData: `
