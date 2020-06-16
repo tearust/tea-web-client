@@ -2,10 +2,9 @@
 export default class {
   constructor(url){
     this.url = url;
-console.log(this.url)
     this.ws = null;
 
-    this.callback = null;
+    this.callback = ()=>{};
   }
 
   do_action(action){
@@ -35,10 +34,16 @@ console.log(this.url)
     console.log(d);
     if(d.data){
       d = JSON.parse(d.data);
-      this.callback && this.callback(true, d.result);
+      if(d.result){
+        this.callback(true, d.result);
+      }
+      else{
+        this.callback(false, d.error);
+      }
+      
     }
     else {
-      this.callback && this.callback(false, d.error);
+      this.callback(false, d.error);
     }
     
 

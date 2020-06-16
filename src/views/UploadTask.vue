@@ -113,12 +113,14 @@ export default {
         });
         // this.$message.success(rs);
         this.result = rs;
+
+        this.form.public_key = '';
+        this.form.gas = '10';
       }catch(e){
         this.$message.error(e);
       }finally{
         this.$root.loading(false);
-        this.form.public_key = '';
-        this.form.gas = '10';
+        
       }
       
     },
