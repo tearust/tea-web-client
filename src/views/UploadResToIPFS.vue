@@ -7,7 +7,6 @@
     accept="application/wasm"
     :on-change="fileChangeHandler"
     :before-upload="uploadChecker"
-    :limit="1"
     :file-list="checker_file_cid?[checker_file_cid]:[]">
     <el-button size="small" type="primary">Upload the task checker</el-button>
     <div slot="tip" class="el-upload__tip">Only receive [wasm]</div>
@@ -19,7 +18,7 @@
     accept="image/jpeg, image/png"
     :on-change="fileChangeHandler"
     :before-upload="uploadImage"
-    :limit="1"
+
     :file-list="img_file_cid?[img_file_cid]:[]">
     <el-button size="small" type="primary">Upload the task image</el-button>
     <div slot="tip" class="el-upload__tip">Only receive [jpg/jpeg/png]</div>
@@ -31,7 +30,6 @@
     accept="application/json"
     :on-change="fileChangeHandler"
     :before-upload="uploadWasmMainfest"
-    :limit="1"
     :file-list="wasm_fest_file_cid?[wasm_fest_file_cid]:[]">
     <el-button size="small" type="primary">Upload the task manifest json</el-button>
     <div slot="tip" class="el-upload__tip">Only receive [json]</div>
@@ -43,7 +41,6 @@
     accept="application/wasm"
     :on-change="fileChangeHandler"
     :before-upload="uploadWasm"
-    :limit="1"
     :file-list="wasm_file_cid?[wasm_file_cid]:[]">
     <el-button size="small" type="primary">Upload the task actor</el-button>
     <div slot="tip" class="el-upload__tip">Only receive [wasm]</div>
@@ -115,9 +112,8 @@ export default {
     },
     build_to_file_list(cid){
       return {
-        uid: cid,
         name: cid,
-        url: ''
+        url: cid
       };
     },
     uploadImage(file){
@@ -156,22 +152,26 @@ export default {
       });
       return false;
     },
-    processUploadFile(file, callback){
+    processUploadFile(file, callback, encrypted=false){
       this.$root.loading(true);
       const fr = new FileReader();
       fr.onload = (e)=>{
         // const buf = (e.target.result.replace(`data:${file.type};base64,`, ''));
         const buf = e.target.result;
-        // crypto
-        // const crypto_str = utils.crypto.encode(buf);
-        console.log(222, buf);
-        window.buf = buf;
+        const crypto_str = utils.crypto.encode(buf);
+        console.log(222, crypto_str);
+
+        const {hex} = utils.crypto.get_secret();
+        const xxx = utils.crypto.encodeWithOtherKey(hex);
+        
+        console.log(333, xxx);
+
         // put to ipfs
-        http.putToIpfs(buf).then((cid)=>{
-          console.log('cid', cid);
-          callback(cid);
-          this.$root.loading(false);
-        });
+        // http.putToIpfs(buf).then((cid)=>{
+        //   console.log('cid', cid);
+        //   callback(cid);
+        //   this.$root.loading(false);
+        // });
       };
 
       fr.readAsArrayBuffer(file);

@@ -18,6 +18,14 @@ const tmp = utils.cache.get('select-node');
 tmp && utils.setHttpBaseUrl(tmp.http);
 http.initBaseUrl();
 
+const {hex} = utils.crypto.get_secret();
+console.log('crypto key => %s', hex);
+
+// const crypto_str = utils.crypto.encode("hello world");
+// console.log(111, crypto_str);
+// const rr = utils.crypto.decode(crypto_str);
+// console.log(222, rr);
+
 const C = {};
 new Vue({
   router,
