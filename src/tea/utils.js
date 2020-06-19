@@ -1,9 +1,9 @@
 import * as uuid from 'uuid';
 import _ from 'lodash';
 import http from './http';
+import proto from './proto';
 
 import forge from 'node-forge';
-window.forge = forge;
 
 const cache = {
   put(id, data) {
@@ -16,14 +16,28 @@ const cache = {
     } catch(e){
       return d;
     }
+  },
+
+  saveNode(node) {
+    cache.put('select-node', node);
+  },
+  getNode(){
+    const node = cache.get('select-node');
+    if(!node) return null;
+    crypto.set_rsa_publickey(node.rsa);
+
+    return node;
   }
 };
 
 
-let _secret = {
+const _secret = {
   key : null,
   iv : null,
-  hex : null
+  hex : null,
+
+  rsa_key: null,
+  key_encrypted: null
 };
 const crypto = {
   get_secret(input_key){
@@ -32,21 +46,33 @@ const crypto = {
       const key = input_key || __key || forge.random.getBytesSync(16);
       // const key = forge.random.generateSync(16);
       const iv = key;
-      const hex = forge.util.bytesToHex(key);
+      const hex = forge.util.encode64(key);
 
       localStorage.setItem('crypto-secret-key', key);
 
-      _secret = {
-        key, iv, hex
-      };
+      _secret.key = key;
+      _secret.iv = iv;
+      _secret.hex = hex;
     }
     return _secret;
   },
+
+  set_rsa_publickey(rsa_key){
+    if(!_secret.rsa_key){
+      crypto.get_secret();
+      _secret.rsa_key = rsa_key;
+
+      console.log(222, _secret.hex);
+      _secret.key_encrypted = crypto.rsaEncodeWithRsaPublickKey(_secret.hex, _secret.rsa_key);
+    }
+  },
+
   encode(buffer_data) {
     const {key, iv} = crypto.get_secret();
     const cipher = forge.cipher.createCipher('AES-CBC', key);
     cipher.start({iv: iv});
     cipher.update(forge.util.createBuffer(buffer_data));
+    console.log(111, forge.util.createBuffer(buffer_data))
     cipher.finish();
     const encrypted = cipher.output;
 
@@ -74,15 +100,13 @@ const crypto = {
     return decrypted;
   },
 
-  encodeWithOtherKey(data, other_key="df38cb4f12479041c8e8d238109ef2a150b017f382206e24fee932e637c2db7b"){
-    const key = forge.util.hexToBytes(other_key);
-    const iv = key;
-    const cipher = forge.cipher.createCipher('AES-CBC', key);
-    cipher.start({iv: iv});
-    cipher.update(forge.util.createBuffer(data));
-    cipher.finish();
+  // rsa encode with RSA_PUBLICKEY from step 1
+  rsaEncodeWithRsaPublickKey(data, ras_pub){
+    const tmp = forge.util.decode64(ras_pub);
+    const pub = forge.pki.publicKeyFromPem(tmp);
 
-    return cipher.output.toHex();
+    let rs = pub.encrypt(data);
+    return forge.util.encode64(rs);
   }
 };
 
@@ -91,6 +115,7 @@ let _http_base_url = '';
 const F = {
   cache,
   crypto,
+  proto,
   forge,
   getBootstrapNodes(){
     return 'http://127.0.0.1:8000';
@@ -116,4 +141,5 @@ const F = {
   }
 };
 
+window.utils = F;
 export default F;

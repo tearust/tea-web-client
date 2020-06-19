@@ -13,9 +13,10 @@
     @current-change="handleSelectChange"
     style="width: 100%">
     <el-table-column prop="tea_id" label="TEA ID"></el-table-column>
+    <el-table-column prop="rsa" label="RSA KEY"></el-table-column>
     <el-table-column prop="http" label="HTTP"></el-table-column>
     <el-table-column prop="ws" label="Websocket"></el-table-column>
-    <el-table-column prop="nkn_id" label="NKN" width="200"></el-table-column>
+    <el-table-column prop="nkn_id" label="NKN"></el-table-column>
       
   </el-table>
 
@@ -57,7 +58,7 @@ export default {
         return false;
       }
       console.log(this.select);
-      utils.cache.put('select-node', this.select);
+      utils.cache.saveNode(this.select);
       utils.setHttpBaseUrl(this.select.http);
 
       this.$router.push('/upload_res');

@@ -77,10 +77,17 @@ export default {
         wasm: null,
         wasm_fest: null,
       },
+
+      node: null,
     };
   },
 
   mounted() {
+    this.node = utils.cache.getNode();
+    if(!this.node){
+      this.$router.replace('/');
+    }
+
     let cid = utils.cache.get('img_file_cid');
     if(cid){
       this.img_file_cid = this.build_to_file_list(cid);
@@ -121,7 +128,7 @@ export default {
         this.img_file_cid = this.build_to_file_list(cid);
         this.res.image = cid;
         utils.cache.put('img_file_cid', cid);
-      });
+      }, true);
 
       return false;
     },
@@ -144,7 +151,6 @@ export default {
       return false;
     },
     uploadWasmMainfest(file){
-      console.log(111, file);
       this.processUploadFile(file, (cid)=>{
         this.wasm_fest_file_cid = this.build_to_file_list(cid);
         this.res.wasm_fest = cid;
@@ -157,21 +163,18 @@ export default {
       const fr = new FileReader();
       fr.onload = (e)=>{
         // const buf = (e.target.result.replace(`data:${file.type};base64,`, ''));
-        const buf = e.target.result;
-        const crypto_str = utils.crypto.encode(buf);
-        console.log(222, crypto_str);
+        let buf = e.target.result;
 
-        const {hex} = utils.crypto.get_secret();
-        const xxx = utils.crypto.encodeWithOtherKey(hex);
-        
-        console.log(333, xxx);
+        if(encrypted){
+          buf = utils.crypto.encode(buf);
+        }
 
         // put to ipfs
-        // http.putToIpfs(buf).then((cid)=>{
-        //   console.log('cid', cid);
-        //   callback(cid);
-        //   this.$root.loading(false);
-        // });
+        http.putToIpfs(buf).then((cid)=>{
+          console.log('cid', cid);
+          callback(cid);
+          this.$root.loading(false);
+        });
       };
 
       fr.readAsArrayBuffer(file);
