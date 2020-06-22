@@ -38,7 +38,7 @@
         "TaskRegisterResponse": {
           "fields": {
             "RefNum": {
-              "type": "uint32",
+              "type": "bytes",
               "id": 1
             },
             "Error": {

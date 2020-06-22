@@ -1,6 +1,9 @@
 import utils from './utils';
 import nkn from './nkn';
 import ws from './ws';
+import http from './http';
+import proto from './proto';
+import Layer1 from './layer1';
 
 export default class {
   constructor(active_nodes){
@@ -9,6 +12,10 @@ export default class {
     this.nkn = null;
     this.ws = null;
     this.active_nodes = [active_nodes];
+
+    this.node = active_nodes;
+
+    this.layer1 = null;
   }
 
   async connect(){
@@ -21,6 +28,9 @@ export default class {
     await this.createMessageChannel();
     this.ready = 2;
     console.log('tea connect success');
+
+    this.layer1 = new Layer1();
+    await this.layer1.init();
   }
 
   sortActiveNodes(node_list){
@@ -83,6 +93,40 @@ export default class {
 
     console.log("rs => ", rs);
     return rs;
+  }
+
+  registerNewTask({cid, hash}){
+    const p = new proto.Protobuf('libp2p_delegate.TaskRegisterRequest');
+    const {key_encrypted} = utils.crypto.get_secret();
+    console.log(44, key_encrypted)
+    const payload = {
+      cidHash: [{
+        cid: cid,
+        hash: proto.stringToU8(hash)
+      }],
+      ekey1: proto.stringToU8(key_encrypted),
+      blockChainAccount: proto.stringToU8(this.node.tea_id)
+    };
+    console.log(22, payload);
+    p.payload(payload);
+    const buf = p.encode();
+    console.log(11, buf);
+    const dd = p.decode(buf);
+    console.log(22, dd);
+
+    return http.registerNewTask(buf);
+  }
+
+  async addNewTask(param, callback){
+    // var teaId = '0x04'
+    // let refNum = 112
+    // let rsaPub = '0xaaa';
+    // let capCid = '0x05'
+    // let modelCid = '0x06'
+    // let dataCid = '0x07'
+    // let payment = 50
+
+    return await this.layer1.addNewTask(param, callback);
   }
 
 }

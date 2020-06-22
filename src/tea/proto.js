@@ -8,7 +8,7 @@ const root = protobuf.Root.fromJSON(protobufJSON);
 class Protobuf {
   constructor(KEY){
     this.key = KEY;
-    this.obj = root.lookup(`libp2p_delegate.${KEY}`);
+    this.obj = root.lookup(`${KEY}`);
     this._payload = null;
   }
   payload(payload){
@@ -19,7 +19,7 @@ class Protobuf {
     }
     this._payload = payload;
   }
-  toBuffer(){
+  encode(){
     const msg = this.obj.create(this._payload);
     return this.obj.encode(msg).finish();
   }
@@ -50,7 +50,7 @@ const F = {
 };
 
 // test
-// const aa = new F.Protobuf('TaskRegisterRequest');
+// const aa = new F.Protobuf('libp2p_delegate.TaskRegisterRequest');
 // aa.payload({
 //   cidHash: [{
 //     cid: 'dfdfd',
@@ -59,7 +59,7 @@ const F = {
 //   ekey1: F.stringToU8('eeeeee'),
 //   blockChainAccount: F.stringToU8('sdfsdfs')
 // });
-// const buf = aa.toBuffer();
+// const buf = aa.encode();
 // console.log(11, buf);
 // window.dd = aa.decode(buf);
 // console.log(22, window.dd);

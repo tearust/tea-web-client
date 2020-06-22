@@ -124,10 +124,12 @@ export default {
       };
     },
     uploadImage(file){
-      this.processUploadFile(file, (cid)=>{
+      this.processUploadFile(file, (cid, buf)=>{
         this.img_file_cid = this.build_to_file_list(cid);
         this.res.image = cid;
         utils.cache.put('img_file_cid', cid);
+
+        utils.cache.put('image_file_hash', utils.crypto.sha256(buf));
       }, true);
 
       return false;
@@ -172,7 +174,7 @@ export default {
         // put to ipfs
         http.putToIpfs(buf).then((cid)=>{
           console.log('cid', cid);
-          callback(cid);
+          callback(cid, e.target.result);
           this.$root.loading(false);
         });
       };

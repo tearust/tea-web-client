@@ -72,7 +72,7 @@ const crypto = {
     const cipher = forge.cipher.createCipher('AES-CBC', key);
     cipher.start({iv: iv});
     cipher.update(forge.util.createBuffer(buffer_data));
-    console.log(111, forge.util.createBuffer(buffer_data))
+    // console.log(111, forge.util.createBuffer(buffer_data))
     cipher.finish();
     const encrypted = cipher.output;
 
@@ -107,6 +107,12 @@ const crypto = {
 
     let rs = pub.encrypt(data);
     return forge.util.encode64(rs);
+  },
+
+  sha256(data){
+    const tmp = forge.sha256.create();
+    tmp.update(data);
+    return tmp.digest().toHex();
   }
 };
 
