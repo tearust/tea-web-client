@@ -57,7 +57,20 @@ const F = {
 //     hash: F.stringToU8('sfefesf')
 //   }],
 //   ekey1: F.stringToU8('eeeeee'),
-//   blockChainAccount: F.stringToU8('sdfsdfs')
+//   blockChainAccount: F.stringToU8('sdfsdfs'),
+//   wasm: {
+//     cid: 'aaaa',
+//     hash: F.stringToU8('aaaaaa'),
+//   },
+//   wasmManifest: {
+//     cid: 'aaaa',
+//     hash: F.stringToU8('aaaaaa'),
+//   },
+//   wasmChecker: {
+//     cid: 'aaaa',
+//     hash: F.stringToU8('aaaaaa'),
+//   },
+//   payment: 30
 // });
 // const buf = aa.encode();
 // console.log(11, buf);

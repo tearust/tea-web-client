@@ -135,28 +135,31 @@ export default {
       return false;
     },
     uploadChecker(file){
-      this.processUploadFile(file, (cid)=>{
+      this.processUploadFile(file, (cid, buf)=>{
         this.checker_file_cid = this.build_to_file_list(cid);
         this.res.checker = cid;
         utils.cache.put('checker_file_cid', cid);
+        utils.cache.put('checker_file_hash', utils.crypto.sha256(buf));
       });
 
       return false;
     },
     uploadWasm(file){
-      this.processUploadFile(file, (cid)=>{
+      this.processUploadFile(file, (cid, buf)=>{
         this.wasm_file_cid = this.build_to_file_list(cid);
         this.res.wasm = cid;
         utils.cache.put('wasm_file_cid', cid);
+        utils.cache.put('wasm_file_hash', utils.crypto.sha256(buf));
       });
 
       return false;
     },
     uploadWasmMainfest(file){
-      this.processUploadFile(file, (cid)=>{
+      this.processUploadFile(file, (cid, buf)=>{
         this.wasm_fest_file_cid = this.build_to_file_list(cid);
         this.res.wasm_fest = cid;
         utils.cache.put('wasm_fest_file_cid', cid);
+        utils.cache.put('wasm_fest_file_hash', utils.crypto.sha256(buf));
       });
       return false;
     },

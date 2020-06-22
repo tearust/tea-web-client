@@ -32,18 +32,81 @@
               "rule": "required",
               "type": "bytes",
               "id": 3
+            },
+            "wasm": {
+              "rule": "required",
+              "type": "CidHash",
+              "id": 4
+            },
+            "wasmManifest": {
+              "rule": "required",
+              "type": "CidHash",
+              "id": 5
+            },
+            "wasmChecker": {
+              "rule": "required",
+              "type": "CidHash",
+              "id": 6
+            },
+            "payment": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 7
             }
           }
         },
         "TaskRegisterResponse": {
           "fields": {
             "RefNum": {
-              "type": "bytes",
+              "type": "string",
               "id": 1
+            },
+            "RsaPubKey": {
+              "type": "string",
+              "id": 3
             },
             "Error": {
               "type": "string",
               "id": 2
+            }
+          }
+        },
+        "AddNewTask": {
+          "fields": {
+            "teaId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "refNum": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
+            "rsaPub": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
+            },
+            "capCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "modelCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
+            },
+            "dataCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 6
+            },
+            "payment": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 7
             }
           }
         }

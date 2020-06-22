@@ -29,8 +29,15 @@ export default class {
     this.ready = 2;
     console.log('tea connect success');
 
-    this.layer1 = new Layer1();
-    await this.layer1.init();
+    
+  }
+
+  async initLayer1(){
+    if(!this.layer1){
+      this.layer1 = new Layer1();
+      await this.layer1.init();
+    }
+    
   }
 
   sortActiveNodes(node_list){
@@ -95,17 +102,35 @@ export default class {
     return rs;
   }
 
-  registerNewTask({cid, hash}){
+  registerNewTask(gas){
+    const wasm = {
+      cid: utils.cache.get('wasm_file_cid'),
+      hash: proto.stringToU8(utils.cache.get('wasm_file_hash'))
+    };
+    const wasmManifest = {
+      cid: utils.cache.get('wasm_fest_file_cid'),
+      hash: proto.stringToU8(utils.cache.get('wasm_fest_file_hash'))
+    };
+    const wasmChecker = {
+      cid: utils.cache.get('checker_file_cid'),
+      hash: proto.stringToU8(utils.cache.get('checker_file_hash'))
+    };
+    const cidHash = [{
+      cid: utils.cache.get('img_file_cid'),
+      hash: proto.stringToU8(utils.cache.get('image_file_hash'))
+    }];
+
     const p = new proto.Protobuf('libp2p_delegate.TaskRegisterRequest');
     const {key_encrypted} = utils.crypto.get_secret();
     console.log(44, key_encrypted)
     const payload = {
-      cidHash: [{
-        cid: cid,
-        hash: proto.stringToU8(hash)
-      }],
+      cidHash,
       ekey1: proto.stringToU8(key_encrypted),
-      blockChainAccount: proto.stringToU8(this.node.tea_id)
+      blockChainAccount: proto.stringToU8(this.node.tea_id),
+      wasm,
+      wasmManifest,
+      wasmChecker,
+      payment: gas
     };
     console.log(22, payload);
     p.payload(payload);
@@ -118,6 +143,7 @@ export default class {
   }
 
   async addNewTask(param, callback){
+    await this.initLayer1();
     // var teaId = '0x04'
     // let refNum = 112
     // let rsaPub = '0xaaa';

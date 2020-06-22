@@ -102,48 +102,40 @@ export default {
     async clickSubmitHandler(){
       this.$root.loading(true);
 
-      const image_cid = utils.cache.get('img_file_cid');
-      const image_hash = utils.cache.get('image_file_hash');
-
-      console.log(123, image_cid, image_hash);
-
       // registr new task
-      // const rs = await this.tea.registerNewTask({
-      //   cid: image_cid,
-      //   hash: image_hash
-      // });
+      const rs = await this.tea.registerNewTask(parseInt(this.form.gas, 10));
 
-      // console.log(22, rs);
+      console.log(22, rs);
 
       // const p = new utils.proto.Protobuf('libp2p_delegate.TaskRegisterResponse');
       // console.log(333, p.decode(rs));
 
       // add new task
-      const ref_num = 1233;
-      const new_task_param = {
-        teaId: this.tea.node.tea_id,
-        refNum: ref_num,
-        rsaPub: this.tea.node.rsa,
-        capCid: this.form.res.checker,
-        modelCid: 'NA',
-        dataCid: this.form.res.image,
-        payment: this.form.gas,
-      };
+      // const ref_num = 1233;
+      // const new_task_param = {
+      //   teaId: this.tea.node.tea_id,
+      //   refNum: ref_num,
+      //   rsaPub: this.tea.node.rsa,
+      //   capCid: this.form.res.checker,
+      //   modelCid: 'NA',
+      //   dataCid: this.form.res.image,
+      //   payment: this.form.gas,
+      // };
 
-      await this.tea.addNewTask(new_task_param, (f, block)=>{
-        if(f){
-          this.result = `
-            Block => ${block} <br/>
-            Ref num => ${ref_num} <br/>
-            Calculating...
-          `;
+      // await this.tea.addNewTask(new_task_param, (f, block)=>{
+      //   if(f){
+      //     this.result = `
+      //       Block => ${block} <br/>
+      //       Ref num => ${ref_num} <br/>
+      //       Calculating...
+      //     `;
 
-          this.form.public_key = '';
-          this.form.gas = '10';
+      //     this.form.public_key = '';
+      //     this.form.gas = '10';
 
-          this.$root.loading(false);
-        }
-      });
+      //     this.$root.loading(false);
+      //   }
+      // });
       
 
 
