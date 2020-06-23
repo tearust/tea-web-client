@@ -28,6 +28,8 @@ class Layer1 {
           "ref_num": "u32",
           "rsa_pub": "Bytes",
           "cap_cid": "Bytes",
+          "manifest_cid": "Bytes",
+          "wasm_cid": "Bytes",
           "model_cid": "Bytes",
           "data_cid": "Bytes",
           "payment": "u32"
@@ -39,12 +41,12 @@ class Layer1 {
   }
 
   async addNewTask({
-    teaId, refNum, rsaPub, capCid, modelCid, dataCid, payment
+    teaId, refNum, rsaPub, capCid, manifestCid, wasmCid, modelCid, dataCid, payment
   }, callback){
     const keyring = new Keyring({ type: 'sr25519' });
     const alice = keyring.addFromUri('//Alice', { name: 'Alice default' });
 
-    await this.api.tx.tea.addNewTask(teaId, refNum, rsaPub, capCid, modelCid, dataCid, payment)
+    await this.api.tx.tea.addNewTask(teaId, refNum, rsaPub, capCid, manifestCid, wasmCid, modelCid, dataCid, payment)
           .signAndSend(alice, ({ events = [], status }) => {
                 if (status.isInBlock) {
                       console.log('Included at block hash', status.asInBlock.toHex());

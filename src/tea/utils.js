@@ -58,6 +58,7 @@ const crypto = {
   },
 
   set_rsa_publickey(rsa_key){
+    delete _secret.rsa_key;
     if(!_secret.rsa_key){
       crypto.get_secret();
       _secret.rsa_key = rsa_key;

@@ -40,12 +40,18 @@
       type="success" 
       round 
       :disabled="!(form.public_key && form.gas)"
-      @click="clickSubmitHandler()">Start Caculate</el-button>
+      @click="clickSubmitHandler()">Send task to layer1</el-button>
   </div>
 </div>
 
 <div v-if="result">
   <h3 v-html="result"></h3>
+
+  <el-button 
+      type="primary" 
+      round 
+      :disabled="!(form.public_key && form.gas)"
+      @click="clickSendTaskForTest()">Calculate task for Test</el-button>
 </div>
   
 
@@ -103,67 +109,74 @@ export default {
       this.$root.loading(true);
 
       // registr new task
-      const rs = await this.tea.registerNewTask(parseInt(this.form.gas, 10));
+      const {ref_num, rsa_pub_key} = await this.tea.registerNewTask(parseInt(this.form.gas, 10));
 
-      console.log(22, rs);
+      console.log('ref_num =>', ref_num);
+      console.log('rsa_pub_key =>', rsa_pub_key);
 
-      // const p = new utils.proto.Protobuf('libp2p_delegate.TaskRegisterResponse');
-      // console.log(333, p.decode(rs));
+      utils.crypto.set_rsa_publickey(rsa_pub_key);
 
       // add new task
-      // const ref_num = 1233;
-      // const new_task_param = {
-      //   teaId: this.tea.node.tea_id,
-      //   refNum: ref_num,
-      //   rsaPub: this.tea.node.rsa,
-      //   capCid: this.form.res.checker,
-      //   modelCid: 'NA',
-      //   dataCid: this.form.res.image,
-      //   payment: this.form.gas,
-      // };
+      // const ref_num = 33333;
+      const new_task_param = {
+        teaId: this.tea.node.tea_id,
+        refNum: ref_num,
+        rsaPub: this.tea.node.rsa,
+        capCid: this.form.res.checker,
+        manifestCid: this.form.res.wasm_fest,
+        wasmCid: this.form.res.wasm,
+        modelCid: 'NA',
+        dataCid: this.form.res.image,
+        payment: this.form.gas,
+      };
 
-      // await this.tea.addNewTask(new_task_param, (f, block)=>{
-      //   if(f){
-      //     this.result = `
-      //       Block => ${block} <br/>
-      //       Ref num => ${ref_num} <br/>
-      //       Calculating...
-      //     `;
+      await this.tea.addNewTask(new_task_param, (f, block)=>{
+        if(f){
+          this.result = `
+            Block => ${block} <br/>
+            Ref num => ${ref_num} <br/>
+            Calculating...
+          `;
 
-      //     this.form.public_key = '';
-      //     this.form.gas = '10';
+          // this.form.public_key = '';
+          this.form.gas = '10';
 
-      //     this.$root.loading(false);
-      //   }
-      // });
+          this.$root.loading(false);
+        }
+      });
       
 
 
-      // try{
-      //   const rs = await this.tea.sendTask({
-      //     public_key: this.form.public_key,
-      //     gas: this.form.gas,
-      //     image_cid: this.form.res.image,
-      //     checker_cid: this.form.res.checker,
-      //     wasm_manifest_cid: this.form.res.wasm_fest,
-      //     wasm_cid: this.form.res.wasm,
-      //   });
-      //   // this.$message.success(rs);
-      //   this.result = rs;
-
-      //   this.form.public_key = '';
-      //   this.form.gas = '10';
-      // }catch(e){
-      //   this.$message.error(e);
-      // }finally{
-      //   this.$root.loading(false);
-        
-      // }
+      
       
     },
     clickPrev(){
       this.$router.push('/upload_res');
     },
+
+    async clickSendTaskForTest(){
+      this.$root.loading(true);
+      try{
+        const rs = await this.tea.sendTask({
+          public_key: this.form.public_key,
+          gas: this.form.gas,
+          image_cid: this.form.res.image,
+          checker_cid: this.form.res.checker,
+          wasm_manifest_cid: this.form.res.wasm_fest,
+          wasm_cid: this.form.res.wasm,
+        });
+        // this.$message.success(rs);
+        this.result = rs;
+
+        this.form.public_key = '';
+        this.form.gas = '10';
+      }catch(e){
+        this.$message.error(e);
+      }finally{
+        this.$root.loading(false);
+        
+      }
+    }
   },
 
   

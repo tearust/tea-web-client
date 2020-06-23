@@ -125,7 +125,7 @@ export default class {
     console.log(44, key_encrypted)
     const payload = {
       cidHash,
-      ekey1: proto.stringToU8(key_encrypted),
+      // ekey1: proto.stringToU8(key_encrypted),
       blockChainAccount: proto.stringToU8(this.node.tea_id),
       wasm,
       wasmManifest,

@@ -23,11 +23,6 @@
               "type": "CidHash",
               "id": 1
             },
-            "ekey1": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 2
-            },
             "blockChainAccount": {
               "rule": "required",
               "type": "bytes",
@@ -107,6 +102,138 @@
               "rule": "required",
               "type": "uint32",
               "id": 7
+            }
+          }
+        },
+        "GeneralTaskMessage": {
+          "fields": {
+            "messageType": {
+              "rule": "required",
+              "type": "MessageType",
+              "id": 1
+            },
+            "payload": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            }
+          },
+          "nested": {
+            "MessageType": {
+              "values": {
+                "ApplyToExecuteTaskRequest": 0,
+                "ApplyToExecuteTaskResponse": 1
+              }
+            }
+          }
+        },
+        "ApplyToExecuteTaskRequest": {
+          "fields": {
+            "TpmSignature": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "TeaId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Task": {
+          "fields": {
+            "teaId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "refNum": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
+            "rsaPub": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
+            },
+            "capCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "manifestCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
+            },
+            "wasmCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 6
+            },
+            "modelCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 7
+            },
+            "dataCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 8
+            },
+            "payment": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 9
+            },
+            "ekey1": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 10
+            }
+          }
+        },
+        "Node": {
+          "fields": {
+            "teaId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "peers": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "AddNewTaskRequest": {
+          "fields": {
+            "task": {
+              "rule": "required",
+              "type": "Task",
+              "id": 1
+            }
+          }
+        },
+        "AddNewTaskResponse": {
+          "fields": {
+            "accountId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "delegateNode": {
+              "rule": "required",
+              "type": "Node",
+              "id": 2
+            },
+            "task": {
+              "rule": "required",
+              "type": "Task",
+              "id": 3
             }
           }
         }
