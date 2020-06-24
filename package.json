@@ -7,7 +7,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "protobuf": "pbjs -t json ../tea-codec/proto/libp2p-delegate.proto > ./src/protobuf/protobuf.json"
+    "protobuf": "pbjs -t json ../tea-codec/proto/actor-delegate.proto > ./src/protobuf/protobuf.json"
   },
   "dependencies": {
     "axios": "^0.19.2",
