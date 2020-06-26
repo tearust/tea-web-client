@@ -1,6 +1,6 @@
 {
   "nested": {
-    "libp2p_delegate": {
+    "actor_delegate": {
       "nested": {
         "CidHash": {
           "fields": {
@@ -116,82 +116,104 @@
               "rule": "required",
               "type": "bytes",
               "id": 2
+            },
+            "TeaId": {
+              "type": "bytes",
+              "id": 3
+            },
+            "Signature": {
+              "type": "bytes",
+              "id": 4
             }
           },
           "nested": {
             "MessageType": {
               "values": {
                 "ApplyToExecuteTaskRequest": 0,
-                "ApplyToExecuteTaskResponse": 1
+                "WinnerExecutorCert": 1
               }
             }
           }
         },
         "ApplyToExecuteTaskRequest": {
           "fields": {
-            "TpmSignature": {
+            "refNum": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "RsaPubKey": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
+            },
+            "CapCheckers": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 5
+            }
+          }
+        },
+        "TaskBody": {
+          "fields": {
+            "refNum": {
               "rule": "required",
               "type": "bytes",
               "id": 1
             },
-            "TeaId": {
+            "rsaPub": {
               "rule": "required",
               "type": "bytes",
               "id": 2
+            },
+            "capCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "manifestCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "wasmCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
+            },
+            "dataCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 6
+            },
+            "ekey1": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 7
             }
           }
         },
         "Task": {
           "fields": {
-            "teaId": {
+            "delegateId": {
               "rule": "required",
               "type": "bytes",
               "id": 1
             },
-            "refNum": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 2
-            },
-            "rsaPub": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 3
-            },
-            "capCid": {
-              "rule": "required",
-              "type": "string",
-              "id": 4
-            },
-            "manifestCid": {
-              "rule": "required",
-              "type": "string",
-              "id": 5
-            },
-            "wasmCid": {
-              "rule": "required",
-              "type": "string",
-              "id": 6
-            },
             "modelCid": {
               "rule": "required",
               "type": "string",
-              "id": 7
-            },
-            "dataCid": {
-              "rule": "required",
-              "type": "string",
-              "id": 8
+              "id": 2
             },
             "payment": {
               "rule": "required",
               "type": "uint32",
-              "id": 9
+              "id": 3
             },
-            "ekey1": {
+            "bodyCid": {
               "rule": "required",
-              "type": "bytes",
-              "id": 10
+              "type": "string",
+              "id": 4
             }
           }
         },
@@ -233,6 +255,25 @@
             "task": {
               "rule": "required",
               "type": "Task",
+              "id": 3
+            }
+          }
+        },
+        "WinnerExecutorCert": {
+          "fields": {
+            "refNum": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "winnerTeaId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
+            "executorRsaPubKey": {
+              "rule": "required",
+              "type": "bytes",
               "id": 3
             }
           }

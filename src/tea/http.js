@@ -34,8 +34,8 @@ const F = {
   requestActiveNodes() {
     return _axios.get('/api/request_active_nodes');
   },
-  putToIpfs(crpyto_str) {
-    return _axios.post('/ipfs', crpyto_str);
+  putToIpfs(data) {
+    return _axios.post('/ipfs', data);
   },
   registerNewTask(proto_buf){
     return _axios.post('/api/register_task', proto_buf);

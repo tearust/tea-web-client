@@ -117,16 +117,16 @@ export default {
       utils.crypto.set_rsa_publickey(rsa_pub_key);
 
       // add new task
-      // const ref_num = 33333;
-      const new_task_param = {
-        teaId: this.tea.node.tea_id,
+      // const ref_num = 33333;  
+      const bodyCid = await this.tea.putTaskBodyToIpfs({
         refNum: ref_num,
         rsaPub: this.tea.node.rsa,
-        capCid: this.form.res.checker,
-        manifestCid: this.form.res.wasm_fest,
-        wasmCid: this.form.res.wasm,
+      });
+
+      const new_task_param = {
+        teaId: this.tea.node.tea_id,
         modelCid: 'NA',
-        dataCid: this.form.res.image,
+        bodyCid,
         payment: this.form.gas,
       };
 
@@ -144,9 +144,6 @@ export default {
           this.$root.loading(false);
         }
       });
-      
-
-
       
       
     },
