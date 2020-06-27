@@ -30,6 +30,7 @@ class Protobuf {
 
 const F = {
   Protobuf,
+  protobuf,
   stringToU8(str){
     var arr = [];
     for (var i = 0, j = str.length; i < j; ++i) {

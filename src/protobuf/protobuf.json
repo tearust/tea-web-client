@@ -190,19 +190,19 @@
         },
         "Task": {
           "fields": {
-            "delegateId": {
+            "refNum": {
               "rule": "required",
               "type": "bytes",
               "id": 1
             },
+            "delegateId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
             "modelCid": {
               "rule": "required",
               "type": "string",
-              "id": 2
-            },
-            "payment": {
-              "rule": "required",
-              "type": "uint32",
               "id": 3
             },
             "bodyCid": {
@@ -210,9 +210,9 @@
               "type": "string",
               "id": 4
             },
-            "refNum": {
+            "payment": {
               "rule": "required",
-              "type": "string",
+              "type": "uint32",
               "id": 5
             }
           }
@@ -247,14 +247,62 @@
               "type": "bytes",
               "id": 1
             },
+            "refNum": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
             "delegateNode": {
               "rule": "required",
               "type": "Node",
+              "id": 3
+            }
+          }
+        },
+        "CompleteTaskRequest": {
+          "fields": {
+            "refNum": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "teaId": {
+              "rule": "required",
+              "type": "bytes",
               "id": 2
             },
-            "task": {
+            "delegateSig": {
               "rule": "required",
-              "type": "Task",
+              "type": "bytes",
+              "id": 3
+            },
+            "result": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 4
+            },
+            "resultSig": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 5
+            }
+          }
+        },
+        "CompleteTaskResponse": {
+          "fields": {
+            "refNum": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "accountId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
+            "result": {
+              "rule": "required",
+              "type": "bytes",
               "id": 3
             }
           }

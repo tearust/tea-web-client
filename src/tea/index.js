@@ -29,7 +29,7 @@ export default class {
     this.ready = 2;
     console.log('tea connect success');
 
-    
+    await this.initLayer1();
   }
 
   async initLayer1(){
@@ -140,7 +140,9 @@ export default class {
     // const dd = p.decode(buf);
     // console.log(22, dd);
 
-    return http.registerNewTask(utils.uint8array_to_arraybuffer(buf));
+    const base64 = utils.uint8array_to_base64(buf);
+    console.log(111, base64);
+    return http.registerNewTask(base64);
   }
 
   putTaskBodyToIpfs({rsaPub}){
@@ -167,9 +169,6 @@ export default class {
   }
 
   async addNewTask(param, callback){
-    await this.initLayer1();
-
-
     return await this.layer1.addNewTask(param, callback);
   }
 

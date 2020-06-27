@@ -149,6 +149,9 @@ const F = {
 
   uint8array_to_arraybuffer(uint8){
     return uint8.buffer.slice(uint8.byteOffset, uint8.byteOffset + uint8.byteLength);
+  },
+  uint8array_to_base64(uint8){
+    return proto.protobuf.util.base64.encode(uint8, uint8.byteOffset, uint8.byteOffset + uint8.byteLength);
   }
 };
 
