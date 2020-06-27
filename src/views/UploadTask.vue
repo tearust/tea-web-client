@@ -40,7 +40,7 @@
       type="success" 
       round 
       :disabled="!(form.public_key && form.gas)"
-      @click="clickSubmitHandler()">Send task to layer1</el-button>
+      @click="clickSendTaskForTest()">Send task to layer1</el-button>
   </div>
 </div>
 
@@ -119,7 +119,6 @@ export default {
       // add new task
       // const ref_num = 33333;  
       const bodyCid = await this.tea.putTaskBodyToIpfs({
-        refNum: ref_num,
         rsaPub: this.tea.node.rsa,
       });
 
@@ -128,6 +127,7 @@ export default {
         modelCid: 'NA',
         bodyCid,
         payment: this.form.gas,
+        refNum: ref_num,
       };
 
       await this.tea.addNewTask(new_task_param, (f, block)=>{
@@ -153,15 +153,14 @@ export default {
 
     async clickSendTaskForTest(){
       this.$root.loading(true);
+
+      const bodyCid = await this.tea.putTaskBodyToIpfs({
+        rsaPub: this.tea.node.rsa,
+      });
+      console.log('task body cid =>', bodyCid);
+
       try{
-        const rs = await this.tea.sendTask({
-          public_key: this.form.public_key,
-          gas: this.form.gas,
-          image_cid: this.form.res.image,
-          checker_cid: this.form.res.checker,
-          wasm_manifest_cid: this.form.res.wasm_fest,
-          wasm_cid: this.form.res.wasm,
-        });
+        const rs = await this.tea.sendTask(bodyCid);
         // this.$message.success(rs);
         this.result = rs;
 

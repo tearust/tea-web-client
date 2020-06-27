@@ -145,6 +145,10 @@ const F = {
 
   uuid(){
     return uuid.v4();
+  },
+
+  uint8array_to_arraybuffer(uint8){
+    return uint8.buffer.slice(uint8.byteOffset, uint8.byteOffset + uint8.byteLength);
   }
 };
 

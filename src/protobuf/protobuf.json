@@ -156,11 +156,6 @@
         },
         "TaskBody": {
           "fields": {
-            "refNum": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 1
-            },
             "rsaPub": {
               "rule": "required",
               "type": "bytes",
@@ -214,6 +209,11 @@
               "rule": "required",
               "type": "string",
               "id": 4
+            },
+            "refNum": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
             }
           }
         },
@@ -275,6 +275,19 @@
               "rule": "required",
               "type": "bytes",
               "id": 3
+            }
+          }
+        },
+        "WinnerExecutorCertPayload": {
+          "fields": {
+            "cert": {
+              "rule": "required",
+              "type": "WinnerExecutorCert",
+              "id": 1
+            },
+            "secKeysRsaBytes": {
+              "type": "bytes",
+              "id": 2
             }
           }
         }

@@ -73,11 +73,14 @@ export default class {
     }
   }
 
-  async sendTask(task_param){
+  async sendTask(bodyCid){
 
+    const {key_encrypted} = utils.crypto.get_secret();
     const param = {
-      ...task_param,
-      nonce: utils.uuid(),
+      task_id: bodyCid,
+      sec_key: {
+        key1: key_encrypted
+      }
     };
 
     const payload = {
@@ -137,14 +140,14 @@ export default class {
     // const dd = p.decode(buf);
     // console.log(22, dd);
 
-    return http.registerNewTask(buf);
+    return http.registerNewTask(utils.uint8array_to_arraybuffer(buf));
   }
 
-  putTaskBodyToIpfs({refNum, rsaPub}){
+  putTaskBodyToIpfs({rsaPub}){
     const {key_encrypted} = utils.crypto.get_secret();
     console.log(44, key_encrypted);
     const payload = {
-      refNum,
+      // refNum,
       rsaPub,
       capCid: utils.cache.get('checker_file_cid'),
       manifestCid: utils.cache.get('wasm_fest_file_cid'),
@@ -160,7 +163,7 @@ export default class {
     const dd = p.decode(buf);
     console.log('decode => ', dd);
 
-    return http.putToIpfs(buf);
+    return http.putToIpfs(utils.uint8array_to_arraybuffer(buf));
   }
 
   async addNewTask(param, callback){
