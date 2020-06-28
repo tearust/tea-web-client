@@ -75,11 +75,12 @@ export default class {
 
   async sendTask(bodyCid){
 
-    const {key_encrypted} = utils.crypto.get_secret();
+    const {hex, key_encrypted} = utils.crypto.get_secret();
     const param = {
       task_id: bodyCid,
       sec_key: {
-        key1: key_encrypted
+        key1: key_encrypted,
+        // key1: hex
       }
     };
 

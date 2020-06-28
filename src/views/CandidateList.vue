@@ -13,7 +13,7 @@
     @current-change="handleSelectChange"
     style="width: 100%">
     <el-table-column prop="tea_id" label="TEA ID"></el-table-column>
-    <el-table-column prop="rsa" label="RSA KEY"></el-table-column>
+    <!-- <el-table-column prop="rsa" label="RSA KEY"></el-table-column> -->
     <el-table-column prop="http" label="HTTP"></el-table-column>
     <el-table-column prop="ws" label="Websocket"></el-table-column>
     <el-table-column prop="nkn_id" label="NKN"></el-table-column>
