@@ -34,8 +34,13 @@ export default class {
 
   async initLayer1(){
     if(!this.layer1){
-      this.layer1 = new Layer1();
-      await this.layer1.init();
+      try{
+        this.layer1 = new Layer1();
+        await this.layer1.init();
+      }catch(e){
+        console.log(e);
+      }
+      
     }
     
   }
@@ -77,7 +82,7 @@ export default class {
 
     const {hex, key_encrypted} = utils.crypto.get_secret();
     const param = {
-      task_id: bodyCid,
+      task_cid: bodyCid,
       sec_key: {
         key1: key_encrypted,
         // key1: hex
