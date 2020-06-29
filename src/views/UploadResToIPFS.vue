@@ -130,7 +130,7 @@ export default {
         utils.cache.put('img_file_cid', cid);
 
         utils.cache.put('image_file_hash', utils.crypto.sha256(buf));
-      }, false);
+      }, true);
 
       return false;
     },

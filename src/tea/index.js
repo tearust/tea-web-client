@@ -84,8 +84,8 @@ export default class {
     const param = {
       task_cid: bodyCid,
       sec_key: {
-        key1: key_encrypted,
-        // key1: hex
+        // key1: key_encrypted,
+        key1: hex
       }
     };
 

@@ -46,7 +46,7 @@ const crypto = {
       const key = input_key || __key || forge.random.getBytesSync(16);
       // const key = forge.random.generateSync(16);
       const iv = key;
-      const hex = forge.util.encode64(key);
+      const hex = forge.util.bytesToHex(key);
 
       localStorage.setItem('crypto-secret-key', key);
 
@@ -72,6 +72,7 @@ const crypto = {
     const {key, iv} = crypto.get_secret();
     const cipher = forge.cipher.createCipher('AES-CBC', key);
     cipher.start({iv: iv});
+    console.log(111, forge.util.createBuffer(key));
     cipher.update(forge.util.createBuffer(buffer_data));
     // console.log(111, forge.util.createBuffer(buffer_data))
     cipher.finish();
