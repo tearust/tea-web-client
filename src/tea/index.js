@@ -111,7 +111,7 @@ export default class {
     return rs;
   }
 
-  registerNewTask(gas){
+  async registerNewTask(gas){
     const wasm = {
       cid: utils.cache.get('wasm_file_cid'),
       hash: proto.stringToU8(utils.cache.get('wasm_file_hash'))
@@ -147,11 +147,11 @@ export default class {
     // console.log(22, dd);
 
     const base64 = utils.uint8array_to_base64(buf);
-    console.log(111, base64);
+    console.log(888, base64);
     return http.registerNewTask(base64);
   }
 
-  putTaskBodyToIpfs({rsaPub}){
+  async putTaskBodyToIpfs({rsaPub}){
     const {key_encrypted} = utils.crypto.get_secret();
     console.log(44, key_encrypted);
     const payload = {
@@ -168,8 +168,10 @@ export default class {
     p.payload(payload);
     const buf = p.encode();
     console.log('buf', buf);
-    const dd = p.decode(buf);
-    console.log('decode => ', dd);
+    const base64 = utils.uint8array_to_base64(buf);
+    console.log(999, base64);
+    // const dd = p.decode(buf);
+    // console.log('decode => ', dd);
 
     return http.putToIpfs(utils.uint8array_to_arraybuffer(buf));
   }

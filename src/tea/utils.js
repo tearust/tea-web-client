@@ -152,7 +152,8 @@ const F = {
     return uint8.buffer.slice(uint8.byteOffset, uint8.byteOffset + uint8.byteLength);
   },
   uint8array_to_base64(uint8){
-    return proto.protobuf.util.base64.encode(uint8, uint8.byteOffset, uint8.byteOffset + uint8.byteLength);
+    uint8 = F.convertU8ToString(uint8);
+    return forge.util.encode64(uint8);
   }
 };
 

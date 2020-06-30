@@ -40,7 +40,7 @@
       type="success" 
       round 
       :disabled="!(form.public_key && form.gas)"
-      @click="clickSendTaskForTest()">Send task to layer1</el-button>
+      @click="clickSubmitHandler()">Send task to layer1</el-button>
   </div>
 </div>
 
