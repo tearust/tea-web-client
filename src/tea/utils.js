@@ -24,6 +24,7 @@ const cache = {
   getNode(){
     const node = cache.get('select-node');
     if(!node) return null;
+
     crypto.set_rsa_publickey(node.rsa);
 
     return node;
@@ -72,7 +73,6 @@ const crypto = {
     const {key, iv} = crypto.get_secret();
     const cipher = forge.cipher.createCipher('AES-CBC', key);
     cipher.start({iv: iv});
-    console.log(111, forge.util.createBuffer(key));
     cipher.update(forge.util.createBuffer(buffer_data));
     // console.log(111, forge.util.createBuffer(buffer_data))
     cipher.finish();
@@ -106,8 +106,10 @@ const crypto = {
   rsaEncodeWithRsaPublickKey(data, ras_pub){
     const tmp = forge.util.decode64(ras_pub);
     const pub = forge.pki.publicKeyFromPem(tmp);
-
+console.log(789, data, ras_pub)
     let rs = pub.encrypt(data);
+    // console.log('jjjj', forge.util.encode64(rs));
+    console.log(22, forge.util.encode64(rs));
     return forge.util.encode64(rs);
   },
 

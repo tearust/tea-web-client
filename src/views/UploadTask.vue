@@ -121,7 +121,7 @@ export default {
       const bodyCid = await this.tea.putTaskBodyToIpfs({
         rsaPub: this.tea.node.rsa,
       });
-
+console.log("========= bodyCid : ", bodyCid);
       const new_task_param = {
         teaId: this.tea.node.tea_id,
         modelCid: 'NA',
