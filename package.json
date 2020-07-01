@@ -10,6 +10,8 @@
     "protobuf": "pbjs -t json ../tea-codec/proto/actor-delegate.proto > ./src/protobuf/protobuf.json"
   },
   "dependencies": {
+    "@polkadot/api": "^1.22.1",
+    "@polkadot/util-crypto": "^2.16.1",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "element-ui": "2.13.2",
@@ -20,8 +22,7 @@
     "protobufjs": "^6.9.0",
     "uuid": "8.1.0",
     "vue": "^2.6.11",
-    "vue-router": "3.3.4",
-    "@polkadot/api": "^1.14.1"
+    "vue-router": "3.3.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.4.4",
