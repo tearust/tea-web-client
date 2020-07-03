@@ -125,7 +125,7 @@ console.log("========= bodyCid : ", bodyCid);
       const new_task_param = {
         teaId: '0x'+this.tea.node.tea_id,
         modelCid: '0x09',
-        bodyCid,
+        bodyCid: '0x'+bodyCid,
         payment: this.form.gas,
         refNum: '0x'+ref_num,
       };
