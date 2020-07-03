@@ -170,8 +170,8 @@ export default class {
     console.log('buf', buf);
     const base64 = utils.uint8array_to_base64(buf);
     console.log(999, base64);
-    // const dd = p.decode(buf);
-    // console.log('decode => ', dd);
+    const dd = p.decode(buf);
+    console.log('decode => ', dd);
 
     return http.putToIpfs(utils.uint8array_to_arraybuffer(buf));
   }

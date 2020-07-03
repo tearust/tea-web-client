@@ -123,11 +123,11 @@ export default {
       });
 console.log("========= bodyCid : ", bodyCid);
       const new_task_param = {
-        teaId: this.tea.node.tea_id,
-        modelCid: 'NA',
+        teaId: '0x'+this.tea.node.tea_id,
+        modelCid: '0x09',
         bodyCid,
         payment: this.form.gas,
-        refNum: ref_num,
+        refNum: '0x'+ref_num,
       };
 
       await this.tea.addNewTask(new_task_param, (f, block)=>{
