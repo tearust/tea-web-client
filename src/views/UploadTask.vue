@@ -62,6 +62,7 @@
 import tea from '../tea';
 import TaskStep from '../components/TaskStep';
 import utils from '../tea/utils';
+import toHex from 'to-hex';
 
 export default {
   components: {
@@ -123,12 +124,13 @@ export default {
       });
 console.log("========= bodyCid : ", bodyCid);
       const new_task_param = {
-        teaId: '0x'+this.tea.node.tea_id,
+        teaId: '0x'+this.tea.node.tea_id, //toHex(this.tea.node.tea_id, { addPrefix: true }),
         modelCid: '0x09',
-        bodyCid: '0x'+bodyCid,
+        bodyCid: toHex(bodyCid, { addPrefix: true }),
         payment: this.form.gas,
-        refNum: '0x'+ref_num,
+        refNum: toHex(ref_num, { addPrefix: true }),
       };
+      console.log(777, new_task_param);
 
       await this.tea.addNewTask(new_task_param, (f, block)=>{
         if(f){

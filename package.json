@@ -22,7 +22,8 @@
     "protobufjs": "^6.9.0",
     "uuid": "8.1.0",
     "vue": "^2.6.11",
-    "vue-router": "3.3.4"
+    "vue-router": "3.3.4",
+    "to-hex": "0.0.15"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.4.4",
