@@ -12,28 +12,27 @@ class Layer1 {
       types: {
         Weight: "u32",
         Address: "AccountId",
-        TeaId: "Bytes",
+        TeaId: "[u8; 32]",
         PeerId: "Bytes",
-        RefNum: "Bytes",
+        RefNum: "H256",
         Result: "Bytes",
         Node: {
-          "TeaId": "TeaId",
-          "Peers": "Vec<PeerId>"
+              "teaId": "TeaId",
+              "peers": "Vec<PeerId>"
         },
         Model: {
-          "account": "AccountId",
-          "payment": "u32",
-          "cid": "H256"
+              "account": "AccountId",
+              "payment": "u32",
+              "cid": "Bytes"
         },
         Task: {
-          "ref_num": "Bytes",
-          "delegate_node": "TeaId",
-          "model_cid": "Bytes",
-          "body_cid": "Bytes",
-          "payment": "Balance"
+              "refNum": "RefNum",
+              "delegateTeaId": "TeaId",
+              "modelCid": "Bytes",
+              "bodyCid": "Bytes",
+              "payment": "Balance"
         }
       }
-
     });
     this.api = api;
     await cryptoWaitReady();
