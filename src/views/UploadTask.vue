@@ -128,7 +128,7 @@ console.log("========= bodyCid : ", bodyCid);
         modelCid: '0x09',
         bodyCid: toHex(bodyCid, { addPrefix: true }),
         payment: this.form.gas,
-        refNum: toHex(ref_num, { addPrefix: true }),
+        refNum: '0x'+ref_num,
       };
       console.log(777, new_task_param);
 
