@@ -47,11 +47,11 @@
 <div v-if="result">
   <h3 v-html="result"></h3>
 
-  <el-button 
+  <!-- <el-button 
       type="primary" 
       round 
       :disabled="!(form.public_key && form.gas)"
-      @click="clickSendTaskForTest()">Calculate task for Test</el-button>
+      @click="clickSendTaskForTest()">Calculate task for Test</el-button> -->
 </div>
   
 
@@ -63,6 +63,7 @@ import tea from '../tea';
 import TaskStep from '../components/TaskStep';
 import utils from '../tea/utils';
 import toHex from 'to-hex';
+import _ from 'lodash';
 
 export default {
   components: {
@@ -132,8 +133,11 @@ console.log("========= bodyCid : ", bodyCid);
       };
       console.log(777, new_task_param);
 
-      this.tea.layer1.buildCallback('CompleteTask', (res)=>{
-        const tmp = JSON.parse(utils.forge.util.hexToBytes(res.result));
+      this.tea.layer1.buildCallback('CompleteTask', (rs)=>{
+        let tmp = rs.replace(/"/, '');
+        tmp = _.slice(rs, 2).join("");
+        console.log(tmp, utils.forge.util.hexToBytes(tmp));
+        tmp = JSON.parse(utils.forge.util.hexToBytes(tmp));
         this.result = tmp.result;
       });
 

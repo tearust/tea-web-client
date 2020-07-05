@@ -64,15 +64,14 @@ class Layer1 {
           // console.log(`\t\t\t${types[index].type}: ${data.toString()}`);
           eventData[types[index].type] = data
         });
-        console.log('eventData:', JSON.stringify(eventData));
+        console.log('eventData:', eventData);
   
         switch (event.method) {
           case 'CompleteTask':
-            console.log(11111, event, eventData);
-
-            console.log('CompleteTask:', JSON.stringify(eventData.RefNum));
+            console.log('CompleteTask:', this.callback, eventData.Result.toString());
             if(this.callback['CompleteTask']){
-              this.callback['CompleteTask'](eventData);
+
+              this.callback['CompleteTask'](eventData.Result.toString());
             }
             break
           default:
@@ -95,10 +94,10 @@ class Layer1 {
                       events.forEach(({ event: { data, method, section }, phase }) => {
                             console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
                       });
+
+                      callback(true, status.asInBlock.toHex());
                 } else if (status.isFinalized) {
                       console.log('Finalized block hash', status.asFinalized.toHex());
-
-                      callback(true, status.asFinalized.toHex());
                 }
     });
 
