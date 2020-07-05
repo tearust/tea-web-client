@@ -63,7 +63,8 @@ class Layer1 {
   
         switch (event.method) {
           case 'CompleteTask':
-  
+            console.log(11111, event, eventData);
+
             console.log('CompleteTask:', JSON.stringify(eventData.RefNum));
             
             break

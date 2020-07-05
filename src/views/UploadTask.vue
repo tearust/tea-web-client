@@ -71,7 +71,7 @@ export default {
   data(){
     return {
       form: {
-        public_key: '',
+        public_key: 'Alice',
         gas: '10',
         res: {}
       },
@@ -166,7 +166,7 @@ console.log("========= bodyCid : ", bodyCid);
         // this.$message.success(rs);
         this.result = rs;
 
-        this.form.public_key = '';
+        // this.form.public_key = '';
         this.form.gas = '10';
       }catch(e){
         this.$message.error(e);
