@@ -6,6 +6,7 @@ import _ from 'lodash';
 class Layer1 {
   constructor(){
     this.api = null;
+    this.callback = {};
   }
   async init(){
     const api = await ApiPromise.create({
@@ -43,6 +44,10 @@ class Layer1 {
     });
   }
 
+  buildCallback(key, cb){
+    this.callback[key] = cb;
+  }
+
   handle_events(events){
 
     _.each(events, (record) => {
@@ -66,7 +71,9 @@ class Layer1 {
             console.log(11111, event, eventData);
 
             console.log('CompleteTask:', JSON.stringify(eventData.RefNum));
-            
+            if(this.callback['CompleteTask']){
+              this.callback['CompleteTask'](eventData);
+            }
             break
           default:
         }

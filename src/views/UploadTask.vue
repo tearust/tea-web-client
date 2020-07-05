@@ -132,6 +132,11 @@ console.log("========= bodyCid : ", bodyCid);
       };
       console.log(777, new_task_param);
 
+      this.tea.layer1.buildCallback('CompleteTask', (res)=>{
+        const tmp = JSON.parse(utils.forge.util.hexToBytes(res.result));
+        this.result = tmp.result;
+      });
+
       await this.tea.addNewTask(new_task_param, (f, block)=>{
         if(f){
           this.result = `

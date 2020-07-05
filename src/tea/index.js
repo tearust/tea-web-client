@@ -37,6 +37,7 @@ export default class {
       try{
         this.layer1 = new Layer1();
         await this.layer1.init();
+
       }catch(e){
         console.log(e);
       }
