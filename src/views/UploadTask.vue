@@ -121,7 +121,7 @@ export default {
       // add new task
       // const ref_num = 33333;  
       const bodyCid = await this.tea.putTaskBodyToIpfs({
-        rsaPub: this.tea.node.rsa,
+        rsaPub: rsa_pub_key,
       });
 console.log("========= bodyCid : ", bodyCid);
       const new_task_param = {

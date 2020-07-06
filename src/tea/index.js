@@ -157,7 +157,7 @@ export default class {
     console.log(44, key_encrypted);
     const payload = {
       // refNum,
-      rsaPub,
+      // rsaPub,
       capCid: utils.cache.get('checker_file_cid'),
       manifestCid: utils.cache.get('wasm_fest_file_cid'),
       wasmCid: utils.cache.get('wasm_file_cid'),

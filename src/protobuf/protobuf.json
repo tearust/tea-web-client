@@ -167,11 +167,6 @@
               "type": "bytes",
               "id": 3
             },
-            "capCheckers": {
-              "rule": "repeated",
-              "type": "bytes",
-              "id": 5
-            },
             "executorTeaId": {
               "rule": "required",
               "type": "bytes",
@@ -190,6 +185,11 @@
               "rule": "required",
               "type": "string",
               "id": 4
+            },
+            "capCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
             },
             "wasmCid": {
               "rule": "required",

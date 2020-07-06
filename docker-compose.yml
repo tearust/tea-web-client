@@ -16,4 +16,4 @@ services:
     - "5002:5001"
     - "4001:4001"
     - "8080:8080"
-    # command: "ipfs daemon --enable-pubsub-experiment"
+    command: ["daemon", "--migrate=true", "--enable-pubsub-experiment"]
