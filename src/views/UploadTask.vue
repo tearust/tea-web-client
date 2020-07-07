@@ -111,10 +111,11 @@ export default {
       this.$root.loading(true);
 
       // registr new task
-      const {ref_num, rsa_pub_key} = await this.tea.registerNewTask(parseInt(this.form.gas, 10));
+      const {ref_num, rsa_pub_key, delegate_id} = await this.tea.registerNewTask(parseInt(this.form.gas, 10));
 
       console.log('ref_num =>', ref_num);
       console.log('rsa_pub_key =>', rsa_pub_key);
+      console.log('delegate_id =>', delegate_id);
 
       utils.crypto.set_rsa_publickey(rsa_pub_key);
 
@@ -124,8 +125,9 @@ export default {
         rsaPub: rsa_pub_key,
       });
 console.log("========= bodyCid : ", bodyCid);
+      
       const new_task_param = {
-        teaId: '0x'+this.tea.node.tea_id, //toHex(this.tea.node.tea_id, { addPrefix: true }),
+        teaId: '0x'+delegate_id, 
         modelCid: '0x09',
         bodyCid: toHex(bodyCid, { addPrefix: true }),
         payment: this.form.gas,
