@@ -32,19 +32,19 @@ const init = ()=>{
 const F = {
   initBaseUrl: init,
   requestActiveNodes() {
-    // return _axios.get('/api/request_active_nodes');
-    return [
-      {
-        "tea_id": "c7e016fad0796bb68594e49a6ef1942cf7e73497e69edb32d19ba2fab3696596",
-        "nkn_id": "nkn_id",
-        "http": "http://127.0.0.1:8000",
-        "rsa": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1Gd3dEUVlKS29aSWh2Y05BUUVCQlFBRFN3QXdTQUpCQUxpV0pYYkxwYXlLL0hmQXFVRnVCOEUvdCtEQlFQUkgNCmFpQWRleFF6ODludThXSlJJUDc2QUJWdHdOeHN3WTNKZnZTVTMrcEkzaUhRem9LWEp0WTYxaVVDQXdFQUFRPT0NCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ0K",
-        "ping": "",
-        "ws": "ws://127.0.0.1:8001",
-        "credit": 0,
-        "update_time": ""
-      },
-    ]
+    return _axios.get('/api/request_active_nodes');
+    // return [
+    //   {
+    //     "tea_id": "c7e016fad0796bb68594e49a6ef1942cf7e73497e69edb32d19ba2fab3696596",
+    //     "nkn_id": "nkn_id",
+    //     "http": "http://127.0.0.1:8000",
+    //     "rsa": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1Gd3dEUVlKS29aSWh2Y05BUUVCQlFBRFN3QXdTQUpCQUxpV0pYYkxwYXlLL0hmQXFVRnVCOEUvdCtEQlFQUkgNCmFpQWRleFF6ODludThXSlJJUDc2QUJWdHdOeHN3WTNKZnZTVTMrcEkzaUhRem9LWEp0WTYxaVVDQXdFQUFRPT0NCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ0K",
+    //     "ping": "",
+    //     "ws": "ws://127.0.0.1:8001",
+    //     "credit": 0,
+    //     "update_time": ""
+    //   },
+    // ]
   },
   putToIpfs(data) {
     return _axios.post('/ipfs', data);
