@@ -2,6 +2,7 @@
 import { ApiPromise, Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import _ from 'lodash';
+import types from './types';
 
 class Layer1 {
   constructor(){
@@ -10,30 +11,7 @@ class Layer1 {
   }
   async init(){
     const api = await ApiPromise.create({
-      types: {
-        Weight: "u32",
-        Address: "AccountId",
-        TeaId: "[u8; 32]",
-        PeerId: "Bytes",
-        RefNum: "H256",
-        Result: "Bytes",
-        Node: {
-              "teaId": "TeaId",
-              "peers": "Vec<PeerId>"
-        },
-        Model: {
-              "account": "AccountId",
-              "payment": "u32",
-              "cid": "Bytes"
-        },
-        Task: {
-              "refNum": "RefNum",
-              "delegateTeaId": "TeaId",
-              "modelCid": "Bytes",
-              "bodyCid": "Bytes",
-              "payment": "Balance"
-        }
-      }
+      types
     });
     this.api = api;
     await cryptoWaitReady();
