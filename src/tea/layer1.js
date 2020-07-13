@@ -1,25 +1,19 @@
 
-import { ApiPromise, Keyring, WsProvider } from '@polkadot/api';
+import { ApiPromise, Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import _ from 'lodash';
 import types from './types';
-import extension from './extension';
 
 class Layer1 {
   constructor(){
     this.api = null;
     this.callback = {};
-    this.extension = extension;
   }
   async init(){
-    const provider = new WsProvider('ws://127.0.0.1:9944');
     const api = await ApiPromise.create({
-      provider,
-      types,
+      types
     });
     this.api = api;
-
-    await this.extension.init();
     await cryptoWaitReady();
 
     // Subscribe to system events via storage
@@ -31,43 +25,6 @@ class Layer1 {
   buildCallback(key, cb){
     this.callback[key] = cb;
   }
-
-  // async test(){
-  //   const api = this.api;
-  //   const keyring = new Keyring({ type: 'sr25519' });
-  //   const Alice = keyring.addFromUri('//Bob', { name: 'Bob default' });
-  //   console.log('==== >', Alice);
-
-  //   // const chain = await this.api.rpc.system.chain();
-  //   // const lastHeader = await this.api.rpc.chain.getHeader();
-  //   // console.log(`${chain}: last block #${lastHeader.number} has hash ${lastHeader.hash}`);
-
-  //   const all_account = await this.extension.getAllAccounts();
-  //   const me = all_account[0].address;
-  //   console.log(222, me);
-
-  //   const transfer = this.api.tx.balances.transfer(Alice.address, 2.0);
-  //   console.log(11, this.api.tx.balances.transfer);
-  //   // const hash = await transfer.signAndSend(Alice);
-
-  //   const me_ac = await this.extension.setSignerForAddress(me, this.api);
-  //   transfer.signAndSend(me, (result) => {
-  //     console.log(`Current status is ${result.status}`);
-
-  //     if (result.status.isInBlock) {
-  //       console.log(`Transaction included at blockHash ${result.status.asInBlock}`);
-  //       result.events.forEach(({ event: { data, method, section }, phase }) => {
-  //         console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-  //       });
-  //     } else if (result.status.isFinalized) {
-  //       console.log(`Transaction finalized at blockHash ${result.status.asFinalized}`);
-
-  //     }
-  //   });
-
-    
-
-  // }
 
   handle_events(events){
 
@@ -101,16 +58,14 @@ class Layer1 {
     });
   }
 
-  async addNewTask(account, {
+  async addNewTask({
     refNum, teaId, modelCid, bodyCid, payment
   }, callback){
-    // const keyring = new Keyring({ type: 'sr25519' });
-    // const alice = keyring.addFromUri('//Alice', { name: 'Alice default' });
+    const keyring = new Keyring({ type: 'sr25519' });
+    const alice = keyring.addFromUri('//Alice', { name: 'Alice default' });
 
-    await this.extension.setSignerForAddress(account, this.api);
-    console.log('send account => ', account);
     await this.api.tx.tea.addNewTask(refNum, teaId, modelCid, bodyCid, payment)
-          .signAndSend(account, ({ events = [], status }) => {
+          .signAndSend(alice, ({ events = [], status }) => {
                 if (status.isInBlock) {
                       console.log('Included at block hash', status.asInBlock.toHex());
                       console.log('Events:');

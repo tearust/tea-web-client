@@ -5,16 +5,8 @@
   <TaskStep :step="3" />
   <el-form :model="form" label-width="140px" class="p-uploadwasm">
 
-    <el-form-item label="Account">
-      <el-select v-model="form.public_key" placeholder="Please select account">
-        <el-option
-          v-for="(item, i) in account_list"
-          :key="i"
-          :label="item.name"
-          :value="item.address">
-        </el-option>
-      </el-select>
-      <span style="display:block; color:#ccc;">If no account, please intall the chrome plugin and create account.</span>
+    <el-form-item label="Public Key">
+      <el-input v-model="form.public_key"></el-input>
     </el-form-item>
     <el-form-item label="Gas">
       <el-input v-model="form.gas"></el-input>
@@ -47,7 +39,7 @@
     <el-button style="width:40%;" 
       type="success" 
       round 
-      :disabled="!(form.public_key && form.gas!=='')"
+      :disabled="!(form.public_key && form.gas)"
       @click="clickSubmitHandler()">Send task to layer1</el-button>
   </div>
 </div>
@@ -80,12 +72,11 @@ export default {
   data(){
     return {
       form: {
-        public_key: '',
-        gas: '0',
+        public_key: 'Alice',
+        gas: '10',
         res: {}
       },
       result: null,
-      account_list: []
     }
   },
 
@@ -96,8 +87,6 @@ export default {
   async mounted() {
     this.$root.loading(true);
     await this.init();
-
-    this.account_list = await this.tea.layer1.extension.getAllAccounts();
     this.$root.loading(false);
   },
 
@@ -154,26 +143,20 @@ console.log("========= bodyCid : ", bodyCid);
         this.result = tmp.result;
       });
 
-      try{
-        await this.tea.addNewTask(this.form.public_key, new_task_param, (f, block)=>{
-          if(f){
-            this.result = `
-              Block => ${block} <br/>
-              Ref num => ${ref_num} <br/>
-              Calculating...
-            `;
+      await this.tea.addNewTask(new_task_param, (f, block)=>{
+        if(f){
+          this.result = `
+            Block => ${block} <br/>
+            Ref num => ${ref_num} <br/>
+            Calculating...
+          `;
 
-            // this.form.public_key = '';
-            this.form.gas = '10';
-          }
-        });
-      }catch(e){
-        // console.log(111, e);
-        this.$message.error(e.toString());
-      }finally{
-        this.$root.loading(false);
-      }
-      
+          // this.form.public_key = '';
+          this.form.gas = '10';
+
+          this.$root.loading(false);
+        }
+      });
       
       
     },
