@@ -177,8 +177,8 @@ export default class {
     return http.putToIpfs(utils.uint8array_to_arraybuffer(buf));
   }
 
-  async addNewTask(param, callback){
-    return await this.layer1.addNewTask(param, callback);
+  async addNewTask(account, param, callback){
+    return await this.layer1.addNewTask(account, param, callback);
   }
 
 }
