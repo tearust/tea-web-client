@@ -156,6 +156,16 @@ const F = {
   uint8array_to_base64(uint8){
     uint8 = F.convertU8ToString(uint8);
     return forge.util.encode64(uint8);
+  },
+
+
+  get_env(key){
+    if(key === 'env'){
+      return process.env.NODE_ENV;
+    }
+
+    const x_key = 'VUE_APP_'+_.toUpper(key);
+    return _.get(process.env, x_key, null);
   }
 };
 

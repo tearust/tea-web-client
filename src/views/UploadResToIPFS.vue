@@ -2,6 +2,7 @@
 <div class="tea-page">
   
   <el-upload
+    v-if="!isDapp"
     style="text-align:left;"
     action="/"
     accept="application/wasm"
@@ -27,6 +28,7 @@
   <el-upload
     style="text-align:left;margin-top: 40px;"
     action="/"
+    v-if="!isDapp"
     accept="application/json"
     :on-change="fileChangeHandler"
     :before-upload="uploadWasmMainfest"
@@ -38,6 +40,7 @@
   <el-upload
     style="text-align:left; margin-top: 40px;"
     action="/"
+    v-if="!isDapp"
     accept="application/wasm"
     :on-change="fileChangeHandler"
     :before-upload="uploadWasm"
@@ -79,7 +82,15 @@ export default {
       },
 
       node: null,
+
+      isDapp: false
     };
+  },
+
+  created(){
+    this.isDapp = utils.get_env('env') === 'dapp';
+    console.log('env =>', process.env);
+
   },
 
   mounted() {
@@ -94,23 +105,39 @@ export default {
       this.res.image = cid;
     }
 
-    cid = utils.cache.get('checker_file_cid');
-    if(cid){
-      this.checker_file_cid = this.build_to_file_list(cid);
-      this.res.checker = cid;
-    }
+    if(!this.isDapp){
+      cid = utils.cache.get('checker_file_cid');
+      if(cid){
+        this.checker_file_cid = this.build_to_file_list(cid);
+        this.res.checker = cid;
+      }
 
-    cid = utils.cache.get('wasm_file_cid');
-    if(cid){
-      this.wasm_file_cid = this.build_to_file_list(cid);
-      this.res.wasm = cid;
-    }
+      cid = utils.cache.get('wasm_file_cid');
+      if(cid){
+        this.wasm_file_cid = this.build_to_file_list(cid);
+        this.res.wasm = cid;
+      }
 
-    cid = utils.cache.get('wasm_fest_file_cid');
-    if(cid){
-      this.wasm_fest_file_cid = this.build_to_file_list(cid);
-      this.res.wasm_fest = cid;
+      cid = utils.cache.get('wasm_fest_file_cid');
+      if(cid){
+        this.wasm_fest_file_cid = this.build_to_file_list(cid);
+        this.res.wasm_fest = cid;
+      }
     }
+    else{
+      this.res.checker = utils.get_env('checker');
+      utils.cache.put('checker_file_cid', this.res.checker);
+      utils.cache.put('checker_file_hash', utils.get_env('checker_hash'));
+
+      this.res.wasm = utils.get_env('wasm');
+      utils.cache.put('wasm_file_cid', this.res.wasm);
+      utils.cache.put('wasm_file_hash', utils.get_env('wasm_hash'));
+
+      this.res.wasm_fest = utils.get_env('wasm_caps');
+      utils.cache.put('wasm_fest_file_cid', this.res.wasm_fest);
+      utils.cache.put('wasm_fest_file_hash', utils.get_env('wasm_caps_hash'));
+    }
+    
   },
   
   methods: {

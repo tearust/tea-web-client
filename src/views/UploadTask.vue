@@ -20,7 +20,7 @@
       <el-input v-model="form.gas"></el-input>
     </el-form-item>
 
-    <el-form-item label="Checker Cid">
+    <el-form-item v-if="!isDapp" label="Checker Cid">
       <el-input disabled v-model="form.res.checker"></el-input>
     </el-form-item>
 
@@ -28,11 +28,11 @@
       <el-input disabled v-model="form.res.image"></el-input>
     </el-form-item>
 
-    <el-form-item label="Manifest Cid">
+    <el-form-item v-if="!isDapp" label="Manifest Cid">
       <el-input disabled v-model="form.res.wasm_fest"></el-input>
     </el-form-item>
 
-    <el-form-item label="Task Wasm Cid">
+    <el-form-item v-if="!isDapp" label="Task Wasm Cid">
       <el-input disabled v-model="form.res.wasm"></el-input>
     </el-form-item>
     
@@ -85,12 +85,17 @@ export default {
         res: {}
       },
       result: null,
-      account_list: []
+      account_list: [],
+
+      isDapp: false
     }
   },
 
   created() {
     this.tea = null;
+    this.isDapp = utils.get_env('env') === 'dapp';
+
+    console.log('env =>', process.env);
   },
 
   async mounted() {
