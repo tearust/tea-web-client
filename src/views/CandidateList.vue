@@ -12,11 +12,11 @@
     highlight-current-row
     @current-change="handleSelectChange"
     style="width: 100%">
-    <el-table-column prop="tea_id" label="TEA ID"></el-table-column>
+    <el-table-column prop="tea_id" label="TEA ID(tea_id)"></el-table-column>
     <!-- <el-table-column prop="rsa" label="RSA KEY"></el-table-column> -->
-    <el-table-column prop="http" label="HTTP"></el-table-column>
-    <el-table-column prop="ws" label="Websocket"></el-table-column>
-    <el-table-column prop="nkn_id" label="NKN"></el-table-column>
+    <el-table-column prop="http" label="HTTP(http)"></el-table-column>
+    <el-table-column prop="ws" label="Websocket(ws)"></el-table-column>
+    <el-table-column prop="nkn_id" label="NKN(nkn_id)"></el-table-column>
       
   </el-table>
 
@@ -31,6 +31,7 @@ import TaskStep from '../components/TaskStep';
 import utils from '../tea/utils';
 import http from '../tea/http';
 import _ from 'lodash';
+import Layer1 from '../tea/layer1';
 
 export default {
   components: {
@@ -44,9 +45,19 @@ export default {
     }
   },
   async mounted() {
+    this.$root.loading(true);
     this.bootstrap = utils.getBootstrapNodes();
-    this.table = await http.requestActiveNodes();
-    console.log(this.table);
+
+    const obj = await Layer1.getBootstrapNodes();
+
+    const tmp = await http.requestActiveNodes();
+    this.table = _.concat(_.map(obj, x => {
+      const t = x.toJSON();
+      t.tea_id = t.teaId;
+      return t;
+    }), tmp);
+
+    this.$root.loading(false);
   },
   methods: {
     handleSelectChange(val) {

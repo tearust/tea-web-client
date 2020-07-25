@@ -4,6 +4,9 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import _ from 'lodash';
 import types from './types';
 import extension from './extension';
+const rpc = require('./rpc');
+
+const LAYER1_URL = 'ws://127.0.0.1:9944';
 
 class Layer1 {
   constructor(){
@@ -12,10 +15,11 @@ class Layer1 {
     this.extension = extension;
   }
   async init(){
-    const provider = new WsProvider('ws://127.0.0.1:9944');
+    const provider = new WsProvider(LAYER1_URL);
     const api = await ApiPromise.create({
       provider,
       types,
+      rpc,
     });
     this.api = api;
 
@@ -128,6 +132,23 @@ class Layer1 {
   }
 }
 
+Layer1.getBootstrapNodes = async ()=>{
+  const provider = new WsProvider(LAYER1_URL);
+  const api = await ApiPromise.create({
+    provider,
+    types,
+    rpc,
+  });
+
+  const nodes = await api.query.tea.bootstrapNodes.entries();
+  const teaNodes = nodes.map((n) => {
+    return n[1]
+  })
+
+  console.log("teaNodes", JSON.stringify(teaNodes));
+
+  return teaNodes;
+};
 
 export default Layer1;
 
