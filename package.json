@@ -6,9 +6,10 @@
     "start": "npm run serve",
     "serve": "vue-cli-service serve --mode dev",
     "dapp": "vue-cli-service serve --mode dapp",
-    "build": "vue-cli-service build",
+    "build:dapp": "vue-cli-service build --mode dapp",
     "lint": "vue-cli-service lint",
-    "protobuf": "pbjs -t json ../tea-codec/proto/actor-delegate.proto > ./src/protobuf/protobuf.json"
+    "protobuf": "pbjs -t json ../tea-codec/proto/actor-delegate.proto > ./src/protobuf/protobuf.json",
+    "deploy:ipfs": "ipfs add -r dist"
   },
   "dependencies": {
     "@polkadot/api": "1.24.1",
