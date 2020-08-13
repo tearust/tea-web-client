@@ -12,7 +12,7 @@ class Log {
     console.info(`[${this.tag}]`, ...args);
   }
 
-};
+}
 
 export default {
   Log,

@@ -29,7 +29,7 @@
 </template>
 <script>
 import TaskStep from '../components/TaskStep';
-import * as DeployDataTaskStep from '../deploy_data_views/TaskStep';
+import DeployDataTaskStep from '../deploy_data_views/DeployDataTaskStep';
 import utils from '../tea/utils';
 import http from '../tea/http';
 import _ from 'lodash';
@@ -37,7 +37,8 @@ import Layer1 from '../tea/layer1';
 
 export default {
   components: {
-    TaskStep
+    TaskStep,
+    DeployDataTaskStep
   },
   data() {
     return {
@@ -51,7 +52,7 @@ export default {
   },
   created(){
     this.mode = utils.get_env('env');
-    this.isDeployData = this.mode === 'deploy_data'
+    this.isDeployData = this.mode === 'deploy_data';
   },
   async mounted() {
     this.$root.loading(true);
