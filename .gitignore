@@ -22,3 +22,4 @@ yarn-error.log*
 
 .data
 .env.dapp
+.env.deploy_data
