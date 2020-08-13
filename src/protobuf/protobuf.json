@@ -66,6 +66,161 @@
             }
           }
         },
+        "DataRegisterRequest": {
+          "fields": {
+            "depositTxId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "blockChainAccount": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "DataRegisterResponse": {
+          "oneofs": {
+            "res": {
+              "oneof": [
+                "Error",
+                "RsaPubKey"
+              ]
+            }
+          },
+          "fields": {
+            "Error": {
+              "type": "string",
+              "id": 1
+            },
+            "RsaPubKey": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "ServiceRegisterRequest": {
+          "fields": {
+            "depositTxId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "blockChainAccount": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "ServiceRegisterResponse": {
+          "oneofs": {
+            "res": {
+              "oneof": [
+                "Error",
+                "RsaPubKey"
+              ]
+            }
+          },
+          "fields": {
+            "Error": {
+              "type": "string",
+              "id": 1
+            },
+            "RsaPubKey": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "DataUploadCompletedNotify": {
+          "oneofs": {
+            "Cid": {
+              "oneof": [
+                "CidData",
+                "CidDescription"
+              ]
+            }
+          },
+          "fields": {
+            "CidData": {
+              "type": "string",
+              "id": 1
+            },
+            "CidDescription": {
+              "type": "string",
+              "id": 2
+            },
+            "RsaPubKey": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "KeyUrlEncoded": {
+              "type": "string",
+              "id": 4
+            },
+            "kvp": {
+              "rule": "repeated",
+              "type": "KeyValuePair",
+              "id": 5
+            }
+          }
+        },
+        "ServiceUploadCompletedNotify": {
+          "oneofs": {
+            "Cid": {
+              "oneof": [
+                "CidCode",
+                "CidDescription",
+                "CidCapCheckerWasm",
+                "CidCapCheckerJson"
+              ]
+            }
+          },
+          "fields": {
+            "CidCode": {
+              "type": "string",
+              "id": 1
+            },
+            "CidDescription": {
+              "type": "string",
+              "id": 2
+            },
+            "CidCapCheckerWasm": {
+              "type": "string",
+              "id": 3
+            },
+            "CidCapCheckerJson": {
+              "type": "string",
+              "id": 4
+            },
+            "RsaPubKey": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
+            },
+            "KeyUrlEncoded": {
+              "type": "string",
+              "id": 6
+            }
+          }
+        },
+        "KeyValuePair": {
+          "fields": {
+            "key": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "value": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
         "AddNewTask": {
           "fields": {
             "teaId": {
@@ -101,80 +256,6 @@
             "payment": {
               "rule": "required",
               "type": "uint32",
-              "id": 7
-            }
-          }
-        },
-        "GeneralTaskMessage": {
-          "fields": {
-            "messageType": {
-              "rule": "required",
-              "type": "MessageType",
-              "id": 1
-            },
-            "payload": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 2
-            }
-          },
-          "nested": {
-            "MessageType": {
-              "values": {
-                "ApplyToExecuteTaskRequest": 0,
-                "WinnerExecutorCert": 1
-              }
-            }
-          }
-        },
-        "WinnerExecutorCertPayload": {
-          "fields": {
-            "refNum": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 1
-            },
-            "winnerTeaId": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 2
-            },
-            "signature": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 3
-            },
-            "secKeysRsaBytes": {
-              "type": "bytes",
-              "id": 4
-            }
-          }
-        },
-        "ApplyToExecuteTaskRequest": {
-          "fields": {
-            "refNum": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 1
-            },
-            "ekey1": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 2
-            },
-            "rsaPubKey": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 3
-            },
-            "executorTeaId": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 6
-            },
-            "signature": {
-              "rule": "required",
-              "type": "bytes",
               "id": 7
             }
           }
@@ -303,22 +384,12 @@
             }
           }
         },
-        "CompleteTaskResponse": {
+        "NotifyDelegateTaskComplete": {
           "fields": {
             "refNum": {
               "rule": "required",
               "type": "bytes",
               "id": 1
-            },
-            "accountId": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 2
-            },
-            "result": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 3
             }
           }
         }

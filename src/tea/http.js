@@ -51,6 +51,29 @@ const F = {
   },
   registerNewTask(proto_buf){
     return _axios.post('/api/register_task', proto_buf);
+  },
+
+
+  registerData(proto_buf_b64){
+    // TODO
+
+    return new Promise((resolve)=>{
+      resolve({
+        rsa_pub_key: 'rsa_pub_key'
+      });
+    });
+  },
+
+  postDataWithRsaKey(data, ekey1, rsa_pub_key){
+    // TODO
+    // const url = `/api/post_data?ekey1=${ekey1}&rsa_key=${rsa_pub_key}`;
+
+    return new Promise((resolve)=>{
+      resolve({
+        code: 1,
+        msg: 'ok'
+      });
+    });
   }
 };
 

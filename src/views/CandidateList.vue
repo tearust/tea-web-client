@@ -1,6 +1,7 @@
 <template>
 <div class="tea-page">
-  <TaskStep :step="1" />
+  <TaskStep :step="1" v-if="!isDeployData" />
+  <DeployDataTaskStep :step="1" v-if="isDeployData" />
 
   <b>Bootstrap node address: {{bootstrap}}</b>
   <h4>Candidate List</h4>
@@ -28,6 +29,7 @@
 </template>
 <script>
 import TaskStep from '../components/TaskStep';
+import * as DeployDataTaskStep from '../deploy_data_views/TaskStep';
 import utils from '../tea/utils';
 import http from '../tea/http';
 import _ from 'lodash';
@@ -41,8 +43,15 @@ export default {
     return {
       bootstrap: null,
       table: [],
-      select: null
+      select: null,
+
+      mode: null,
+      isDeployData: false,
     }
+  },
+  created(){
+    this.mode = utils.get_env('env');
+    this.isDeployData = this.mode === 'deploy_data'
   },
   async mounted() {
     this.$root.loading(true);
@@ -72,7 +81,13 @@ export default {
       utils.cache.saveNode(this.select);
       utils.setHttpBaseUrl(this.select.http);
 
-      this.$router.push('/upload_res');
+      if(this.isDeployData){
+        this.$router.push('/upload_data');
+      }
+      else{
+        this.$router.push('/upload_res');
+      }
+      
     }
   }
 }
