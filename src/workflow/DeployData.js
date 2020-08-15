@@ -102,7 +102,7 @@ class DeployData {
     return rs;
   }
   async uploadCapchecker(){
-    const rs = await http.postDataWithRsaKey('capchecker', "cap_checker_placeholder", this.last_ekey1, this.last_rsa_pub_key);
+    const rs = await http.postDataWithRsaKey('capchecker', "", this.last_ekey1, this.last_rsa_pub_key);
 
     log.d('uploadCapchecker response = ', rs);
     return rs;
