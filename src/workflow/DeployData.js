@@ -29,6 +29,7 @@ class DeployData {
 
   last_rsa_pub_key = null;
   last_ekey1 = null;
+  last_session_id = null;
 
   constructor(ori_data_buf, data_desc, price_plan="A"){
     this.ori_data_buf = ori_data_buf;
@@ -86,23 +87,25 @@ class DeployData {
     const {key_encrypted} = utils.crypto.get_secret();
     this.last_ekey1 = key_encrypted;
     log.d("ekey1", this.last_ekey1);
+    this.last_session_id = rs.session_id;
+    log.d("session_id", this.last_session_id);
 
     return true;
   }
 
   async uploadData(){
-    const rs = await http.postDataWithRsaKey('data', this.data_buf, this.last_ekey1, this.last_rsa_pub_key);
+    const rs = await http.postDataWithRsaKey('data', this.data_buf, this.last_ekey1, this.last_session_id);
     log.d('uploadData response = ', rs);
     return rs;
   }
   async uploadDescription(){
-    const rs = await http.postDataWithRsaKey('description', encodeURIComponent(this.data_desc), this.last_ekey1, this.last_rsa_pub_key);
+    const rs = await http.postDataWithRsaKey('description', encodeURIComponent(this.data_desc), this.last_ekey1, this.last_session_id);
 
     log.d('uploadDescription response = ', rs);
     return rs;
   }
   async uploadCapchecker(){
-    const rs = await http.postDataWithRsaKey('capchecker', "", this.last_ekey1, this.last_rsa_pub_key);
+    const rs = await http.postDataWithRsaKey('capchecker', "", this.last_ekey1, this.last_session_id);
 
     log.d('uploadCapchecker response = ', rs);
     return rs;
