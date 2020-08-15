@@ -101,6 +101,12 @@ class DeployData {
     log.d('uploadDescription response = ', rs);
     return rs;
   }
+  async uploadCapchecker(){
+    const rs = await http.postDataWithRsaKey('capchecker', "cap_checker_placeholder", this.last_ekey1, this.last_rsa_pub_key);
+
+    log.d('uploadCapchecker response = ', rs);
+    return rs;
+  }
 
 
   async start(layer1_account, deposit_money){
@@ -115,6 +121,9 @@ class DeployData {
 
     // step 9
     await this.uploadDescription();
+
+    // step 10
+    await this.uploadCapchecker();
 
     // TODO step 21
   }
