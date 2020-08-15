@@ -7,6 +7,7 @@
     "serve": "vue-cli-service serve --mode dev",
     "dapp": "vue-cli-service serve --mode dapp",
     "deploy-data": "vue-cli-service serve --mode deploy_data",
+    "deploy-code": "vue-cli-service serve --mode deploy_code",
     "build:dapp": "vue-cli-service build --mode dapp",
     "lint": "vue-cli-service lint",
     "protobuf": "pbjs -t json ../tea-codec/proto/actor-delegate.proto > ./src/protobuf/protobuf.json",

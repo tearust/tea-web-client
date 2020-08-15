@@ -48,11 +48,13 @@ export default {
 
       mode: null,
       isDeployData: false,
+      isDeployCode: false,
     }
   },
   created(){
     this.mode = utils.get_env('env');
     this.isDeployData = this.mode === 'deploy_data';
+    this.isDeployCode = this.mode === 'deploy_code';
   },
   async mounted() {
     this.$root.loading(true);
@@ -84,6 +86,9 @@ export default {
 
       if(this.isDeployData){
         this.$router.push('/upload_data');
+      }
+      else if(this.isDeployCode){
+        this.$router.push('/upload_code');
       }
       else{
         this.$router.push('/upload_res');

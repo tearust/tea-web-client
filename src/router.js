@@ -7,6 +7,7 @@ import UploadResToIPFS from './views/UploadResToIPFS';
 
 // deploy data views
 import UploadData from './deploy_data_views/UploadData';
+import UploadCode from './deploy_data_views/UploadCode';
 
 Vue.use(Router)
 
@@ -36,6 +37,11 @@ export default new Router({
       path: '/upload_data',
       name: 'upload_data',
       component: UploadData
+    },
+    {
+      path: '/upload_code',
+      name: 'upload_code',
+      component: UploadCode
     },
     
   ]

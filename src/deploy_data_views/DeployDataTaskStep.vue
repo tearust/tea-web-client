@@ -2,7 +2,7 @@
 
 <el-steps :active="step" style="margin: 10px 0 30px;">
   <el-step title="Select" description=""></el-step>
-  <el-step title="Upload Data" description=""></el-step>
+  <el-step :title="title" description=""></el-step>
 </el-steps>
 
 </template>
@@ -18,6 +18,11 @@ export default {
     step: {
       type: Number,
       required: true
+    },
+    title: {
+      type: String,
+      required: true,
+      default: 'Upload Data'
     }
   }
 }
