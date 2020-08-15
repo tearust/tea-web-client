@@ -78,6 +78,7 @@ const F = {
    */
   postDataWithRsaKey(type, data, ekey1, rsa_pub_key){
     rsa_pub_key = encodeURIComponent(rsa_pub_key);
+    ekey1 = encodeURIComponent(ekey1);
     const url = `/ipfs?cid_type=${type}&ekey=${ekey1}&rsa_pub=${rsa_pub_key}`;
 
     return _axios.post(url, data);
