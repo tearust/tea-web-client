@@ -31,4 +31,6 @@ e.g. [http://127.0.0.1:8080/ipfs/QmY4jewu1oga5JwhyVJmRvbEcE3WqeGfA7U1WcbRyKxaKV]
 * Copy **.env.deploy_data.sample** and rename to **.env.deploy_data**;
 * Run **npm run deploy-data**
 
-
+## RUN Deploy Code app
+* Copy **.env.deploy_code.sample** and rename to **.env.deploy_code**;
+* Run **npm run deploy-code**
