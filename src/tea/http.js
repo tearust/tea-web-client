@@ -55,25 +55,31 @@ const F = {
 
 
   registerData(proto_buf_b64){
-    // TODO
+    return _axios.post('/api/register_data', proto_buf_b64);
 
-    return new Promise((resolve)=>{
-      resolve({
-        rsa_pub_key: 'LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JSUJDZ0tDQVFFQTc2anNHZEJUUlJONW1XakZhUldqTkdXMG5sdENEazZlY215RzRYcDNVTk82cnUxZlRpVDAKaFJ3WEZralFwN3FtQUt3dDk0MVduVWNrYWNuT1VMMWJldHY5OW1sZjhLRjRoNDZZcHZ4ZnlnRExmWVEyekVwcgpzdE5kcUpWS3I0NHo3dDRDNGRJVzQydTN0VFBTeVI0NytENjhnQ0cxNnNMR2p6eEQvVFJMNnhlRUFFWUxMWURGClc0TXNmbE5zYTRlT3psa0xJWW1qTGNJTmN0aGVnbEtMWTlRN1h2TVlmZWxHb2x0VEticjJJRUVMbUFaa0tJaU8KYWNUdXJYbnFXaFNsdk1TZTBORCt0ai9oQnVPUHZoK1FrZDNBNkxQM09JcE1UdTVqRktwRm5WN1lCczRHcFhZNApQaWdBSy9rRVMwV1F6ZHoyOVFqNWFGb09GS0Q4WUdlWnh3SURBUUFCCi0tLS0tRU5EIFJTQSBQVUJMSUMgS0VZLS0tLS0K'
-      });
-    });
+    // return new Promise((resolve)=>{
+    //   resolve({
+    //     rsa_pub_key: `-----BEGIN RSA PUBLIC KEY-----
+    //     MIIBCgKCAQEA9zlzDmuOxB4x14CMfICBX6WZaN2hcHJH8UGg2fWzVm1GxqNSEl/6
+    //     gFiZq/w5I8R9izGyfT5/dycTvQB0miaLB9f4w/m/UX3uygmJ2zemsMY6yCHjk0WO
+    //     Z4NWtmJBA0uQ6+qjCOFZLr7AXTrcZ5NJNUg4AEAdCDJDkekefGzzyoBVhkC1328y
+    //     2niGFRCcppVR7iXcrAIv5Jbv0f5wLwlzDu/1tp18GTryVhld+Cg+iAch5T2nGAXF
+    //     HCGXbn7fnoNfH1p4RaYRC+rzhzc+PrAOPCD4skZ4xa7zP95dG+txvZNx+ah3r4H4
+    //     GhmqjqF+tLxTqknZkaDLUX1hItLb5RUsGQIDAQAB
+    //     -----END RSA PUBLIC KEY-----`
+    //   });
+    // });
   },
 
-  postDataWithRsaKey(data, ekey1, rsa_pub_key){
-    // TODO
-    // const url = `/api/post_data?ekey1=${ekey1}&rsa_key=${rsa_pub_key}`;
+  /**
+   * @param type: description, data
+   * @param ekey1 
+   * @param rsa_pub_key 
+   */
+  postDataWithRsaKey(type, data, ekey1, rsa_pub_key){
+    const url = `/ipfs?cid_type=${type}&ekey=${ekey1}&rsa_pub=${rsa_pub_key}`;
 
-    return new Promise((resolve)=>{
-      resolve({
-        code: 1,
-        msg: 'ok'
-      });
-    });
+    return _axios.post(url, data);
   }
 };
 

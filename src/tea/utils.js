@@ -25,7 +25,7 @@ const cache = {
     const node = cache.get('select-node');
     if(!node) return null;
 
-    crypto.set_rsa_publickey(node.rsa);
+    // crypto.set_rsa_publickey(node.rsa);
 
     return node;
   }
@@ -106,7 +106,8 @@ const crypto = {
   rsaEncodeWithRsaPublickKey(data, ras_pub){
     
     // TODO remove decode64 when runtime tpm privoder done.
-    const tmp = forge.util.decode64(ras_pub);
+    // const tmp = forge.util.decode64(ras_pub);
+    const tmp = ras_pub;
 
     const pub = forge.pki.publicKeyFromPem(tmp);
 console.log(789, data, ras_pub)

@@ -81,6 +81,7 @@ class DeployData {
     log.d('registerData response = ', rs);
 
     this.last_rsa_pub_key = rs.rsa_pub_key;
+    log.d(this.last_rsa_pub_key)
     crypto.set_rsa_publickey(this.last_rsa_pub_key);
     const {key_encrypted} = utils.crypto.get_secret();
     this.last_ekey1 = key_encrypted;
@@ -90,12 +91,12 @@ class DeployData {
   }
 
   async uploadData(){
-    const rs = await http.postDataWithRsaKey(this.data_buf, this.last_ekey1, this.last_rsa_pub_key);
+    const rs = await http.postDataWithRsaKey('data', this.data_buf, this.last_ekey1, this.last_rsa_pub_key);
     log.d('uploadData response = ', rs);
     return rs;
   }
   async uploadDescription(){
-    const rs = await http.postDataWithRsaKey(encodeURIComponent(this.data_desc), this.last_ekey1, this.last_rsa_pub_key);
+    const rs = await http.postDataWithRsaKey('description', encodeURIComponent(this.data_desc), this.last_ekey1, this.last_rsa_pub_key);
 
     log.d('uploadDescription response = ', rs);
     return rs;
