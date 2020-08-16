@@ -3,17 +3,17 @@
   <DeployDataTaskStep :step="2" title="Upload Code" />
 
   <el-form :model="form" label-width="140px" class="p-uploadwasm">
-    <el-form-item label="Image Data">
+    <el-form-item label="Wasm Code">
       <el-upload
         style="text-align:left;"
         action="/"
-        accept="image/jpeg, image/png"
+        accept="application/wasm"
         :on-change="fileChangeHandler"
         :before-upload="uploadImage"
 
         :file-list="img_file?[img_file]:[]">
-        <el-button size="small" type="primary">Upload the data image</el-button>
-        <span slot="tip" class="el-upload__tip" style="margin-left: 8px;">Only receive [jpg/jpeg/png]</span>
+        <el-button size="small" type="primary">Upload the Wasm Code</el-button>
+        <span slot="tip" class="el-upload__tip" style="margin-left: 8px;">Only receive wasm</span>
       </el-upload>
     </el-form-item>
 
