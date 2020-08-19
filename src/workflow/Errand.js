@@ -2,18 +2,15 @@ import Layer1 from '../tea/layer1';
 import utils from '../tea/utils';
 import _ from 'lodash';
 import ed25519 from '../shared/utility/ed25519';
+import Log from '../shared/utility/Log';
+import { util } from 'node-forge';
 
+const log = Log.create('Errand');
 
 export default class {
-  // hash_of_task = null;
-  // proof_of_delegate = null;
-
-  // deployment_id_for_code = null;
-  // cid_of_code = null;
-
-  // deployment_id_for_data = null;
-  // cid_of_data = null;
-
+  deployed_code = null;
+  deployed_data = null;
+  
   layer1_account = null;
   nonce = null;
 
@@ -27,13 +24,25 @@ export default class {
 
 
   constructor(opts){
-    this.hash_of_task = utils.get_env('hash_of_task');
 
-    this.layer1_account = opts.layer1_account;
+    
   }
 
   async init(){
-
+    const c = utils.get_env('CID_OF_CODE');
+    const d = utils.get_env('CID_OF_DATA');
+    if(c){
+      this.deployed_code = {
+        deployment_id: utils.get_env('DEPLOYMENT_ID_FOR_CODE'),
+        cid: c
+      };
+    }
+    if(d){
+      this.deployed_data = {
+        deployment_id: utils.get_env('DEPLOYMENT_ID_FOR_DATA'),
+        cid: d
+      };
+    }
   }
 
   async requestToDelegator(){
@@ -65,14 +74,19 @@ export default class {
   }
 
 
-  async start(){
+  async start(layer1_account){
+    this.layer1_account = layer1_account;
+
     // step 1
+    log.d('Step 1');
     await this.requestToDelegator();
 
     // step 3
+    log.d('Step 3');
     this.ed = ed25519.keypair();
 
     // step 4
+    log.d('Step 4');
     await this.depositToAgentAccount();
 
   }
