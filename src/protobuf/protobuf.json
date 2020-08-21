@@ -139,7 +139,8 @@
             "Cid": {
               "oneof": [
                 "CidData",
-                "CidDescription"
+                "CidDescription",
+                "CidCapchecker"
               ]
             }
           },
@@ -152,72 +153,18 @@
               "type": "string",
               "id": 2
             },
-            "RsaPubKey": {
-              "rule": "required",
+            "CidCapchecker": {
               "type": "string",
               "id": 3
-            },
-            "KeyUrlEncoded": {
-              "type": "string",
-              "id": 4
-            },
-            "kvp": {
-              "rule": "repeated",
-              "type": "KeyValuePair",
-              "id": 5
-            }
-          }
-        },
-        "ServiceUploadCompletedNotify": {
-          "oneofs": {
-            "Cid": {
-              "oneof": [
-                "CidCode",
-                "CidDescription",
-                "CidCapCheckerWasm",
-                "CidCapCheckerJson"
-              ]
-            }
-          },
-          "fields": {
-            "CidCode": {
-              "type": "string",
-              "id": 1
-            },
-            "CidDescription": {
-              "type": "string",
-              "id": 2
-            },
-            "CidCapCheckerWasm": {
-              "type": "string",
-              "id": 3
-            },
-            "CidCapCheckerJson": {
-              "type": "string",
-              "id": 4
             },
             "RsaPubKey": {
               "rule": "required",
               "type": "string",
-              "id": 5
+              "id": 10
             },
             "KeyUrlEncoded": {
               "type": "string",
-              "id": 6
-            }
-          }
-        },
-        "KeyValuePair": {
-          "fields": {
-            "key": {
-              "rule": "required",
-              "type": "string",
-              "id": 1
-            },
-            "value": {
-              "rule": "required",
-              "type": "string",
-              "id": 2
+              "id": 11
             }
           }
         },
@@ -318,6 +265,58 @@
             }
           }
         },
+        "Data": {
+          "fields": {
+            "delegatorEphemeralId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "deploymentId": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "dataCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "descriptionCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "capCid": {
+              "type": "string",
+              "id": 5
+            }
+          }
+        },
+        "Service": {
+          "fields": {
+            "delegateId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
+            "modelCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "bodyCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "payment": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 5
+            }
+          }
+        },
         "Node": {
           "fields": {
             "teaId": {
@@ -355,6 +354,29 @@
             }
           }
         },
+        "AddNewDataRequest": {
+          "fields": {
+            "data": {
+              "rule": "required",
+              "type": "Data",
+              "id": 1
+            }
+          }
+        },
+        "AddNewDataResponse": {
+          "fields": {
+            "accountId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "data": {
+              "rule": "required",
+              "type": "Data",
+              "id": 2
+            }
+          }
+        },
         "CompleteTaskRequest": {
           "fields": {
             "refNum": {
@@ -384,12 +406,64 @@
             }
           }
         },
+        "CompleteTaskResponse": {
+          "fields": {
+            "refNum": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "accountId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
+            "result": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
         "NotifyDelegateTaskComplete": {
           "fields": {
             "refNum": {
               "rule": "required",
               "type": "bytes",
               "id": 1
+            }
+          }
+        },
+        "BeMyDelegateRequest": {
+          "fields": {
+            "layer1Account": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "nonce": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "BeMyDelegateResponse": {
+          "fields": {
+            "teaId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "ephemeralId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
+            "sig": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
             }
           }
         }

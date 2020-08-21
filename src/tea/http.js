@@ -56,19 +56,6 @@ const F = {
 
   registerData(proto_buf_b64){
     return _axios.post('/api/register_data', proto_buf_b64);
-
-    // return new Promise((resolve)=>{
-    //   resolve({
-    //     rsa_pub_key: `-----BEGIN RSA PUBLIC KEY-----
-    //     MIIBCgKCAQEA9zlzDmuOxB4x14CMfICBX6WZaN2hcHJH8UGg2fWzVm1GxqNSEl/6
-    //     gFiZq/w5I8R9izGyfT5/dycTvQB0miaLB9f4w/m/UX3uygmJ2zemsMY6yCHjk0WO
-    //     Z4NWtmJBA0uQ6+qjCOFZLr7AXTrcZ5NJNUg4AEAdCDJDkekefGzzyoBVhkC1328y
-    //     2niGFRCcppVR7iXcrAIv5Jbv0f5wLwlzDu/1tp18GTryVhld+Cg+iAch5T2nGAXF
-    //     HCGXbn7fnoNfH1p4RaYRC+rzhzc+PrAOPCD4skZ4xa7zP95dG+txvZNx+ah3r4H4
-    //     GhmqjqF+tLxTqknZkaDLUX1hItLb5RUsGQIDAQAB
-    //     -----END RSA PUBLIC KEY-----`
-    //   });
-    // });
   },
 
   /**
@@ -82,6 +69,10 @@ const F = {
     const url = `/ipfs?cid_type=${type}&ekey=${ekey1}&rsa_pub=${rsa_pub_key}`;
 
     return _axios.post(url, data);
+  },
+
+  requestBeMyDelegate(proto_buf_b64){
+    return _axios.post('/api/be_my_delegate', proto_buf_b64);
   }
 };
 

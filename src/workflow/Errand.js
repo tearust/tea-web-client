@@ -3,7 +3,7 @@ import utils from '../tea/utils';
 import _ from 'lodash';
 import ed25519 from '../shared/utility/ed25519';
 import Log from '../shared/utility/Log';
-import { util } from 'node-forge';
+import { load } from 'protobufjs';
 
 const log = Log.create('Errand');
 
@@ -88,6 +88,10 @@ export default class {
     // step 4
     log.d('Step 4');
     await this.depositToAgentAccount();
+
+    // step 7
+    log.d('Step 7');
+    
 
   }
 
