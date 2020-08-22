@@ -9,40 +9,61 @@ import UploadResToIPFS from './views/UploadResToIPFS';
 import UploadData from './deploy_data_views/UploadData';
 import UploadCode from './deploy_data_views/UploadCode';
 
-Vue.use(Router)
+// Errand views
+import ErrandTask from './errand_views/ErrandTask';
+
+Vue.use(Router);
+
+import utils from './tea/utils';
+
+const isErrandTask = utils.get_env('env') === 'dapp';
+
+let routers = [
+  {
+    path: '/',
+    name: 'candidate_list',
+    component: CandidateList
+  },
+  {
+    path: '/upload_res',
+    name: 'upload_res',
+    component: UploadResToIPFS,
+  },
+  {
+    path: '/upload_task',
+    name: 'upload_task',
+    component: UploadTask,
+    meta: {
+
+    }
+
+  },
+  {
+    path: '/upload_data',
+    name: 'upload_data',
+    component: UploadData
+  },
+  {
+    path: '/upload_code',
+    name: 'upload_code',
+    component: UploadCode
+  },
+  
+];
+
+if(isErrandTask){
+  routers = [
+    {
+      path: '/',
+      name: 'errand_task',
+      component: ErrandTask
+    }
+  ];
+}
+
+
 
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'candidate_list',
-      component: CandidateList
-    },
-    {
-      path: '/upload_res',
-      name: 'upload_res',
-      component: UploadResToIPFS,
-    },
-    {
-      path: '/upload_task',
-      name: 'upload_task',
-      component: UploadTask,
-      meta: {
-
-      }
-
-    },
-    {
-      path: '/upload_data',
-      name: 'upload_data',
-      component: UploadData
-    },
-    {
-      path: '/upload_code',
-      name: 'upload_code',
-      component: UploadCode
-    },
-    
-  ]
+  routes: routers
 })

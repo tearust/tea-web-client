@@ -20,4 +20,4 @@ export default class {
       pri: forge.util.bytesToHex(tmp.privateKey)
     };
   };
-};
+}

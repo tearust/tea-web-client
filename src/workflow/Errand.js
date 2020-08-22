@@ -3,7 +3,10 @@ import utils from '../tea/utils';
 import _ from 'lodash';
 import ed25519 from '../shared/utility/ed25519';
 import Log from '../shared/utility/Log';
-import { load } from 'protobufjs';
+import proto from '../tea/proto';
+import http from '../tea/http';
+
+const {Protobuf, stringToU8, u8ToString} = proto;
 
 const log = Log.create('Errand');
 
@@ -23,9 +26,13 @@ export default class {
   deposit_tx_id = null;
 
 
-  constructor(opts){
-
+  constructor(){
+    this.layer1 = null;
     
+  }
+
+  setLayer1Account(account){
+    this.layer1_account = account;
   }
 
   async init(){
@@ -43,20 +50,49 @@ export default class {
         cid: d
       };
     }
+
+    await this.initLayer1();
   }
 
-  async requestToDelegator(){
+  async initLayer1(){
+    if(!this.layer1){
+      try{
+        this.layer1 = new Layer1();
+        await this.layer1.init();
+
+      }catch(e){
+        console.error(e);
+      }
+    }
+  }
+
+  async requestBeMyDelegate(){
     if(!this.layer1_account){
       throw 'invalid layer1 account';
     }
 
+    const pb = new Protobuf('actor_delegate.BeMyDelegateRequest');
+
     this.nonce = _.random(100000000).toString();
 
-    // TODO post to delegator
-    this.delegator_tea_id = 'delegator_tea_id';
-    this.delegator_ephemeral_id = 'delegator_ephemeral_id';
-    this.task_sign = 'sign';
+    pb.payload({
+      layer1Account: stringToU8(this.layer1_account),
+      nonce: stringToU8(this.nonce)
+    });
 
+    const buf = pb.encode();
+    const buf_64 = utils.uint8array_to_base64(buf);
+    log.d('BeMyDelegateRequest base64 = ', buf_64);
+
+    const res = await http.requestBeMyDelegate(buf_64);
+    log.d('BeMyDelegateRequest response ', res);
+
+    // TODO post to delegator
+    this.delegator_tea_id = _.get(res, 'delegator_tea_id');
+    this.delegator_ephemeral_id = _.get(res, 'delegator_ephemeral_id');
+    this.task_sign = _.get(res, 'sig');
+
+    
   }
 
   async depositToAgentAccount(){
@@ -73,13 +109,10 @@ export default class {
 
   }
 
-
-  async start(layer1_account){
-    this.layer1_account = layer1_account;
-
+  async start_task(){
     // step 1
     log.d('Step 1');
-    await this.requestToDelegator();
+    await this.requestBeMyDelegate();
 
     // step 3
     log.d('Step 3');
@@ -95,4 +128,4 @@ export default class {
 
   }
 
-};
+}
