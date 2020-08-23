@@ -2,6 +2,7 @@ import * as uuid from 'uuid';
 import _ from 'lodash';
 import http from './http';
 import proto from './proto';
+import types from './types';
 
 import forge from 'node-forge';
 
@@ -170,6 +171,9 @@ const F = {
 
     const x_key = 'VUE_APP_'+_.toUpper(key);
     return _.get(process.env, x_key, null);
+  },
+  print_layer1_types(){
+    console.log(JSON.stringify(types));
   }
 };
 

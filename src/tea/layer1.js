@@ -130,6 +130,30 @@ class Layer1 {
 
     console.log('send add_new_task tx')
   }
+
+  async deposit(account, {
+    delegator_ephemeral_id,
+    deposit_key,
+    amount,
+    expire_time
+  }, callback){
+    await this.extension.setSignerForAddress(account, this.api);
+    console.log(this.api.tx.tea);
+    await this.api.tx.tea.deposite(delegator_ephemeral_id, deposit_key, amount, expire_time)
+      .signAndSend(account, ({ events = [], status }) => {
+        if (status.isInBlock) {
+              console.log('Included at block hash', status.asInBlock.toHex());
+              console.log('Events:');
+              events.forEach(({ event: { data, method, section }, phase }) => {
+                    console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+              });
+
+              callback(true, status.asInBlock.toHex());
+        } else if (status.isFinalized) {
+              console.log('Finalized block hash', status.asFinalized.toHex());
+        }
+      });
+  }
 }
 
 Layer1.getBootstrapNodes = async ()=>{

@@ -6,6 +6,7 @@ class Log {
 
   d(...args){
     console.log(`[${this.tag}]`, ...args);
+    console.log('\n');
   }
 
   i(...args){

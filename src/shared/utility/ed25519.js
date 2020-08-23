@@ -20,4 +20,31 @@ export default class {
       pri: forge.util.bytesToHex(tmp.privateKey)
     };
   };
+
+  static sign = (msg, pri_hex)=>{
+    const pri = forge.util.hexToBytes(pri_hex);
+
+    let signature = forge.ed25519.sign({
+      message: msg,
+      encoding: 'utf8',
+      privateKey: pri
+    });
+
+    signature = forge.util.bytesToHex(signature);
+    log.d('signature =>', signature);
+
+    return signature
+  }
+  // sign_bytes(msg){
+  //   let signature = forge.ed25519.sign({
+  //     message: msg,
+  //     encoding: 'binary',
+  //     privateKey: S.privateKey
+  //   });
+
+  //   signature = forge.util.bytesToHex(signature);
+  //   console.log('signature => %s', signature);
+
+  //   return signature
+  // }
 }

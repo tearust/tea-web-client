@@ -73,6 +73,10 @@ const F = {
 
   requestBeMyDelegate(proto_buf_b64){
     return _axios.post('/api/be_my_delegate', proto_buf_b64);
+  },
+
+  requestErrandTask(url, json_b64){
+    return _axios.post(url, json_b64);
   }
 };
 
