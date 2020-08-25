@@ -250,11 +250,13 @@ export default {
       }
 
       try{
-
+        this.$root.loading(true);
         const res = await this.er.startTask();
 
       }catch(e){
         this.$message.error(e.toString());
+      }finally{
+        this.$root.loading(false);
       }
     }
 
@@ -288,9 +290,9 @@ export default {
   border-bottom: 1px solid #c9c9c9;
 
   h4{
-    margin: 10px 0;
-    font-size: 18px;
-
+    margin: 4px 0 20px;
+    font-size: 25px;
+    color: #b8b8b8;
   }
 
   .el-row{
