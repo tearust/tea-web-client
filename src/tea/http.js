@@ -47,7 +47,7 @@ const F = {
     // ]
   },
   putToIpfs(data) {
-    return _axios.post('/ipfs', data);
+    return _axios.post('/ipfs-upload', data);
   },
   registerNewTask(proto_buf){
     return _axios.post('/api/register_task', proto_buf);

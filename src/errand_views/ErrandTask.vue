@@ -60,7 +60,7 @@
   <div v-if="step===3">
     <h2>Errand Task</h2>
     
-    <div class="s3-info">
+    <div class="s3-info" v-if="S3.deployment_id_for_code">
       <h4>Deployed Code</h4>
       <el-row>
         <el-col :span="6">deployment_id_for_code</el-col>
@@ -75,7 +75,44 @@
         <el-col :span="18">{{S3.cid_of_checker}}</el-col>
       </el-row>
     </div>
-    <div class="s3-info">
+    <div class="s3-info" v-if="!S3.deployment_id_for_code">
+      <h4>Upload Code</h4>
+
+      <el-row>
+        <el-col :span="6">cid_of_code</el-col>
+        <el-col :span="18">
+          <UploadToIpfs 
+            :onChange="(cid)=>{S3.cid_of_code = cid}"
+            text="Upload the task Wasm"
+            tip="Only receive [wasm]"
+            accept="application/wasm" />
+          
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="6">cid_of_checker</el-col>
+        <el-col :span="18">
+          <UploadToIpfs 
+            :onChange="(cid)=>{S3.cid_of_checker = cid}"
+            text="Upload the task checker"
+            tip="Only receive [wasm]"
+            accept="application/wasm" />
+          
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="6">cid_of_description</el-col>
+        <el-col :span="18">
+          <UploadToIpfs 
+            :onChange="(cid)=>{S3.cid_of_description = cid}"
+            text="Upload the task description"
+            tip=""
+            accept="application/*" />
+        </el-col>
+      </el-row>
+    </div>
+
+    <div class="s3-info" v-if="S3.deployment_id_for_data">
       <h4>Deployed Data</h4>
       <el-row>
         <el-col :span="6">deployment_id_for_data</el-col>
@@ -84,6 +121,20 @@
       <el-row>
         <el-col :span="6">cid_of_data</el-col>
         <el-col :span="18">{{S3.cid_of_data}}</el-col>
+      </el-row>
+    </div>
+
+    <div class="s3-info" v-if="!S3.deployment_id_for_data">
+      <h4>Upload Data</h4>
+      <el-row>
+        <el-col :span="6">cid_of_data</el-col>
+        <el-col :span="18">
+          <UploadToIpfs 
+            :onChange="(cid)=>{S3.cid_of_data = cid}"
+            text="Upload the data"
+            tip=""
+            accept="*/*" />
+        </el-col>
       </el-row>
     </div>
 
@@ -101,7 +152,12 @@ import http from '../tea/http';
 import _ from 'lodash';
 import Layer1 from '../tea/layer1';
 import Errand from '../workflow/Errand';
+import UploadToIpfs from '../components/UploadToIpfs';
+
 export default {
+  components: {
+    UploadToIpfs,
+  },
   data(){
     return {
       layer1_account_list: [],
@@ -122,6 +178,7 @@ export default {
         deployment_id_for_code: null,
         cid_of_code: null,
         cid_of_checker: null,
+        cid_of_description: null,
 
         deployment_id_for_data: null,
         cid_of_data: null
@@ -167,7 +224,33 @@ export default {
     },
 
     async s3_next(){
+      const {deployed_code, deployed_data} = this.er;
+      if(!deployed_code){
+        this.er.adhoc_code = {
+          cid_of_code: this.S3.cid_of_code,
+          cid_of_checker: this.S3.cid_of_checker,
+          cid_of_description: this.S3.cid_of_description
+        }
+
+        if(!this.S3.cid_of_code || !this.S3.cid_of_checker || !this.S3.cid_of_description){
+          this.$message.error("Invalid upload code");
+          return false;
+        }
+      }
+
+      if(!deployed_data){
+        this.er.adhoc_data = {
+          cid_of_data: this.S3.cid_of_data
+        }
+
+        if(!this.S3.cid_of_data){
+          this.$message.error("Invalid upload data");
+          return false;
+        }
+      }
+
       try{
+
         const res = await this.er.startTask();
 
       }catch(e){
@@ -212,6 +295,7 @@ export default {
 
   .el-row{
     padding: 4px 0;
+    margin-bottom: 15px;
 
     .el-col:first-child{
       font-weight: bold;

@@ -22,6 +22,9 @@ export default class {
   delegator_ephemeral_id = null;
   task_sign = null;
 
+  adhoc_code = {};
+  adhoc_data = {};
+
   ed = null;
 
   deposit_tx_id = null;
@@ -121,8 +124,8 @@ export default class {
   async depositToAgentAccount(){
     const payload = {
       delegator_ephemeral_id: '0x'+this.delegator_emphemeral_id,
-      deposit_key: '0x'+this.ed.pub,
-      // sign: this.task_sign,
+      deposit_pub_key: '0x'+this.ed.pub,
+      delegator_signature: this.task_sign,
       amount: 10,
       expire_time: 999999
     };
@@ -144,11 +147,19 @@ export default class {
         cid_of_checker: this.deployed_code.checker
       });
     }
+    else{
+      _.set(task_json, 'adhoc_code', this.adhoc_code);
+    }
+
+
     if(this.deployed_data){
       _.set(task_json, 'deployed_data', {
         deployment_id_for_data: this.deployed_data.deployment_id,
         cid_of_data: this.deployed_data.cid
       });
+    }
+    else{
+      _.set(task_json, 'adhoc_data', this.adhoc_data);
     }
     _.set(task_json, 'deposit_tx_id', this.deposit_tx_id);
 
