@@ -1,7 +1,7 @@
 <template>
 <div class="tea-page">
-  <TaskStep :step="1" v-if="!isDeployData" />
-  <DeployDataTaskStep :step="1" v-if="isDeployData" />
+  <TaskStep :step="1" v-if="!isDeployData && !isDeployCode" />
+  <DeployDataTaskStep :step="1" v-if="isDeployData || isDeployCode" />
 
   <b>Bootstrap node address: {{bootstrap}}</b>
   <h4>Candidate List</h4>
