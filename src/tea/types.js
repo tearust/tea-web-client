@@ -27,6 +27,7 @@ const types = {
       Deposit: {
             "delegatorEphemeralId": "TeaPubKey",
             "depositPubkey": "TeaPubKey",
+            "delegatorSignature": "Bytes",
             "amount": "Balance",
             "expireTime": "u64"
       },
@@ -37,7 +38,7 @@ const types = {
             "payment": "Balance",
             "paymentType": "u32",
             "executorEphemeralId": "TeaPubKey",
-            "expiarTime": "u64",
+            "expiredTime": "u64",
             "resultCid": "Cid"
       },
       Data: {
