@@ -288,7 +288,7 @@ export default {
 
         const res = await http.getFromIpfs(cid);
         const json = JSON.parse(utils.forge.util.decode64(res));
-        this.S4.result = json.result;
+        this.S4.result = json.result + ' (This is mock result, not real.)';
       }, 2000);
     }
 
