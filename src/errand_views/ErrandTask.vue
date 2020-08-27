@@ -143,6 +143,18 @@
     </div>
   </div>
 
+  <div v-if="step===4">
+    <h2>Waiting for the Errand task result.</h2>
+    <div>
+      <h4>{{S4.task_id}}</h4>
+
+      <p>
+        <span v-if="!S4.result">Loading...</span>
+        <b v-if="S4.result">Result: <font style="color:#f0f; margin-left: 10px;">{{S4.result}}</font></b>
+      </p>
+    </div>
+  </div>
+
 
 </div>
 </template>
@@ -182,6 +194,11 @@ export default {
 
         deployment_id_for_data: null,
         cid_of_data: null
+      },
+
+      S4: {
+        task_id: null,
+        result: null
       }
     }
   },
@@ -253,11 +270,26 @@ export default {
         this.$root.loading(true);
         const res = await this.er.startTask();
 
+        this.S4.task_id = this.er.last_task_id;
+        this.step = 4;
+
+        this.mock_s4();
       }catch(e){
         this.$message.error(e.toString());
       }finally{
         this.$root.loading(false);
       }
+    },
+
+    mock_s4(){
+      _.delay(async ()=>{
+        // TODO remove mock
+        const cid = 'QmTMXTS8BrrPZ5SdYGfttsjAotphtiPgUmBEd9gNsEeCRA';
+
+        const res = await http.getFromIpfs(cid);
+        const json = JSON.parse(utils.forge.util.decode64(res));
+        this.S4.result = json.result;
+      }, 2000);
     }
 
   },
