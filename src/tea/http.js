@@ -49,6 +49,9 @@ const F = {
   putToIpfs(data) {
     return _axios.post('/ipfs-upload', data);
   },
+  getFromIpfs(cid) {
+    return _axios.get(`/ipfs-download?cid=${cid}`);
+  },
   registerNewTask(proto_buf){
     return _axios.post('/api/register_task', proto_buf);
   },

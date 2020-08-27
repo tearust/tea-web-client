@@ -5,6 +5,8 @@ import ed25519 from '../shared/utility/ed25519';
 import Log from '../shared/utility/Log';
 import proto from '../tea/proto';
 import http from '../tea/http';
+import toHex from 'to-hex';
+import BN from 'bn.js';
 
 const {Protobuf, stringToU8, u8ToString} = proto;
 
@@ -28,6 +30,8 @@ export default class {
   ed = null;
 
   deposit_tx_id = null;
+
+  last_task_id = null;
 
 
   constructor(){
@@ -123,13 +127,17 @@ export default class {
 
   async depositToAgentAccount(){
     const payload = {
-      delegator_ephemeral_id: '0x'+this.delegator_emphemeral_id,
-      deposit_pub_key: '0x'+this.ed.pub,
-      delegator_signature: this.task_sign,
-      amount: 10,
-      expire_time: 999999
+      // delegator_ephemeral_id: toHex(this.delegator_ephemeral_id, {addPrefix: true}),
+      // deposit_pub_key: toHex(this.ed.pub, {addPrefix: true}),
+      // delegator_signature: toHex(this.task_sign, {addPrefix: true}),
+      delegator_ephemeral_id: '0x'+this.delegator_ephemeral_id,
+      deposit_pub_key: '0x09',//+this.ed.pub,
+      delegator_signature: '0x09', //+this.task_sign,
+      amount: this.paymentUnit(10),
+      // amount: "10",
+      expire_time: (999999)
     };
-    // TODO send to layer1
+    log.d('deposit payload => ', payload)
     this.layer1.deposit(this.layer1_account, payload, (flag, block_hex)=>{
       log.d('depositToAgentAccount', flag, block_hex);
     });
@@ -175,6 +183,7 @@ export default class {
     log.d('task json base64', json_b64);
 
     const task_id = utils.uuid();
+    this.last_task_id = task_id;
     const proof_of_delegate = ed25519.sign(`${this.delegator_ephemeral_id}${task_id}`, this.ed.pri);
 
     const url = `/api/service/${this.layer1_account}/${task_id}/${proof_of_delegate}`;
@@ -201,5 +210,14 @@ export default class {
     
 
   // }
+
+  paymentUnit(n){
+    const yi = new BN('100000000', 10);
+    const million = new BN('10000000', 10);
+    const unit = yi.mul(million);
+
+    const payment = parseInt(n, 10) * unit;
+    return payment.toString();
+  }
 
 }
