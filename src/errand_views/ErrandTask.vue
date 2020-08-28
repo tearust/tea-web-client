@@ -311,7 +311,6 @@ export default {
       }, 2000);
     },
     async s4_result(cid){
-      alert(cid);
       const res = await http.getFromIpfs(cid);
       if(res){
         const json = JSON.parse(utils.forge.util.decode64(res));
