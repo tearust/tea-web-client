@@ -1,9 +1,9 @@
 <template>
 <div class="tea-page">
   <el-row>
-    <el-col :span="6">
+    <!-- <el-col :span="6">
       <strong style="line-height:40px;">Layer1 Account</strong>
-    </el-col>
+    </el-col> -->
     <el-col :span="6">
       <el-select :disabled="step!==1" v-model="layer1_account" placeholder="Please select account">
         <el-option
@@ -14,12 +14,18 @@
         </el-option>
       </el-select>
     </el-col>
-    <el-col :span="6" v-if="layer1_balance">
-      {{layer1_balance.amount-layer1_balance.locked}}/{{layer1_balance.amount}} <br/>
-      {{deposit_tx_id}}
+    <el-col :span="12" v-if="layer1_balance" style="
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    ">
+      Locked/Amount : {{layer1_balance.locked}}/{{layer1_balance.amount}} <br/>
+      TX_ID: {{deposit_tx_id}}
     </el-col>
-    <el-col :span="6" v-if="layer1_balance">
-      <el-button style="width:100%;" type="primary" @click="layer1_deposit()">Deposit</el-button>
+    <el-col :span="6" v-if="layer1_balance" style="display:flex;">
+      <el-button style="width:40%;" type="default" @click="er.requestBeMyDelegate()">Refresh</el-button>
+      <el-button style="width:58%;" type="primary" @click="layer1_deposit()">Deposit</el-button>
+      
     </el-col>
   </el-row>
 
@@ -208,7 +214,16 @@ export default {
 
   methods: {
     async layer1_deposit(){
+      this.$root.loading(true);
+
       await this.er.depositToAgentAccount();
+      this.layer1_refresh();
+
+      this.$root.loading(false);   
+    },
+    layer1_refresh(){
+      this.layer1_balance = this.er.layer1_balance;
+      this.deposit_tx_id = this.er.deposit_tx_id;
     },
     s1_tableSelectHandler(v){
       this.S1.select = v;
@@ -219,8 +234,7 @@ export default {
       this.$root.loading(true);
       await this.er.requestBeMyDelegate();
 
-      this.layer1_balance = this.er.layer1_balance;
-      this.deposit_tx_id = this.er.deposit_tx_id;
+      this.layer1_refresh();
       this.S2.status = true;
       this.$root.loading(false);
     },
@@ -269,11 +283,16 @@ export default {
       try{
         this.$root.loading(true);
         const res = await this.er.startTask();
+        this.er.layer1.buildCallback('SettleAccounts', async (rs)=>{
+          console.log("task result => ", JSON.stringify(rs));
+          const cid = utils.forge.util.hexToBytes(_.slice(rs.resultCid.toString(), 2).join(""));
+          await this.s4_result(cid);
+        });
 
         this.S4.task_id = this.er.last_task_id;
         this.step = 4;
 
-        this.mock_s4();
+        // this.mock_s4();
       }catch(e){
         this.$message.error(e.toString());
       }finally{
@@ -290,6 +309,15 @@ export default {
         const json = JSON.parse(utils.forge.util.decode64(res));
         this.S4.result = json.result + ' (This is mock result, not real.)';
       }, 2000);
+    },
+    async s4_result(cid){
+      alert(cid);
+      const res = await http.getFromIpfs(cid);
+      if(res){
+        const json = JSON.parse(utils.forge.util.decode64(res));
+        this.S4.result = json.result;
+      }
+      
     }
 
   },

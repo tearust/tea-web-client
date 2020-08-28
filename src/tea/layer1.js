@@ -81,7 +81,7 @@ class Layer1 {
       const types = event.typeDef;
 
       if (event.section == 'tea') {
-        console.log(`Received tea events:`);
+        // console.log(`Received tea events:`);
   
         let eventData = {}
         // Loop through each of the parameters, displaying the type and data
@@ -89,7 +89,8 @@ class Layer1 {
           // console.log(`\t\t\t${types[index].type}: ${data.toString()}`);
           eventData[types[index].type] = data
         });
-        console.log('eventData:', eventData);
+
+        // console.log('eventData:', eventData);
 
         switch (event.method) {
           case 'CompleteTask':
@@ -99,6 +100,13 @@ class Layer1 {
               this.callback['CompleteTask'](eventData.Result.toString());
             }
             break
+
+          case 'SettleAccounts':
+            console.log('SettleAccounts:', this.callback, eventData.Bill);
+            if(this.callback['SettleAccounts']){
+              this.callback['SettleAccounts'](eventData.Bill);
+            }
+            break;
           default:
         }
       }

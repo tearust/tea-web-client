@@ -95,7 +95,7 @@ export default class {
 
     const pb = new Protobuf('actor_delegate.QueryBalanceRequest');
     pb.payload({
-      accountId: this.layer1_account
+      accountId: stringToU8(this.layer1_account)
     });
 
     const buf = pb.encode();
@@ -103,6 +103,10 @@ export default class {
     const res = await http.getBalanceInfo(buf_64);
 
     log.d('getBalanceInfo response ', res);
+    this.layer1_balance = {
+      amount: _.get(res, 'balance'),
+      locked: _.get(res, 'locked'),
+    };
   }
 
   async requestBeMyDelegate(){
@@ -134,7 +138,7 @@ export default class {
       amount: _.get(res, 'balance'),
       locked: _.get(res, 0),
     };
-    this.deposit_tx_id = _.get(res, 'tx_id');
+    // this.deposit_tx_id = _.get(res, 'tx_id');
 
     await this.getLayer1AccountBalance();
 
@@ -156,12 +160,28 @@ export default class {
       // amount: "10",
       expire_time: (999999)
     };
-    log.d('deposit payload => ', payload)
-    this.layer1.deposit(this.layer1_account, payload, (flag, block_hex)=>{
-      log.d('depositToAgentAccount', flag, block_hex);
-    });
+    log.d('deposit payload => ', payload);
 
-    this.deposit_tx_id = 'deposit_tx_id';
+    return new Promise((resolve, reject)=>{
+      this.layer1.deposit(this.layer1_account, payload, async (flag, block_hex)=>{
+        log.d('depositToAgentAccount', flag, block_hex);
+        if(flag){
+          alert("success");
+          this.deposit_tx_id = block_hex;
+  
+          await this.requestBeMyDelegate();
+
+          resolve();
+        }
+        else{
+          reject()
+        }
+        
+      });
+    });
+    
+
+    // this.deposit_tx_id = 'deposit_tx_id';
 
   }
 
