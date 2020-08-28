@@ -425,6 +425,162 @@
             }
           }
         },
+        "DepositInfoRequest": {
+          "fields": {
+            "accountId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "delegatorEphemeralId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "DepositInfoResponse": {
+          "fields": {
+            "accountId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "delegatorEphemeralId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
+            "depositPubKey": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
+            },
+            "delegatorSignature": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 4
+            },
+            "amount": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 5
+            },
+            "expiredTime": {
+              "rule": "required",
+              "type": "uint64",
+              "id": 6
+            }
+          }
+        },
+        "SettleAccountsRequest": {
+          "fields": {
+            "employer": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "delegatorEphemeralId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
+            },
+            "errandUuid": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "payment": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 4
+            },
+            "paymentType": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 5
+            },
+            "employerSignature": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 6
+            },
+            "executorEphemeralId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 7
+            },
+            "expiredTime": {
+              "rule": "required",
+              "type": "uint64",
+              "id": 8
+            },
+            "delegateSignature": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 9
+            },
+            "resultCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 10
+            },
+            "executorSingature": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 11
+            }
+          }
+        },
+        "SettleAccountsResponse": {
+          "fields": {
+            "accountId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            },
+            "employer": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "delegatorEphemeralId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
+            },
+            "errandUuid": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "payment": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 5
+            },
+            "paymentType": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 6
+            },
+            "executorEphemeralId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 7
+            },
+            "expiredTime": {
+              "rule": "required",
+              "type": "uint64",
+              "id": 8
+            },
+            "resultCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 9
+            }
+          }
+        },
         "NotifyDelegateTaskComplete": {
           "fields": {
             "refNum": {
@@ -448,22 +604,26 @@
             }
           }
         },
-        "BeMyDelegateResponse": {
+        "QueryBalanceRequest": {
           "fields": {
-            "teaId": {
+            "accountId": {
               "rule": "required",
               "type": "bytes",
               "id": 1
-            },
-            "ephemeralId": {
+            }
+          }
+        },
+        "QueryBalanceResponse": {
+          "fields": {
+            "amount": {
               "rule": "required",
-              "type": "bytes",
+              "type": "uint32",
+              "id": 1
+            },
+            "locked": {
+              "rule": "required",
+              "type": "uint32",
               "id": 2
-            },
-            "sig": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 3
             }
           }
         }

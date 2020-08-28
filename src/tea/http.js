@@ -80,6 +80,9 @@ const F = {
 
   requestErrandTask(url, json_b64){
     return _axios.post(url, json_b64);
+  },
+  getBalanceInfo(proto_buf_b64){
+    return _axios.post('/api/get_balance_info', proto_buf_b64);
   }
 };
 

@@ -88,6 +88,23 @@ export default class {
     }
   }
 
+  async getLayer1AccountBalance(){
+    if(!this.layer1_account){
+      throw 'invalid layer1 account';
+    }
+
+    const pb = new Protobuf('actor_delegate.QueryBalanceRequest');
+    pb.payload({
+      accountId: this.layer1_account
+    });
+
+    const buf = pb.encode();
+    const buf_64 = utils.uint8array_to_base64(buf);
+    const res = await http.getBalanceInfo(buf_64);
+
+    log.d('getBalanceInfo response ', res);
+  }
+
   async requestBeMyDelegate(){
     if(!this.layer1_account){
       throw 'invalid layer1 account';
@@ -115,9 +132,11 @@ export default class {
     this.task_sign = _.get(res, 'sig');
     this.layer1_balance = {
       amount: _.get(res, 'balance'),
-      locked: _.get(res, 'locked'),
+      locked: _.get(res, 0),
     };
     this.deposit_tx_id = _.get(res, 'tx_id');
+
+    await this.getLayer1AccountBalance();
 
     // if(this.layer1_balance.amount === 0){
     //   await this.depositToAgentAccount();
