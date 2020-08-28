@@ -131,8 +131,8 @@ export default class {
       // deposit_pub_key: toHex(this.ed.pub, {addPrefix: true}),
       // delegator_signature: toHex(this.task_sign, {addPrefix: true}),
       delegator_ephemeral_id: '0x'+this.delegator_ephemeral_id,
-      deposit_pub_key: '0x09',//+this.ed.pub,
-      delegator_signature: '0x09', //+this.task_sign,
+      deposit_pub_key: '0x'+this.ed.pub,
+      delegator_signature: '0x'+this.task_sign,
       amount: this.paymentUnit(10),
       // amount: "10",
       expire_time: (999999)
