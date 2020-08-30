@@ -83,6 +83,10 @@ const F = {
   },
   getBalanceInfo(proto_buf_b64){
     return _axios.post('/api/get_balance_info', proto_buf_b64);
+  },
+
+  post(url, data){
+    return _axios.post(url, data);
   }
 };
 

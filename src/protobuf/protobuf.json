@@ -613,17 +613,12 @@
             }
           }
         },
-        "QueryBalanceResponse": {
+        "QueryErrandExecutionResult": {
           "fields": {
-            "amount": {
+            "errandId": {
               "rule": "required",
-              "type": "uint32",
+              "type": "bytes",
               "id": 1
-            },
-            "locked": {
-              "rule": "required",
-              "type": "uint32",
-              "id": 2
             }
           }
         }

@@ -287,6 +287,11 @@ export default {
           console.log("task result => ", JSON.stringify(rs));
           const cid = utils.forge.util.hexToBytes(_.slice(rs.resultCid.toString(), 2).join(""));
           await this.s4_result(cid);
+          this.er.loopTaskResult(false);
+        });
+
+        this.er.loopTaskResult(true, (res)=>{
+          console.log(111, res);
         });
 
         this.S4.task_id = this.er.last_task_id;

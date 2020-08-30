@@ -33,9 +33,15 @@ export default class {
 
   last_task_id = null;
 
+  last_rsa_pub_key = null;
+  last_ekey3 = null;
+
+  loop_running = false;
 
   constructor(){
     this.layer1 = null;
+
+    utils.crypto.get_secret();
     
     const ed = utils.cache.get('ed25519');
     if(ed){
@@ -103,10 +109,20 @@ export default class {
     const res = await http.getBalanceInfo(buf_64);
 
     log.d('getBalanceInfo response ', res);
-    this.layer1_balance = {
-      amount: _.get(res, 'balance'),
-      locked: _.get(res, 'locked'),
-    };
+    if(res.balance){
+      this.layer1_balance = {
+        amount: _.get(res, 'balance'),
+        locked: _.get(res, 'locked'),
+      };
+    }
+    else{
+      this.layer1_balance = {
+        amount: 0,
+        locked: 0,
+      };
+    }
+
+    
   }
 
   async requestBeMyDelegate(){
@@ -138,6 +154,14 @@ export default class {
       amount: _.get(res, 'balance'),
       locked: _.get(res, 0),
     };
+    this.last_rsa_pub_key = res.key3_rsa_pub_key;
+    log.d("RSA Pubkey", this.last_rsa_pub_key);
+
+    utils.crypto.set_rsa_publickey(this.last_rsa_pub_key);
+    const {key_encrypted} = utils.crypto.get_secret();
+    this.last_ekey3 = key_encrypted;
+    log.d("ekey3", this.last_ekey3);
+
     // this.deposit_tx_id = _.get(res, 'tx_id');
 
     await this.getLayer1AccountBalance();
@@ -209,6 +233,7 @@ export default class {
       _.set(task_json, 'adhoc_data', this.adhoc_data);
     }
     _.set(task_json, 'deposit_tx_id', this.deposit_tx_id);
+    _.set(task_json, 'encrypted_key3', this.last_ekey3);
 
     return task_json;
   }
@@ -257,6 +282,58 @@ export default class {
 
     const payment = parseInt(n, 10) * unit;
     return payment.toString();
+  }
+
+  loopTaskResult(flag=false, cb){
+    if(!flag){
+      this.loop_running = false;
+      return false;
+    }
+    if(this.loop_running){
+      return false;
+    }
+
+    this.loop_running = true;
+
+    this.loopTaskResultFromDelegate(cb);
+  }
+
+  async loopTaskResultFromDelegate(cb){
+    if(!this.loop_running) return false;
+
+    const loop = ()=>{
+      _.delay(()=>{
+        this.queryTaskResult().then((res)=>{
+          if(!res.completed){
+            loop();
+
+            this.loop_running = false;
+          }
+          else{
+            cb(res);
+          }
+          
+        })
+      }, 5000);
+    };
+
+    loop();
+  }
+
+  async queryTaskResult(){
+    const url = '/api/query_errand_execution_result';
+
+    const pb = new Protobuf("actor_delegate.QueryErrandExecutionResult");
+    pb.payload({
+      errandId: stringToU8(this.last_task_id),
+    });
+
+    const buf = pb.encode();
+    const buf_64 = utils.uint8array_to_base64(buf);
+
+    const res = await http.post(url, buf_64);
+    log.d("queryTaskResult response\n", res);
+    return res;
   }
 
 }
