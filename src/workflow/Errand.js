@@ -182,7 +182,7 @@ export default class {
       delegator_ephemeral_id: '0x'+this.delegator_ephemeral_id,
       deposit_pub_key: '0x'+this.ed.pub,
       delegator_signature: '0x'+this.task_sign,
-      amount: this.paymentUnit(10),
+      amount: this.paymentUnit(1000),
       // amount: "10",
       expire_time: (999999)
     };
