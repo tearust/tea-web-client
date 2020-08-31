@@ -307,10 +307,10 @@ export default class {
           if(!res.completed){
             loop();
 
-            this.loop_running = false;
           }
           else{
             cb(res);
+            this.loop_running = false;
           }
           
         })

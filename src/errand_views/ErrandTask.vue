@@ -155,8 +155,9 @@
       <h4>{{S4.task_id}}</h4>
 
       <p>
-        <span v-if="!S4.result">Loading...</span>
+        <span v-if="!S4.result && !S4.error">Loading...</span>
         <b v-if="S4.result">Result: <font style="color:#f0f; margin-left: 10px;">{{S4.result}}</font></b>
+        <b v-if="S4.error" style="color:#f00;">{{S4.error}}</b>
       </p>
     </div>
   </div>
@@ -204,7 +205,8 @@ export default {
 
       S4: {
         task_id: null,
-        result: null
+        result: null,
+        error: null,
       }
     }
   },
@@ -284,14 +286,16 @@ export default {
         this.$root.loading(true);
         const res = await this.er.startTask();
         this.er.layer1.buildCallback('SettleAccounts', async (rs)=>{
-          console.log("task result => ", JSON.stringify(rs));
-          const cid = utils.forge.util.hexToBytes(_.slice(rs.resultCid.toString(), 2).join(""));
-          await this.s4_result(cid);
-          this.er.loopTaskResult(false);
+          console.log("layer1 task result => ", JSON.stringify(rs));
+          // const cid = utils.forge.util.hexToBytes(_.slice(rs.resultCid.toString(), 2).join(""));
+          // await this.s4_result(cid);
+          // this.er.loopTaskResult(false);
         });
 
-        this.er.loopTaskResult(true, (res)=>{
-          console.log(111, res);
+        this.er.loopTaskResult(true, async (res)=>{
+          const cid = res.result_cid;
+          await this.s4_result(cid);
+          this.er.loopTaskResult(false);
         });
 
         this.S4.task_id = this.er.last_task_id;
@@ -319,7 +323,14 @@ export default {
       const res = await http.getFromIpfs(cid);
       if(res){
         const json = JSON.parse(utils.forge.util.decode64(res));
-        this.S4.result = json.result;
+        console.log('Get JSON from task result cid \n', json);
+        if(json.error){
+          this.S4.error = json.error;
+        }
+        else{
+          this.S4.result = json.result;
+        }
+        
       }
       
     }
