@@ -432,7 +432,7 @@
               "type": "bytes",
               "id": 1
             },
-            "delegatorEphemeralId": {
+            "depositPubkey": {
               "rule": "required",
               "type": "bytes",
               "id": 2
@@ -601,6 +601,11 @@
               "rule": "required",
               "type": "bytes",
               "id": 2
+            },
+            "depositPubkey": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 3
             }
           }
         },
@@ -610,6 +615,11 @@
               "rule": "required",
               "type": "bytes",
               "id": 1
+            },
+            "depositPubkey": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
             }
           }
         },

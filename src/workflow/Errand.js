@@ -101,7 +101,8 @@ export default class {
 
     const pb = new Protobuf('actor_delegate.QueryBalanceRequest');
     pb.payload({
-      accountId: stringToU8(this.layer1_account)
+      accountId: stringToU8(this.layer1_account),
+      depositPubkey: stringToU8(this.ed.pub),
     });
 
     const buf = pb.encode();
@@ -136,7 +137,8 @@ export default class {
 
     pb.payload({
       layer1Account: stringToU8(this.layer1_account),
-      nonce: stringToU8(this.nonce)
+      nonce: stringToU8(this.nonce),
+      depositPubkey: stringToU8(this.ed.pub),
     });
 
     const buf = pb.encode();
