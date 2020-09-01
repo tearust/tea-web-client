@@ -322,7 +322,16 @@ export default {
     async s4_result(cid){
       const res = await http.getFromIpfs(cid);
       if(res){
-        const json = JSON.parse(utils.forge.util.decode64(res));
+        let json = null;
+        let ori_str = utils.forge.util.decode64(res);
+        try{
+          json = JSON.parse(ori_str);
+        }catch(e){
+          let tmp = utils.forge.util.bytesToHex(ori_str);
+          tmp = utils.crypto.decode(tmp);
+          json = JSON.parse(tmp);
+        }
+        // const json = JSON.parse(utils.forge.util.decode64(res));
         console.log('Get JSON from task result cid \n', json);
         if(json.error){
           this.S4.error = json.error;
