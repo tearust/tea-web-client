@@ -5,6 +5,7 @@ import _ from 'lodash';
 import types from './types';
 import extension from './extension';
 const rpc = require('./rpc');
+import toHex from 'to-hex';
 
 const LAYER1_URL = 'ws://127.0.0.1:9944';
 
@@ -111,6 +112,14 @@ class Layer1 {
         }
       }
     });
+  }
+
+  async sign(account, text){
+    await this.extension.setSignerForAddress(account, this.api);
+    const sig = await this.api.sign(account, {
+      data: toHex(text, {addPrefix: true})
+    });
+    return sig;
   }
 
   async addNewTask(account, {
