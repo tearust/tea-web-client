@@ -27,8 +27,6 @@ export default class {
   adhoc_code = {};
   adhoc_data = {};
 
-  ed = null;
-
   deposit_tx_id = null;
 
   last_task_id = null;
@@ -42,16 +40,6 @@ export default class {
     this.layer1 = null;
 
     utils.crypto.get_secret();
-    
-    const ed = utils.cache.get('ed25519');
-    if(ed){
-      this.ed = ed;
-    }
-    else{
-      this.ed = ed25519.keypair();
-      utils.cache.put('ed25519', this.ed);
-    }
-    log.d('ed25519 (hex)', this.ed);
     
   }
 
@@ -101,8 +89,8 @@ export default class {
 
     const pb = new Protobuf('actor_delegate.QueryBalanceRequest');
     pb.payload({
-      accountId: stringToU8(this.layer1_account),
-      depositPubkey: stringToU8(this.ed.pub),
+      accountId: (this.layer1_account),
+      delegatorTeaId: stringToU8(this.delegator_tea_id),
     });
 
     const buf = pb.encode();
@@ -136,9 +124,8 @@ export default class {
     this.nonce = _.random(100000000).toString();
 
     pb.payload({
-      layer1Account: stringToU8(this.layer1_account),
-      nonce: stringToU8(this.nonce),
-      depositPubkey: stringToU8(this.ed.pub),
+      layer1Account: (this.layer1_account),
+      nonce: stringToU8(this.nonce)
     });
 
     const buf = pb.encode();
@@ -176,14 +163,10 @@ export default class {
 
   async depositToAgentAccount(){
     const payload = {
-      // delegator_ephemeral_id: toHex(this.delegator_ephemeral_id, {addPrefix: true}),
-      // deposit_pub_key: toHex(this.ed.pub, {addPrefix: true}),
-      // delegator_signature: toHex(this.task_sign, {addPrefix: true}),
+      delegator_tea_id: '0x'+this.delegator_tea_id,
       delegator_ephemeral_id: '0x'+this.delegator_ephemeral_id,
-      deposit_pub_key: '0x'+this.ed.pub,
       delegator_signature: '0x'+this.task_sign,
       amount: this.paymentUnit(1000),
-      // amount: "10",
       expire_time: (999999)
     };
     log.d('deposit payload => ', payload);
@@ -250,32 +233,17 @@ export default class {
 
     const task_id = utils.uuid();
     this.last_task_id = task_id;
-    const proof_of_delegate = ed25519.sign(`${this.delegator_ephemeral_id}${task_id}`, this.ed.pri);
-
+    const sig = await this.layer1.sign(this.layer1_account, `${this.delegator_ephemeral_id}${task_id}`);
+    if(!sig){
+      alert('Sign error');
+      return false;
+    }
+    const proof_of_delegate = sig;
     const url = `/api/service/${this.layer1_account}/${task_id}/${proof_of_delegate}`;
     const res = await http.requestErrandTask(url, json_b64);
 
     log.d('requestErrandTask response', res);
   }
-
-  // async start_task(){
-  //   // step 1
-  //   log.d('Step 1');
-  //   await this.requestBeMyDelegate();
-
-  //   // step 3
-  //   log.d('Step 3');
-  //   this.ed = ed25519.keypair();
-
-  //   // step 4
-  //   log.d('Step 4');
-  //   await this.depositToAgentAccount();
-
-  //   // step 7
-  //   log.d('Step 7');
-    
-
-  // }
 
   paymentUnit(n){
     const yi = new BN('100000000', 10);
