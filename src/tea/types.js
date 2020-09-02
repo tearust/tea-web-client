@@ -1,5 +1,6 @@
 const types = {
       Address: "AccountId",
+      LookupSource: "AccountId",
       TeaPubKey: "[u8; 32]",
       Url: "Bytes",
       Cid: "Bytes",
@@ -19,20 +20,21 @@ const types = {
       },
       Task: {
             "refNum": "RefNum",
-            "delegateTeaId": "TeaPubKey",
+            "delegatorTeaId": "TeaPubKey",
             "modelCid": "Bytes",
             "bodyCid": "Bytes",
             "payment": "Balance"
       },
       Deposit: {
+            "delegatorTeaId": "TeaPubKey",
             "delegatorEphemeralId": "TeaPubKey",
-            "depositPubkey": "TeaPubKey",
             "delegatorSignature": "Bytes",
             "amount": "Balance",
             "expireTime": "u64"
       },
       Bill: {
             "employer": "AccountId",
+            "delegatorTeaId": "TeaPubKey",
             "delegatorEphemeralId": "TeaPubKey",
             "errandUuid": "Bytes",
             "payment": "Balance",
