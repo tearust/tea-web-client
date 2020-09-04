@@ -17,6 +17,7 @@ export default class {
   deployed_data = null;
   
   layer1_account = null;
+  layer1_account_amount = 0;
   nonce = null;
   layer1_balance = null;  // amount, locked
 
@@ -87,6 +88,8 @@ export default class {
       throw 'invalid layer1 account';
     }
 
+    this.layer1_account_amount = await this.layer1.getAccountBalance(this.layer1_account);
+
     const pb = new Protobuf('actor_delegate.QueryBalanceRequest');
     pb.payload({
       accountId: (this.layer1_account),
@@ -154,19 +157,15 @@ export default class {
     // this.deposit_tx_id = _.get(res, 'tx_id');
 
     await this.getLayer1AccountBalance();
-
-    // if(this.layer1_balance.amount === 0){
-    //   await this.depositToAgentAccount();
-    // }
     
   }
 
-  async depositToAgentAccount(){
+  async depositToAgentAccount(number=1000){
     const payload = {
       delegator_tea_id: '0x'+this.delegator_tea_id,
       delegator_ephemeral_id: '0x'+this.delegator_ephemeral_id,
       delegator_signature: '0x'+this.task_sign,
-      amount: this.paymentUnit(1000),
+      amount: this.paymentUnit(number),
       expire_time: (999999)
     };
     log.d('deposit payload => ', payload);
@@ -246,13 +245,12 @@ export default class {
   }
 
   paymentUnit(n){
-    const yi = new BN('100000000', 10);
-    const million = new BN('10000000', 10);
-    const unit = yi.mul(million);
+    const unit = this.layer1.asUnit();
 
     const payment = parseInt(n, 10) * unit;
     return payment.toString();
   }
+  
 
   loopTaskResult(flag=false, cb){
     if(!flag){

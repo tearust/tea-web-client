@@ -6,6 +6,7 @@ import types from './types';
 import extension from './extension';
 const rpc = require('./rpc');
 import toHex from 'to-hex';
+import BN from 'bn.js';
 
 const LAYER1_URL = 'ws://127.0.0.1:9944';
 
@@ -35,6 +36,38 @@ class Layer1 {
 
   buildCallback(key, cb){
     this.callback[key] = cb;
+  }
+
+  asUnit(){
+    const yi = new BN('100000000', 10);
+    const million = new BN('10000000', 10);
+    const unit = yi.mul(million);
+
+    return unit;
+  }
+
+  async getAccountBalance(account){
+    let { data: { free: previousFree }, nonce: previousNonce } = await this.api.query.system.account(account);
+
+    // console.log(222, previousFree, previousNonce);
+    // console.log(`Layer1 has a balance of ${previousFree}, nonce ${previousNonce}`);
+    // this.api.query.system.account(account, ({ data: { free: currentFree }, nonce: currentNonce }) => {
+    //   // Calculate the delta
+    //   const change = currentFree.sub(previousFree);
+  
+    //   // Only display positive value changes (Since we are pulling `previous` above already,
+    //   // the initial balance change will also be zero)
+    //   if (!change.isZero()) {
+    //     console.log(`New balance change of ${change}, nonce ${currentNonce}`);
+  
+    //     previousFree = currentFree;
+    //     previousNonce = currentNonce;
+
+    //     console.log(333, previousFree, previousNonce);
+    //   }
+    // });
+    const free = parseInt(previousFree.toString(), 10) / this.asUnit();
+    return Math.floor(free*10000)/10000;
   }
 
   // async test(){

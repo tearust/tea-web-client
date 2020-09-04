@@ -19,7 +19,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     ">
-      Locked/Amount : {{layer1_balance.locked}}/{{layer1_balance.amount}} <br/>
+      Locked/Balance/Layer1 Amount : {{layer1_balance.locked}}/{{layer1_balance.amount}}/{{layer1_amount}} <br/>
       TX_ID: {{deposit_tx_id}}
     </el-col>
     <el-col :span="6" v-if="layer1_balance" style="display:flex;">
@@ -182,6 +182,7 @@ export default {
       layer1_account_list: [],
       layer1_account: null,
       layer1_balance: null,
+      layer1_amount: null,
       deposit_tx_id: null,
       step: 1,
 
@@ -216,9 +217,16 @@ export default {
 
   methods: {
     async layer1_deposit(){
+      let number = await prompt("Plese input the number you wanna deposit");
+      number = parseInt(number, 10);
+      if(!number || number < 100){
+        this.$message.error("invalid number");
+        return false;
+      }
+
       this.$root.loading(true);
 
-      await this.er.depositToAgentAccount();
+      await this.er.depositToAgentAccount(number);
       this.layer1_refresh();
 
       this.$root.loading(false);   
@@ -226,6 +234,7 @@ export default {
     layer1_refresh(){
       this.layer1_balance = this.er.layer1_balance;
       this.deposit_tx_id = this.er.deposit_tx_id;
+      this.layer1_amount = this.er.layer1_account_amount;
     },
     s1_tableSelectHandler(v){
       this.S1.select = v;
