@@ -33,7 +33,7 @@ class DeployData {
 
   constructor(ori_data_buf, data_desc, price_plan="A"){
     this.ori_data_buf = ori_data_buf;
-    this.data_desc = data_desc;
+    this.data_desc = JSON.stringify(data_desc);
     this.price_plan = price_plan;
   }
 

@@ -30,7 +30,8 @@
     </el-form-item>
 
     <el-form-item label="Description">
-      <el-input v-model="form.desc"></el-input>
+      <!-- <el-input v-model="form.desc"></el-input> -->
+      <JsonEditor :json="form.desc" :onChange="(val)=>{form.desc=val}" />
     </el-form-item>
 
     <el-form-item label="Deposit Money">
@@ -60,9 +61,16 @@ import http from '../tea/http';
 import tea from '../tea';
 import DeployDataTaskStep from './DeployDataTaskStep';
 import DeployData from '../workflow/DeployData';
+import JsonEditor from '../components/JsonEditor';
+
+const desc_default = {
+
+};
+
 export default {
   components: {
-    DeployDataTaskStep
+    DeployDataTaskStep,
+    JsonEditor
   },
   data() {
     return {
@@ -70,7 +78,7 @@ export default {
       form: {
         public_key: '',
         money: 10,
-        desc: ''
+        desc: desc_default
       },
       img_file: null,
 
@@ -103,7 +111,7 @@ export default {
       this.form = {
         public_key : '',
         money : 10,
-        desc : ''
+        desc : desc_default
       };
       this.img_file = null;
       this.res.image = null;

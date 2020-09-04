@@ -60,14 +60,15 @@ export default {
     this.$root.loading(true);
     this.bootstrap = utils.getBootstrapNodes();
 
-    const obj = await Layer1.getBootstrapNodes();
+    // const obj = await Layer1.getBootstrapNodes();
 
     const tmp = await http.requestActiveNodes();
-    this.table = _.concat(_.map(obj, x => {
-      const t = x.toJSON();
-      t.tea_id = t.teaId;
-      return t;
-    }), tmp);
+    // this.table = _.concat(_.map(obj, x => {
+    //   const t = x.toJSON();
+    //   t.tea_id = t.teaId;
+    //   return t;
+    // }), tmp);
+    this.table = tmp;
 
     this.$root.loading(false);
   },
