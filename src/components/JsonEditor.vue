@@ -16,6 +16,9 @@ export default {
     onChange: {
       type: Function,
       required: true
+    },
+    mode: {
+      type: String
     }
   },
   data(){
@@ -29,7 +32,7 @@ export default {
   mounted(){
     const el = document.getElementById(this.uuid);
     this.editor = new JSONEditor(el, {
-      mode: 'code',
+      mode: this.mode || 'code',
       onChangeJSON: (val)=>{
         this.onChange(val)
       }

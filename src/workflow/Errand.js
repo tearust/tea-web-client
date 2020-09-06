@@ -1,7 +1,6 @@
 import Layer1 from '../tea/layer1';
 import utils from '../tea/utils';
 import _ from 'lodash';
-import ed25519 from '../shared/utility/ed25519';
 import Log from '../shared/utility/Log';
 import proto from '../tea/proto';
 import http from '../tea/http';
@@ -65,8 +64,6 @@ export default class {
         cid: d
       };
     }
-
-    console.log(999, this.deployed_code, this.deployed_data);
 
     await this.initLayer1();
   }
@@ -193,7 +190,12 @@ export default class {
 
   }
 
-  buildTaskJson(){
+  buildTaskJson(desc_json){
+    const {payment, delegator, executor} = desc_json;
+    if(payment < 1 || delegator === 0 || executor === 0){
+      throw 'invalid description';
+    }
+
     const task_json = {};
     if(this.deployed_code){
       _.set(task_json, 'deployed_code', {
@@ -218,21 +220,30 @@ export default class {
     }
     _.set(task_json, 'deposit_tx_id', this.deposit_tx_id);
     _.set(task_json, 'encrypted_key3', this.last_ekey3);
+    _.set(task_json, 'payment', payment);
+    _.set(task_json, 'gas_distribution', {
+      delegator, 
+      executor
+    });
 
     return task_json;
   }
 
-  async startTask(){
+  async startTask(desc_json){
+
     log.d('Start Task');
-    const json = this.buildTaskJson();
+    const json = this.buildTaskJson(desc_json);
     log.d('task json', json);
 
-    const json_b64 = utils.forge.util.encode64(JSON.stringify(json));
+    const json_str = JSON.stringify(json);
+    const sha256 = utils.crypto.sha256(json_str);
+
+    const json_b64 = utils.forge.util.encode64(json_str);
     log.d('task json base64', json_b64);
 
     const task_id = utils.uuid();
     this.last_task_id = task_id;
-    const sig = await this.layer1.sign(this.layer1_account, `${this.delegator_ephemeral_id}${task_id}`);
+    const sig = await this.layer1.sign(this.layer1_account, `${task_id}${sha256}`);
     if(!sig){
       alert('Sign error');
       return false;

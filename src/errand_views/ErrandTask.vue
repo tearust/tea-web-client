@@ -144,6 +144,11 @@
       </el-row>
     </div>
 
+    <div class="s3-info">
+      <h4>Description</h4>
+      <JsonEditor mode="form" :json="S3.desc_json" :onChange="(val)=>{S3.desc_json=val}" />
+    </div>
+
     <div style="display:flex; justify-content: flex-end;">
       <el-button :disabled="false" style="width:40%;margin-top: 40px;" type="primary" round @click="s3_next()">Run Errand Task</el-button>
     </div>
@@ -172,10 +177,18 @@ import _ from 'lodash';
 import Layer1 from '../tea/layer1';
 import Errand from '../workflow/Errand';
 import UploadToIpfs from '../components/UploadToIpfs';
+import JsonEditor from '../components/JsonEditor';
+
+const desc_json = {
+  payment: 10,
+  delegator: 20,
+  executor: 80
+};
 
 export default {
   components: {
     UploadToIpfs,
+    JsonEditor,
   },
   data(){
     return {
@@ -201,7 +214,9 @@ export default {
         cid_of_description: null,
 
         deployment_id_for_data: null,
-        cid_of_data: null
+        cid_of_data: null,
+
+        desc_json: desc_json
       },
 
       S4: {
@@ -293,7 +308,8 @@ export default {
 
       try{
         this.$root.loading(true);
-        const res = await this.er.startTask();
+ 
+        const res = await this.er.startTask(this.S3.desc_json);
         this.er.layer1.buildCallback('SettleAccounts', async (rs)=>{
           console.log("layer1 task result => ", JSON.stringify(rs));
           // const cid = utils.forge.util.hexToBytes(_.slice(rs.resultCid.toString(), 2).join(""));
