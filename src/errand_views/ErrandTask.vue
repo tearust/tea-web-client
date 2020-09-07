@@ -23,7 +23,7 @@
       TX_ID: {{deposit_tx_id}}
     </el-col>
     <el-col :span="6" v-if="layer1_balance" style="display:flex;">
-      <el-button style="width:40%;" type="default" @click="er.getLayer1AccountBalance()">Refresh</el-button>
+      <el-button style="width:40%;" type="default" @click="getLayer1AccountBalance()">Refresh</el-button>
       <el-button style="width:58%;" type="primary" @click="layer1_deposit()">Deposit</el-button>
       
     </el-col>
@@ -367,6 +367,10 @@ export default {
         
       }
       
+    },
+    async getLayer1AccountBalance(){
+      await this.er.getLayer1AccountBalance();
+      this.layer1_refresh();
     }
 
   },
