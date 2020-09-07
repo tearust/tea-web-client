@@ -37,11 +37,11 @@ const types = {
             "delegatorTeaId": "TeaPubKey",
             "delegatorEphemeralId": "TeaPubKey",
             "errandUuid": "Bytes",
-            "payment": "Balance",
-            "paymentType": "u32",
+            "errandJsonCid": "Bytes",
             "executorEphemeralId": "TeaPubKey",
             "expiredTime": "u64",
-            "resultCid": "Cid"
+            "resultCid": "Cid",
+            "bills": "Vec<(AccountId, Balance)>"
       },
       Data: {
             "delegatorEphemeralId": "TeaPubKey",
