@@ -44,7 +44,8 @@
     </el-form-item>
 
     <el-form-item label="Description">
-      <el-input v-model="form.desc"></el-input>
+      <!-- <el-input v-model="form.desc"></el-input> -->
+      <JsonEditor :json="form.desc" mode="code" :onChange="(val)=>{form.desc=val}" />
     </el-form-item>
 
     <el-form-item label="Deposit Money">
@@ -74,9 +75,30 @@ import http from '../tea/http';
 import tea from '../tea';
 import DeployDataTaskStep from './DeployDataTaskStep';
 import DeployCode from '../workflow/DeployCode';
+import JsonEditor from '../components/JsonEditor';
+
+const desc_default = {
+  perUse: 5,
+  bindings: [
+    {
+      "capability": "wascc:messaging",
+      "values": {
+        "SUBSCRIPTION": "actor.execute.task.with_param"
+      }
+    },
+    {
+      "capability": "tea:tensorflow",
+      "values": {
+        
+      }
+    }
+  ]
+};
+
 export default {
   components: {
-    DeployDataTaskStep
+    DeployDataTaskStep,
+    JsonEditor
   },
   data() {
     return {
@@ -84,7 +106,7 @@ export default {
       form: {
         public_key: '',
         money: 10,
-        desc: ''
+        desc: desc_default
       },
       img_file: null,
       checker_file: null,
@@ -119,7 +141,7 @@ export default {
       this.form = {
         public_key : '',
         money : 10,
-        desc : ''
+        desc : desc_default
       };
       this.img_file = null;
       this.res.image = null;

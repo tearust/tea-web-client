@@ -35,7 +35,7 @@ class DeployCode {
   constructor(ori_code_buf, ori_checker_buf, data_desc, price_plan="A"){
     this.ori_code_buf = ori_code_buf;
     this.ori_checker_buf = ori_checker_buf;
-    this.data_desc = data_desc;
+    this.data_desc = JSON.stringify(data_desc);
     this.price_plan = price_plan;
   }
 

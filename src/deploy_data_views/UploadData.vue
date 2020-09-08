@@ -31,7 +31,7 @@
 
     <el-form-item label="Description">
       <!-- <el-input v-model="form.desc"></el-input> -->
-      <JsonEditor :json="form.desc" :onChange="(val)=>{form.desc=val}" />
+      <JsonEditor :json="form.desc" mode="form" :onChange="(val)=>{form.desc=val}" />
     </el-form-item>
 
     <el-form-item label="Deposit Money">
@@ -64,7 +64,7 @@ import DeployData from '../workflow/DeployData';
 import JsonEditor from '../components/JsonEditor';
 
 const desc_default = {
-
+  perUse: 2
 };
 
 export default {

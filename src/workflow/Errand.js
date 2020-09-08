@@ -236,21 +236,25 @@ export default class {
     log.d('task json', json);
 
     const json_str = JSON.stringify(json);
-    const sha256 = utils.crypto.sha256(json_str);
+
+    // put to ipfs
+    const cid = await http.putToIpfs(json_str);
+    // const sha256 = utils.crypto.sha256(json_str);
 
     const json_b64 = utils.forge.util.encode64(json_str);
     log.d('task json base64', json_b64);
 
     const task_id = utils.uuid();
     this.last_task_id = task_id;
-    const sig = await this.layer1.sign(this.layer1_account, `${task_id}${sha256}`);
+    const sig = await this.layer1.sign(this.layer1_account, `${task_id}${cid}`);
     if(!sig){
       alert('Sign error');
       return false;
     }
     const proof_of_delegate = sig;
     const url = `/api/service/${this.layer1_account}/${task_id}/${proof_of_delegate}`;
-    const res = await http.requestErrandTask(url, json_b64);
+    // const res = await http.requestErrandTask(url, json_b64);
+    const res = await http.requestErrandTask(url, cid);
 
     log.d('requestErrandTask response', res);
   }
