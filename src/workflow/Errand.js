@@ -7,14 +7,14 @@ import http from '../tea/http';
 import toHex from 'to-hex';
 import BN from 'bn.js';
 
-const {Protobuf, stringToU8, u8ToString} = proto;
+const { Protobuf, stringToU8, u8ToString } = proto;
 
 const log = Log.create('Errand');
 
 export default class {
   deployed_code = null;
   deployed_data = null;
-  
+
   layer1_account = null;
   layer1_account_amount = 0;
   nonce = null;
@@ -36,29 +36,29 @@ export default class {
 
   loop_running = false;
 
-  constructor(){
+  constructor() {
     this.layer1 = null;
 
     utils.crypto.get_secret();
-    
+
   }
 
-  setLayer1Account(account){
+  setLayer1Account(account) {
     this.layer1_account = account;
   }
 
-  async init(){
+  async init() {
     const c = utils.get_env('CID_OF_CODE');
     const d = utils.get_env('CID_OF_DATA');
-    
-    if(c){
+
+    if (c) {
       this.deployed_code = {
         deployment_id: utils.get_env('DEPLOYMENT_ID_FOR_CODE'),
         checker: utils.get_env('CID_OF_CHECKER'),
         cid: c
       };
     }
-    if(d){
+    if (d) {
       this.deployed_data = {
         deployment_id: utils.get_env('DEPLOYMENT_ID_FOR_DATA'),
         cid: d
@@ -68,20 +68,20 @@ export default class {
     await this.initLayer1();
   }
 
-  async initLayer1(){
-    if(!this.layer1){
-      try{
+  async initLayer1() {
+    if (!this.layer1) {
+      try {
         this.layer1 = new Layer1();
         await this.layer1.init();
 
-      }catch(e){
+      } catch (e) {
         console.error(e);
       }
     }
   }
 
-  async getLayer1AccountBalance(){
-    if(!this.layer1_account){
+  async getLayer1AccountBalance() {
+    if (!this.layer1_account) {
       throw 'invalid layer1 account';
     }
 
@@ -98,24 +98,24 @@ export default class {
     const res = await http.getBalanceInfo(buf_64);
 
     log.d('getBalanceInfo response ', res);
-    if(res.balance){
+    if (res.balance) {
       this.layer1_balance = {
         amount: _.get(res, 'balance'),
         locked: _.get(res, 'locked'),
       };
     }
-    else{
+    else {
       this.layer1_balance = {
         amount: 0,
         locked: 0,
       };
     }
 
-    
+
   }
 
-  async requestBeMyDelegate(){
-    if(!this.layer1_account){
+  async requestBeMyDelegate() {
+    if (!this.layer1_account) {
       throw 'invalid layer1 account';
     }
 
@@ -147,89 +147,91 @@ export default class {
     log.d("RSA Pubkey", this.last_rsa_pub_key);
 
     utils.crypto.set_rsa_publickey(this.last_rsa_pub_key);
-    const {key_encrypted} = utils.crypto.get_secret();
+    const { key_encrypted } = utils.crypto.get_secret();
     this.last_ekey3 = key_encrypted;
     log.d("ekey3", this.last_ekey3);
 
     // this.deposit_tx_id = _.get(res, 'tx_id');
 
     await this.getLayer1AccountBalance();
-    
+
   }
 
-  async depositToAgentAccount(number=1000){
+  async depositToAgentAccount(number = 1000) {
     const payload = {
-      delegator_tea_id: '0x'+this.delegator_tea_id,
-      delegator_ephemeral_id: '0x'+this.delegator_ephemeral_id,
-      delegator_signature: '0x'+this.task_sign,
+      delegator_tea_id: '0x' + this.delegator_tea_id,
+      delegator_ephemeral_id: '0x' + this.delegator_ephemeral_id,
+      delegator_signature: '0x' + this.task_sign,
       amount: this.paymentUnit(number),
       expire_time: (999999)
     };
     log.d('deposit payload => ', payload);
 
-    return new Promise((resolve, reject)=>{
-      this.layer1.deposit(this.layer1_account, payload, async (flag, block_hex)=>{
+    return new Promise((resolve, reject) => {
+      this.layer1.deposit(this.layer1_account, payload, async (flag, block_hex) => {
         log.d('depositToAgentAccount', flag, block_hex);
-        if(flag){
+        if (flag) {
           alert("success");
           this.deposit_tx_id = block_hex;
-  
+
           await this.requestBeMyDelegate();
 
           resolve();
         }
-        else{
+        else {
           reject()
         }
-        
+
       });
     });
-    
+
 
     // this.deposit_tx_id = 'deposit_tx_id';
 
   }
 
-  buildTaskJson(desc_json){
-    const {payment, delegator, executor} = desc_json;
-    if(payment < 1 || delegator === 0 || executor === 0){
+  buildTaskJson(desc_json) {
+    const { payment, delegator, executor } = desc_json;
+    if (payment < 1 || delegator === 0 || executor === 0) {
       throw 'invalid description';
     }
 
     const task_json = {};
-    if(this.deployed_code){
+    if (this.deployed_code) {
       _.set(task_json, 'deployed_code', {
         deployment_id_for_code: this.deployed_code.deployment_id,
         cid_of_code: this.deployed_code.cid,
-        cid_of_checker: this.deployed_code.checker
+        cid_of_checker: this.deployed_code.checker,
+        pay_per_use: 3
       });
     }
-    else{
+    else {
       _.set(task_json, 'adhoc_code', this.adhoc_code);
     }
 
 
-    if(this.deployed_data){
+    if (this.deployed_data) {
       _.set(task_json, 'deployed_data', {
         deployment_id_for_data: this.deployed_data.deployment_id,
-        cid_of_data: this.deployed_data.cid
+        cid_of_data: this.deployed_data.cid,
+        pay_per_use: 2
       });
     }
-    else{
+    else {
       _.set(task_json, 'adhoc_data', this.adhoc_data);
     }
     _.set(task_json, 'deposit_tx_id', this.deposit_tx_id);
     _.set(task_json, 'encrypted_key3', this.last_ekey3);
     _.set(task_json, 'payment', payment);
     _.set(task_json, 'gas_distribution', {
-      delegator, 
+      delegator,
       executor
     });
 
     return task_json;
   }
 
-  async startTask(desc_json){
+  async startTask(desc_json) {
 
     log.d('Start Task');
     const json = this.buildTaskJson(desc_json);
@@ -247,7 +249,7 @@ export default class {
     const task_id = utils.uuid();
     this.last_task_id = task_id;
     const sig = await this.layer1.sign(this.layer1_account, `${task_id}${cid}`);
-    if(!sig){
+    if (!sig) {
       alert('Sign error');
       return false;
     }
@@ -259,20 +261,20 @@ export default class {
     log.d('requestErrandTask response', res);
   }
 
-  paymentUnit(n){
+  paymentUnit(n) {
     const unit = this.layer1.asUnit();
 
     const payment = parseInt(n, 10) * unit;
     return payment.toString();
   }
-  
 
-  loopTaskResult(flag=false, cb){
-    if(!flag){
+
+  loopTaskResult(flag = false, cb) {
+    if (!flag) {
       this.loop_running = false;
       return false;
     }
-    if(this.loop_running){
+    if (this.loop_running) {
       return false;
     }
 
@@ -281,21 +283,21 @@ export default class {
     this.loopTaskResultFromDelegate(cb);
   }
 
-  async loopTaskResultFromDelegate(cb){
-    if(!this.loop_running) return false;
+  async loopTaskResultFromDelegate(cb) {
+    if (!this.loop_running) return false;
 
-    const loop = ()=>{
-      _.delay(()=>{
-        this.queryTaskResult().then((res)=>{
-          if(!res.completed){
+    const loop = () => {
+      _.delay(() => {
+        this.queryTaskResult().then((res) => {
+          if (!res.completed) {
             loop();
 
           }
-          else{
+          else {
             cb(res);
             this.loop_running = false;
           }
-          
+
         })
       }, 5000);
     };
@@ -303,7 +305,7 @@ export default class {
     loop();
   }
 
-  async queryTaskResult(){
+  async queryTaskResult() {
     const url = '/api/query_errand_execution_result';
 
     const pb = new Protobuf("actor_delegate.QueryErrandExecutionResult");
