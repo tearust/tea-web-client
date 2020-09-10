@@ -64,7 +64,7 @@ import DeployData from '../workflow/DeployData';
 import JsonEditor from '../components/JsonEditor';
 
 const desc_default = {
-  perUse: 2
+  pay_per_use: 2
 };
 
 export default {

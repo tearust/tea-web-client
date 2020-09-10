@@ -78,7 +78,7 @@ import DeployCode from '../workflow/DeployCode';
 import JsonEditor from '../components/JsonEditor';
 
 const desc_default = {
-  perUse: 5,
+  pay_per_use: 5,
   bindings: [
     {
       "capability": "wascc:messaging",
