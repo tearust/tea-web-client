@@ -33,7 +33,7 @@ class DeployData {
 
   constructor(ori_data_buf, data_desc, price_plan="A"){
     this.ori_data_buf = ori_data_buf;
-    this.data_desc = JSON.stringify(data_desc);
+    this.data_desc = data_desc;
     this.price_plan = price_plan;
   }
 
@@ -100,7 +100,13 @@ class DeployData {
     return rs;
   }
   async uploadDescription(){
-    const rs = await http.postDataWithRsaKey('description', encodeURIComponent(this.data_desc), this.last_ekey1, this.last_session_id);
+    const desc = {
+      "payment": {
+        "account_id": this.last_layer1_account,
+        "pay_per_use": this.data_desc.pay_per_use,
+      },
+    };
+    const rs = await http.postDataWithRsaKey('description', JSON.stringify(desc), this.last_ekey1, this.last_session_id);
 
     log.d('uploadDescription response = ', rs);
     return rs;
