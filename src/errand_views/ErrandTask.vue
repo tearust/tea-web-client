@@ -315,12 +315,17 @@ export default {
           // const cid = utils.forge.util.hexToBytes(_.slice(rs.resultCid.toString(), 2).join(""));
           // await this.s4_result(cid);
           // this.er.loopTaskResult(false);
+          await this.getLayer1AccountBalance();
+          _.delay(()=>{
+            this.getLayer1AccountBalance();
+          }, 2000);
         });
 
         this.er.loopTaskResult(true, async (res)=>{
           const cid = res.result_cid;
           await this.s4_result(cid);
           this.er.loopTaskResult(false);
+          await this.getLayer1AccountBalance();
         });
 
         this.S4.task_id = this.er.last_task_id;

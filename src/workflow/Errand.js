@@ -196,6 +196,10 @@ export default class {
       throw 'invalid description';
     }
 
+    if(delegator + executor !== 100){
+      throw 'invalid delegator or executor persent';
+    }
+
     const task_json = {};
     if (this.deployed_code) {
       _.set(task_json, 'deployed_code', {
