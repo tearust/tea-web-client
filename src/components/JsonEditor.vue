@@ -31,12 +31,25 @@ export default {
   },
   mounted(){
     const el = document.getElementById(this.uuid);
-    this.editor = new JSONEditor(el, {
+    const config = {
       mode: this.mode || 'code',
-      onChangeJSON: (val)=>{
+    };
+    if(config.mode === 'code'){
+      config.onChangeText = (text)=>{
+        try{
+          const json = JSON.parse(text);
+          this.onChange(JSON.parse(text));
+        }catch(e){
+          alert('invalid json formatter');
+        }
+      };
+    }
+    else{
+      config.onChangeJSON = (val)=>{
         this.onChange(val)
-      }
-    }, this.json);
+      };
+    }
+    this.editor = new JSONEditor(el, config, this.json);
   }
 }
 </script>
