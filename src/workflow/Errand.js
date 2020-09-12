@@ -48,20 +48,19 @@ export default class {
   }
 
   async init() {
-    const c = utils.get_env('CID_OF_CODE');
-    const d = utils.get_env('CID_OF_DATA');
+    const c = utils.get_env('DEPLOYMENT_ID_FOR_CODE');
+    const d = utils.get_env('DEPLOYMENT_ID_FOR_DATA');
 
     if (c) {
       this.deployed_code = {
-        deployment_id: utils.get_env('DEPLOYMENT_ID_FOR_CODE'),
-        checker: utils.get_env('CID_OF_CHECKER'),
-        cid: c
+        deployment_id: c,
+        pay_per_use: utils.get_env('CODE_PAY_PER_USE')
       };
     }
     if (d) {
       this.deployed_data = {
-        deployment_id: utils.get_env('DEPLOYMENT_ID_FOR_DATA'),
-        cid: d
+        deployment_id: d,
+        pay_per_use: utils.get_env('DATA_PAY_PER_USE')
       };
     }
 
@@ -204,9 +203,7 @@ export default class {
     if (this.deployed_code) {
       _.set(task_json, 'deployed_code', {
         deployment_id_for_code: this.deployed_code.deployment_id,
-        cid_of_code: this.deployed_code.cid,
-        cid_of_checker: this.deployed_code.checker,
-        pay_per_use: 3
+        pay_per_use: parseInt(this.deployed_code.pay_per_use, 10),
       });
     }
     else {
@@ -217,8 +214,7 @@ export default class {
     if (this.deployed_data) {
       _.set(task_json, 'deployed_data', {
         deployment_id_for_data: this.deployed_data.deployment_id,
-        cid_of_data: this.deployed_data.cid,
-        pay_per_use: 2
+        pay_per_use: parseInt(this.deployed_data.pay_per_use, 10),
       });
     }
     else {

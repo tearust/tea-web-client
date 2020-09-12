@@ -73,12 +73,8 @@
         <el-col :span="18">{{S3.deployment_id_for_code}}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="6">cid_of_code</el-col>
-        <el-col :span="18">{{S3.cid_of_code}}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6">cid_of_checker</el-col>
-        <el-col :span="18">{{S3.cid_of_checker}}</el-col>
+        <el-col :span="6">pay_per_use</el-col>
+        <el-col :span="18">{{S3.code_pay_per_use}}</el-col>
       </el-row>
     </div>
     <div class="s3-info" v-if="!S3.deployment_id_for_code">
@@ -128,8 +124,8 @@
         <el-col :span="18">{{S3.deployment_id_for_data}}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="6">cid_of_data</el-col>
-        <el-col :span="18">{{S3.cid_of_data}}</el-col>
+        <el-col :span="6">pay_per_use</el-col>
+        <el-col :span="18">{{S3.data_pay_per_use}}</el-col>
       </el-row>
     </div>
 
@@ -247,13 +243,12 @@ export default {
 
       S3: {
         deployment_id_for_code: null,
-        cid_of_code: null,
-        cid_of_checker: null,
+        code_pay_per_use: 0,
         cid_of_description: null,
         cid_of_description_json: {},
 
         deployment_id_for_data: null,
-        cid_of_data: null,
+        data_pay_per_use: 0,
         cid_of_data_description: null,
         cid_of_data_description_json: {},
 
@@ -311,9 +306,9 @@ export default {
 
       const {deployed_code, deployed_data} = this.er;
       if(deployed_code){
+        console.log(1111, deployed_code)
         this.S3.deployment_id_for_code = deployed_code.deployment_id;
-        this.S3.cid_of_code = deployed_code.cid;
-        this.S3.cid_of_checker = deployed_code.checker;
+        this.S3.code_pay_per_use = deployed_code.pay_per_use;
       }
       else{
         const tmp_json = _.clone(desc_code_json);
@@ -323,7 +318,7 @@ export default {
 
       if(deployed_data){
         this.S3.deployment_id_for_data = deployed_data.deployment_id;
-        this.S3.cid_of_data = deployed_data.cid;
+        this.S3.data_pay_per_use = deployed_data.pay_per_use;
       }
       else{
         const tmp_json = _.clone(desc_data_json);
