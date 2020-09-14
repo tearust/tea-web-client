@@ -31,6 +31,7 @@ class DeployData {
   last_ekey1 = null;
   last_session_id = null;
 
+
   constructor(ori_data_buf, data_desc, price_plan="A"){
     this.ori_data_buf = ori_data_buf;
     this.data_desc = data_desc;
@@ -137,6 +138,9 @@ class DeployData {
 
     // TODO step 21
   }
+
+
+  
 
 }
 

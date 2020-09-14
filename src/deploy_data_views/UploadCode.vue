@@ -211,6 +211,7 @@ export default {
         await dd.start(this.form.public_key, this.form.money);
 
         this.reset();
+        this.$router.push('/deploy_result/'+dd.last_session_id);
       }catch(e){
         console.error(e);
       }finally{

@@ -8,6 +8,7 @@ import UploadResToIPFS from './views/UploadResToIPFS';
 // deploy data views
 import UploadData from './deploy_data_views/UploadData';
 import UploadCode from './deploy_data_views/UploadCode';
+import DeployResult from './deploy_data_views/DeployResult';
 
 // Errand views
 import ErrandTask from './errand_views/ErrandTask';
@@ -48,6 +49,12 @@ let routers = [
     name: 'upload_code',
     component: UploadCode
   },
+
+  {
+    path: '/deploy_result/:sesson_id',
+    name: 'deploy_result',
+    component: DeployResult
+  }
   
 ];
 

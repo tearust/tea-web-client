@@ -87,6 +87,17 @@ const F = {
 
   post(url, data){
     return _axios.post(url, data);
+  },
+
+
+  query_deployment_id_by_session_id(seesion_id){
+    return _axios.post('/api/query_deployment_id_by_session_id', seesion_id);
+  },
+  start_query_pinners_by_deployment_id(deployment_id){
+    return _axios.post('/api/start_query_pinners_by_deployment_id', deployment_id);
+  },
+  query_pinners_by_deployment_id(deployment_id){
+    return _axios.post('/api/query_pinners_by_deployment_id', deployment_id);
   }
 };
 
