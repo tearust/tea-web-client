@@ -11,8 +11,8 @@ import Log from '../shared/utility/Log';
 
 const log = Log.create('Deploy Code');
 
-const {crypto} = utils;
-const {Protobuf, stringToU8, u8ToString} = proto;
+const { crypto } = utils;
+const { Protobuf, stringToU8, u8ToString } = proto;
 
 class DeployCode {
   ori_code_buf = null;
@@ -32,14 +32,14 @@ class DeployCode {
   last_ekey1 = null;
   last_session_id = null;
 
-  constructor(ori_code_buf, ori_checker_buf, data_desc, price_plan="A"){
+  constructor(ori_code_buf, ori_checker_buf, data_desc, price_plan = "A") {
     this.ori_code_buf = ori_code_buf;
     this.ori_checker_buf = ori_checker_buf;
     this.data_desc = JSON.stringify(data_desc);
     this.price_plan = price_plan;
   }
 
-  async init(){
+  async init() {
     this.aes_key = crypto.get_secret();
 
     this.code_buf = crypto.encode(this.ori_code_buf);
@@ -47,8 +47,8 @@ class DeployCode {
 
   // send layer1 transaction to deposit money
   // return tx id
-  async depositToAgentAccount(deposit_money){
-    if(!deposit_money){
+  async depositToAgentAccount(deposit_money) {
+    if (!deposit_money) {
       throw 'invalid deposit money';
     }
 
@@ -60,7 +60,7 @@ class DeployCode {
     return rs;
   }
 
-  buildRegisteServiceProtobuf(){
+  buildRegisteServiceProtobuf() {
     const pb = new Protobuf('actor_delegate.DataRegisterRequest');
     pb.payload({
       depositTxId: stringToU8(this.last_tx_id),
@@ -76,7 +76,7 @@ class DeployCode {
     return buf_64;
   }
 
-  async registeService(layer1_account){
+  async registeService(layer1_account) {
     this.last_layer1_account = layer1_account;
 
     const buf_b64 = this.buildRegisteServiceProtobuf();
@@ -86,7 +86,7 @@ class DeployCode {
     this.last_rsa_pub_key = rs.rsa_pub_key;
     log.d(this.last_rsa_pub_key)
     crypto.set_rsa_publickey(this.last_rsa_pub_key);
-    const {key_encrypted} = utils.crypto.get_secret();
+    const { key_encrypted } = utils.crypto.get_secret();
     this.last_ekey1 = key_encrypted;
     log.d("ekey1", this.last_ekey1);
     this.last_session_id = rs.session_id;
@@ -95,18 +95,20 @@ class DeployCode {
     return true;
   }
 
-  async uploadData(){
+  async uploadData() {
     const rs = await http.postDataWithRsaKey('data', this.code_buf, this.last_ekey1, this.last_session_id);
     log.d('uploadData response = ', rs);
     return rs;
   }
-  async uploadDescription(){
-    const rs = await http.postDataWithRsaKey('description', encodeURIComponent(this.data_desc), this.last_ekey1, this.last_session_id);
+  async uploadDescription() {
+    let json = JSON.parse(this.data_desc);
+    json.payment.account_id = this.last_layer1_account;
+    const rs = await http.postDataWithRsaKey('description', JSON.stringify(json), this.last_ekey1, this.last_session_id);
 
     log.d('uploadDescription response = ', rs);
     return rs;
   }
-  async uploadCapchecker(){
+  async uploadCapchecker() {
     const rs = await http.postDataWithRsaKey('capchecker', this.ori_checker_buf, this.last_ekey1, this.last_session_id);
 
     log.d('uploadCapchecker response = ', rs);
@@ -114,7 +116,7 @@ class DeployCode {
   }
 
 
-  async start(layer1_account, deposit_money){
+  async start(layer1_account, deposit_money) {
     // step 3
     await this.depositToAgentAccount(deposit_money || 0);
 
