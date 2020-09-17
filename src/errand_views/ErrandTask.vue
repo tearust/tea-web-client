@@ -201,7 +201,7 @@ const desc_json = {
 const desc_code_json = {
   "payment": {
     "account_id": "",
-    "pay_per_use": 5,
+    "pay_per_use": 3,
   },
   "actor_bindings": [
     {
