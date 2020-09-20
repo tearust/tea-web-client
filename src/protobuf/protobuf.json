@@ -317,20 +317,6 @@
             }
           }
         },
-        "Node": {
-          "fields": {
-            "teaId": {
-              "rule": "required",
-              "type": "bytes",
-              "id": 1
-            },
-            "peers": {
-              "rule": "repeated",
-              "type": "bytes",
-              "id": 2
-            }
-          }
-        },
         "AddNewTaskRequest": {
           "fields": {
             "task": {
@@ -473,6 +459,20 @@
             }
           }
         },
+        "Bill": {
+          "fields": {
+            "accountId": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "payment": {
+              "rule": "required",
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
         "SettleAccountsRequest": {
           "fields": {
             "employer": {
@@ -495,14 +495,14 @@
               "type": "string",
               "id": 4
             },
-            "payment": {
+            "errandJsonCid": {
               "rule": "required",
-              "type": "uint32",
+              "type": "string",
               "id": 5
             },
-            "paymentType": {
-              "rule": "required",
-              "type": "uint32",
+            "bills": {
+              "rule": "repeated",
+              "type": "Bill",
               "id": 6
             },
             "employerSignature": {
@@ -564,14 +564,14 @@
               "type": "string",
               "id": 5
             },
-            "payment": {
+            "errandJsonCid": {
               "rule": "required",
-              "type": "uint32",
+              "type": "string",
               "id": 6
             },
-            "paymentType": {
-              "rule": "required",
-              "type": "uint32",
+            "bills": {
+              "rule": "repeated",
+              "type": "Bill",
               "id": 7
             },
             "executorEphemeralId": {
@@ -588,6 +588,29 @@
               "rule": "required",
               "type": "string",
               "id": 10
+            }
+          }
+        },
+        "AddNewNodeRequest": {
+          "fields": {
+            "teaId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            }
+          }
+        },
+        "AddNewNodeResponse": {
+          "fields": {
+            "accountId": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "teaId": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 2
             }
           }
         },

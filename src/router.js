@@ -18,6 +18,7 @@ Vue.use(Router);
 import utils from './tea/utils';
 
 const isErrandTask = utils.get_env('env') === 'dapp';
+const isLayer1 = utils.get_env('env') === 'layer1';
 
 let routers = [
   {
@@ -66,6 +67,10 @@ if(isErrandTask){
       component: ErrandTask
     }
   ];
+}
+
+if(isLayer1){
+  
 }
 
 
