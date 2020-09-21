@@ -12,7 +12,8 @@
     "build:dapp": "vue-cli-service build --mode dapp",
     "lint": "vue-cli-service lint",
     "protobuf": "pbjs -t json ../tea-codec/proto/actor-delegate.proto > ./src/protobuf/protobuf.json",
-    "deploy:ipfs": "ipfs add -r dist"
+    "deploy:ipfs": "ipfs add -r dist",
+    "init-layer1": "node --experimental-modules src/shell/Layer1Portal.mjs"
   },
   "dependencies": {
     "@polkadot/api": "1.24.1",
@@ -20,9 +21,11 @@
     "@polkadot/util-crypto": "2.16.1",
     "axios": "^0.19.2",
     "bn.js": "^5.1.3",
+    "codemirror": "^5.57.0",
     "core-js": "^3.6.4",
     "element-ui": "2.13.2",
     "ipfs": "0.46.0",
+    "js-yaml": "^3.14.0",
     "jsoneditor": "^9.0.4",
     "lodash": "^4.17.15",
     "nkn-sdk": "1.1.6",
