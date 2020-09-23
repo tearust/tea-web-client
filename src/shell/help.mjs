@@ -8,7 +8,7 @@ export const post_ipfs = async (ipfs_address, file_content) => {
     maxContentLength: Infinity,
     baseURL: ipfs_address
   });
-
+  console.log("ready to call ipfs-upload ", ipfs_address);
   const res = await _axios.post('/ipfs-upload', file_content);
   
   const cid = res.data.data;

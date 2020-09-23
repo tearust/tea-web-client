@@ -1,9 +1,8 @@
 import * as help from './help';
 import _ from 'lodash';
 
-const ROOT_PATH="../docker-output/tea-runtime";
+const ROOT_PATH="../builds";
 const PATH_1=`${ROOT_PATH}/debug`;
-const PATH_2=`${ROOT_PATH}/providers`;
 const LIST = [
   {
     name: 'libtea_tpm_provider',
@@ -11,7 +10,7 @@ const LIST = [
   },
   {
     name: 'libwascc_httpsrv',
-    url: `${PATH_2}/libwascc_httpsrv.so`
+    url: `${PATH_1}/libwascc_httpsrv.so`
   },
   {
     name: 'libtea_keyvalue_provider',
@@ -23,7 +22,7 @@ const LIST = [
   },
   {
     name: 'libwascc_log',
-    url: `${PATH_2}/libwascc_log.so`
+    url: `${PATH_1}/libwascc_log.so`
   },
   {
     name: 'libtea_env_provider',
