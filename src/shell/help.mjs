@@ -8,16 +8,16 @@ export const post_ipfs = async (ipfs_address, file_content) => {
     maxContentLength: Infinity,
     baseURL: ipfs_address
   });
-  console.log("ready to call ipfs-upload ", ipfs_address);
+  console.log("uploading size: ", file_content.length);
   const res = await _axios.post('/ipfs-upload', file_content);
-  
   const cid = res.data.data;
-  // console.log(cid);
+  console.log("uploaded and got the cid", cid);
   return cid;
 };
 
 export const post_file_to_ipfs = async (ipfs_address, url) => {
   const file_u8 = fs.readFileSync(url, {});
+  console.log("Reading file prepare for uploading, ", url, file_u8.length);
   const cid = await post_ipfs(ipfs_address, file_u8);
   return cid;
 };

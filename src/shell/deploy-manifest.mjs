@@ -37,11 +37,10 @@ const post_ipfs = async (ipfs_address, file_content) => {
   const _axios = axios.create({
     baseURL: ipfs_address
   });
-
+  console.log("deploy-manifest.mjs post_ipfs size: ", file_content.length);
   const res = await _axios.post('/ipfs-upload', file_content);
-  
   const cid = res.data.data;
-  // console.log(cid);
+  console.log("uploaded got cid: ",cid);
   return cid;
 };
 

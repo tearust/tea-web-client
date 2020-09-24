@@ -47,10 +47,13 @@ class Deploy {
   }
 
   async updateManifest(item, manifestCid, cb){
+    console.log("updating manifest.., item.", item, manifestCid);
     const ac = keyring.addFromUri(`//${item.layer1_account}`, { name: `${item.layer1_account} default` });
     const teaId = '0x'+item.tea_id;
+    console.log("teaId", teaId);
     await this.api.tx.tea.updateManifest(teaId, manifestCid)
       .signAndSend(ac, ({ events = [], status }) => {
+        console.log("signAndSend...");
         if (status.isInBlock) {
           console.log('Included at block hash', status.asInBlock.toHex())
           console.log('Events:')
@@ -68,6 +71,8 @@ class Deploy {
 
 
   async start(cb){
+    console.log(`Reading ../builds/manifest.${this.name}.yaml` );
+
     const file_content = fs.readFileSync(`../builds/manifest.${this.name}.yaml`, {
       encoding: 'utf-8'
     });
@@ -98,6 +103,7 @@ class Deploy {
 
 
 const main = async ()=>{
+  console.log("build for layer1 started");
   const tar = process.argv[2];
   const d = new Deploy(tar);
   await d.init();

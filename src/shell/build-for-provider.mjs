@@ -5,6 +5,10 @@ const ROOT_PATH="../builds";
 const PATH_1=`${ROOT_PATH}/debug`;
 const LIST = [
   {
+    name: 'libtea_tensorflow_provider',
+    url: `${PATH_1}/libtea_tensorflow_provider.so`
+  },
+  {
     name: 'libtea_tpm_provider',
     url: `${PATH_1}/libtea_tpm_provider.so`
   },
@@ -27,10 +31,6 @@ const LIST = [
   {
     name: 'libtea_env_provider',
     url: `${PATH_1}/libtea_env_provider.so`
-  },
-  {
-    name: 'libtea_tensorflow_provider',
-    url: `${PATH_1}/libtea_tensorflow_provider.so`
   },
   {
     name: 'libtea_ipfs_provider',
