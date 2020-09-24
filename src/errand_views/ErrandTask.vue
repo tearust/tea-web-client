@@ -357,7 +357,11 @@ export default {
       try{
         this.$root.loading(true);
  
-        const res = await this.er.startTask(this.S3.desc_json);
+        const error = await this.er.startTask(this.S3.desc_json);
+        if(error){
+          alert(error);
+          return false;
+        }
         this.er.layer1.buildCallback('SettleAccounts', async (rs)=>{
           console.log("layer1 task result => ", JSON.stringify(rs));
           // const cid = utils.forge.util.hexToBytes(_.slice(rs.resultCid.toString(), 2).join(""));

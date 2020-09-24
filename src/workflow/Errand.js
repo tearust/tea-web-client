@@ -259,6 +259,7 @@ export default class {
     const res = await http.requestErrandTask(url, cid);
 
     log.d('requestErrandTask response', res);
+    return res;
   }
 
   paymentUnit(n) {
