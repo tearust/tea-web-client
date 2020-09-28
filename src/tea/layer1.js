@@ -8,7 +8,7 @@ const rpc = require('./rpc');
 import toHex from 'to-hex';
 import BN from 'bn.js';
 
-const LAYER1_URL = 'ws://127.0.0.1:9944';
+const LAYER1_URL = 'ws://81.70.96.136:9944';
 
 class Layer1 {
   constructor(){

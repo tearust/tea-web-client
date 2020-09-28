@@ -134,9 +134,11 @@ const F = {
   forge,
   getBootstrapNodes(){
     return 'http://127.0.0.1:8000';
+    // return 'http://81.70.96.136:8000';
   },
 
   getHttpBaseUrl() {
+    console.log(222, _http_base_url)
     if(!_http_base_url){
       _http_base_url = F.getBootstrapNodes();
     }
