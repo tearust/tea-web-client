@@ -133,7 +133,6 @@ const F = {
   proto,
   forge,
 
-
   getHttpBaseUrl() {
     if(!_http_base_url){
       throw 'no http url';

@@ -8,7 +8,6 @@ const rpc = require('./rpc');
 import toHex from 'to-hex';
 import BN from 'bn.js';
 import utils from './utils';
-
 const LAYER1_URL = utils.get_env('layer1_url') || 'ws://127.0.0.1:9944';
 
 class Layer1 {
