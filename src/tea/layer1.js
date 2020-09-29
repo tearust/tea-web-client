@@ -17,6 +17,11 @@ class Layer1 {
     this.callback = {};
     this.extension = extension;
   }
+  getDefaultAccount(){
+    const keyring = new Keyring({ type: 'sr25519' });
+    const ac = keyring.addFromUri(`//Alice`, { name: `Alice default` });
+    return ac;
+  }
   async init(){
     const provider = new WsProvider(LAYER1_URL);
     const api = await ApiPromise.create({

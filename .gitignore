@@ -24,3 +24,4 @@ yarn-error.log*
 .env.dapp
 .env.deploy_data
 .env.deploy_code
+.env.gov

@@ -13,15 +13,16 @@ import DeployResult from './deploy_data_views/DeployResult';
 // Errand views
 import ErrandTask from './errand_views/ErrandTask';
 
-// layer1 portal
-import RegisterTeaNode from './layer1_portal/RegisterTeaNode';
+// gov 
+import NodeList from './gov/NodeList';
+import RegisterNodeToLayer1 from './gov/RegisterNodeToLayer1';
 
 Vue.use(Router);
 
 import utils from './tea/utils';
 
 const isErrandTask = utils.get_env('env') === 'dapp';
-const isLayer1 = utils.get_env('env') === 'layer1';
+const isGov = utils.get_env('env') === 'gov';
 
 let routers = [
   {
@@ -72,12 +73,17 @@ if(isErrandTask){
   ];
 }
 
-if(isLayer1){
+if(isGov){
   routers = [
     {
       path: '/',
-      name: 'register_tea_node',
-      component: RegisterTeaNode
+      name: 'node_list',
+      component: NodeList,
+    },
+    {
+      path: '/register_node',
+      name: 'register_node',
+      component: RegisterNodeToLayer1
     }
   ];
 }
