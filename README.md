@@ -12,3 +12,8 @@
 ## RUN Deploy Code app
 * Copy **.env.deploy_code.sample** and rename to **.env.deploy_code**;
 * Run **npm run deploy-code**
+
+## RUN Gov portal
+
+* Copy **.env.gov.sample** and rename to **.env.gov**;
+* Run **npm run gov** 
