@@ -132,21 +132,18 @@ const F = {
   crypto,
   proto,
   forge,
-  getBootstrapNodes(){
-    // return 'http://127.0.0.1:8000';
-    return 'http://104.248.3.112:8000';
-  },
 
   getHttpBaseUrl() {
-    console.log(222, _http_base_url)
     if(!_http_base_url){
-      _http_base_url = F.getBootstrapNodes();
+      throw 'no http url';
+      
     }
 
     return _http_base_url;
   },
   setHttpBaseUrl(url) {
     _http_base_url = url;
+    http.initBaseUrl();
   },
 
   convertU8ToString(u8_array){

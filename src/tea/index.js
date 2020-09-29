@@ -54,18 +54,18 @@ export default class {
 
   configChannelByActiveNode(info){
     const rs = {};
-    if(info.ws){
-      rs.type = 'ws';
-      rs.address = info.ws;
-    }
-    else if(info.nkn_id){
-      rs.type = 'nkn';
-      rs.address = info.nkn_id;
-    }
-    else{
-      console.log(info);
-      throw 'invalid active node';
-    }
+    // if(info.ws){
+    //   rs.type = 'ws';
+    //   rs.address = info.ws;
+    // }
+    // else if(info.nkn_id){
+    //   rs.type = 'nkn';
+    //   rs.address = info.nkn_id;
+    // }
+    // else{
+    //   console.log(info);
+    //   throw 'invalid active node';
+    // }
 
     return rs;
   }

@@ -4,8 +4,8 @@ import utils from './utils';
 
 let _axios = null;
 const init = ()=>{
-  const baseUrl = utils.getBootstrapNodes();
-console.log(111, baseUrl)
+  _axios = null;
+  const baseUrl = utils.getHttpBaseUrl();
   _axios = axios.create({
     baseURL: baseUrl
   

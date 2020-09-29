@@ -16,8 +16,8 @@
     <el-table-column prop="tea_id" label="TEA ID(tea_id)"></el-table-column>
     <!-- <el-table-column prop="rsa" label="RSA KEY"></el-table-column> -->
     <el-table-column prop="http" label="HTTP(http)"></el-table-column>
-    <el-table-column prop="ws" label="Websocket(ws)"></el-table-column>
-    <el-table-column prop="nkn_id" label="NKN(nkn_id)"></el-table-column>
+    <!-- <el-table-column prop="ws" label="Websocket(ws)"></el-table-column> -->
+    <el-table-column prop="status" label="Status"></el-table-column>
       
   </el-table>
 
@@ -58,18 +58,16 @@ export default {
   },
   async mounted() {
     this.$root.loading(true);
-    this.bootstrap = utils.getBootstrapNodes();
 
-    // const obj = await Layer1.getBootstrapNodes();
+    const obj = await Layer1.getBootstrapNodes();
 
-    const tmp = await http.requestActiveNodes();
-    // this.table = _.concat(_.map(obj, x => {
-    //   const t = x.toJSON();
-    //   t.tea_id = t.teaId;
-    //   return t;
-    // }), tmp);
-    this.table = tmp;
-
+    this.table = _.map(obj, x => {
+      const t = x.toJSON();
+      t.tea_id = t.teaId;
+      t.http = t.urls[0] ? utils.forge.util.hexToBytes(t.urls[0]) : '';
+      return t;
+    });
+  console.log(this.table);
     this.$root.loading(false);
   },
   methods: {
