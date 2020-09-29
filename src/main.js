@@ -15,8 +15,7 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 const tmp = utils.cache.get('select-node');
-tmp && utils.setHttpBaseUrl(tmp.http);
-http.initBaseUrl();
+tmp && tmp.http && utils.setHttpBaseUrl(tmp.http);
 
 const {hex} = utils.crypto.get_secret();
 console.log('crypto key => %s', hex);

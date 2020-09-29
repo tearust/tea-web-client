@@ -7,8 +7,9 @@ import extension from './extension';
 const rpc = require('./rpc');
 import toHex from 'to-hex';
 import BN from 'bn.js';
+import utils from './utils';
 
-const LAYER1_URL = 'ws://81.70.96.136:9944';
+const LAYER1_URL = utils.get_env('layer1_url') || 'ws://127.0.0.1:9944';
 
 class Layer1 {
   constructor(){
@@ -215,12 +216,13 @@ Layer1.getBootstrapNodes = async ()=>{
     rpc,
   });
 
-  const nodes = await api.query.tea.bootstrapNodes.entries();
-  const teaNodes = nodes.map((n) => {
+  const nodes = await api.query.tea.nodes.entries();
+  
+  const teaNodes = _.slice(nodes, 0, 100).map((n) => {
     return n[1]
   })
 
-  console.log("teaNodes", JSON.stringify(teaNodes));
+  // console.log("teaNodes", JSON.stringify(teaNodes));
 
   return teaNodes;
 };

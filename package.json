@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm run serve",
-    "serve": "vue-cli-service serve --mode dev",
+    "start": "npm run dapp",
     "dapp": "vue-cli-service serve --mode dapp",
     "layer1": "vue-cli-service serve --mode layer1",
     "deploy-data": "vue-cli-service serve --mode deploy_data --port 3001",
