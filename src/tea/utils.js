@@ -133,8 +133,8 @@ const F = {
   proto,
   forge,
   getBootstrapNodes(){
-    return 'http://127.0.0.1:8000';
-    // return 'http://81.70.96.136:8000';
+    // return 'http://127.0.0.1:8000';
+    return 'http://104.248.3.112:8000';
   },
 
   getHttpBaseUrl() {
