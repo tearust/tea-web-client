@@ -364,7 +364,7 @@ export default {
         const error = await this.er.startTask(this.S3.desc_json);
         if(error){
           alert(error);
-          return false;
+          // return false;
         }
         this.er.layer1.buildCallback('SettleAccounts', async (rs)=>{
           console.log("layer1 task result => ", JSON.stringify(rs));

@@ -25,3 +25,5 @@ yarn-error.log*
 .env.deploy_data
 .env.deploy_code
 .env.gov
+
+.layer1
