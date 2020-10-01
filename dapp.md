@@ -14,7 +14,7 @@ QmTUAJUpqpCyWziGH9YSSVZLQnnPT34UtVdtAZFtZ4UTEk
 ## Build and Deploy
 
 ### Build dapp
-* Copy **.env.dapp.sample** and rename to **.env.dapp** and Put the real CID and hash in it.
+* Copy **.env.dapp.sample** and rename to **.env.dapp** and edit it for your local.
 * Run **npm run build:dapp**
 
 ### Deploy dapp
