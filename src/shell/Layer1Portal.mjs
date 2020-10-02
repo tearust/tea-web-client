@@ -30,6 +30,11 @@ const MAIN_LIST = [
     layer1_account: 'Dave',
     tea_id: 'c9380fde1ba795fc656ab08ab4ef4482cf554790fd3abcd4642418ae8fb5fd52',
     ipfs: 'http://127.0.0.1:8104'
+  },
+  {
+    layer1_account: 'Eve',
+    tea_id: 'b482b584cb4b806d20c8a57ad728bc8e3b78e06ae0ccd58edae34cd831507599',
+    ipfs: 'http://127.0.0.1:8105'
   }
 ];
 
@@ -39,7 +44,7 @@ const post_ipfs = async (ipfs_address, file_content) => {
   });
 
   const res = await _axios.post('/ipfs-upload', file_content);
-  
+
   const cid = res.data.data;
   // console.log(cid);
   return cid;
@@ -54,10 +59,10 @@ const LAYER1_URL = 'ws://127.0.0.1:9944';
 const log = console.log;
 
 class Layer1Portal {
-  constructor(){
+  constructor() {
     this.api = null;
   }
-  async init(){
+  async init() {
     const provider = new WsProvider(LAYER1_URL);
     const api = await ApiPromise.create({
       provider,
@@ -68,7 +73,7 @@ class Layer1Portal {
 
     await cryptoWaitReady();
   }
-  async add_new_node(item){
+  async add_new_node(item) {
     const ac = keyring.addFromUri(`//${item.layer1_account}`, { name: `${item.layer1_account} default` });
     const teaId = toHex(item.tea_id, { addPrefix: true });
     console.log(ac, teaId);
@@ -86,9 +91,9 @@ class Layer1Portal {
       })
   }
 
-  async updateManifest(item, manifestCid, cb){
+  async updateManifest(item, manifestCid, cb) {
     const ac = keyring.addFromUri(`//${item.layer1_account}`, { name: `${item.layer1_account} default` });
-    const teaId = '0x'+item.tea_id;
+    const teaId = '0x' + item.tea_id;
     await this.api.tx.tea.updateManifest(teaId, manifestCid)
       .signAndSend(ac, ({ events = [], status }) => {
         if (status.isInBlock) {
@@ -103,47 +108,47 @@ class Layer1Portal {
           cb();
         }
       });
-  
+
   }
 
 
-  async test(){
+  async test() {
     const finish = [];
-    _.each(MAIN_LIST, async (item)=>{
+    _.each(MAIN_LIST, async (item) => {
       const file_content = fs.readFileSync('../docker-output/tea-runtime/manifest.yaml', {
         encoding: 'utf-8'
       });
       const m_cid = await post_ipfs(item.ipfs, file_content);
-    
-      await this.updateManifest(item, m_cid, async ()=>{
-        const teaId = '0x'+item.tea_id;
+
+      await this.updateManifest(item, m_cid, async () => {
+        const teaId = '0x' + item.tea_id;
         const nodeObj = await this.api.query.tea.manifest(teaId);
-      
+
         if (nodeObj.isNone) {
-          console.log('No such node found')  
+          console.log('No such node found')
         }
         let cid = nodeObj.toJSON();
         cid = Buffer.from(cid.slice(2), 'hex');
         console.log('');
-        console.log('layer1 account => '+item.layer1_account);
-        console.log('tea id => '+item.tea_id);
-        console.log('manifest cid => '+cid);
+        console.log('layer1 account => ' + item.layer1_account);
+        console.log('tea id => ' + item.tea_id);
+        console.log('manifest cid => ' + cid);
         console.log('');
 
         finish.push(1);
-        if(finish.length === MAIN_LIST.length){
+        if (finish.length === MAIN_LIST.length) {
           process.exit(0);
         }
       });
-      
-      
+
+
     });
   }
 };
 
 
 
-const main = async ()=>{
+const main = async () => {
   const lp = new Layer1Portal();
   log('start init tea layer1 node');
   await lp.init();
