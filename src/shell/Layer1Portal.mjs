@@ -113,6 +113,8 @@ class Layer1Portal {
 
 
   async test() {
+    await this.add_new_node(MAIN_LIST[4]);
+
     const finish = [];
     _.each(MAIN_LIST, async (item) => {
       const file_content = fs.readFileSync('../docker-output/tea-runtime/manifest.yaml', {
