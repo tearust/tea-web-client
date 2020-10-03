@@ -31,10 +31,12 @@ export const get_json = async (name) => {
 };
 
 export const replace_cid = async (name, cid, tar_name) => {
+  // console.log("inside replace_cid: ", name, cid, tar_name);
   const spawn = child_process.spawn;
   //sed -i "" 's/^.*ra=.*$/  - '${ra_str}'/' $TARGET_PATH
 
   const str = `${name}=${cid}`;
+  console.log("sed ", name, str, tar_name);
   const child = spawn('sed', [
     '-i',
     '',
@@ -42,6 +44,9 @@ export const replace_cid = async (name, cid, tar_name) => {
     `../builds/manifest.${tar_name}.yaml`
   ]);
   child.stdout.on('data', function(data) {
-    console.log(data.toString());
+    console.log(`stdout: ${data}`);
+  });
+  child.stderr.on('data', function(data){
+    console.error(`stderr: ${data}`);
   });
 };
