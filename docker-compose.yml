@@ -8,4 +8,4 @@ services:
       - 9944:9944
     volumes:
       - .layer1:/root/.local
-    command: bash -c "tea-layer1 --chain local --ws-external --rpc-external --rpc-cors all --bootnodes /ip4/159.203.101.15/tcp/30333/p2p/QmPx5pGv8FuqLUPP5MTxHRSvnvGtBwy1WDHjqSyJUA43QR --bootnodes /ip4/81.70.93.215/tcp/30333/p2p/12D3KooWCqH4NFr2ts7NnRzu359kHJDqQdyNTto2mtDPyKsXz1D8 --bootnodes /ip4/104.248.3.112/tcp/30333/p2p/12D3KooWPbBTW1Yzx1nEqcrkCfiJN4vAConVxL6g7WApwD7ffNK6 --bootnodes /ip4/81.70.96.136/tcp/30333/p2p/12D3KooWDWdXqKeuNrSvbyYEkH4oq8xEKsjaauhNiTJVbkQu1gMm"
+    command: bash -c "tea-layer1 --chain dev --ws-external --rpc-external --rpc-cors all --bootnodes /ip4/159.203.101.15/tcp/30333/p2p/QmRs8muPr7dgHrXdf7VRnQiMZ2bR8JBwkp7piSs96QeEAR"
