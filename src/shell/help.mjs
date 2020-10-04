@@ -36,7 +36,7 @@ export const replace_cid = async (name, cid, tar_name) => {
   //sed -i "" 's/^.*ra=.*$/  - '${ra_str}'/' $TARGET_PATH
 
   const str = `${name}=${cid}`;
-  console.log("sed ", name, str, tar_name);
+  // console.log("sed ", name, str, tar_name);
   // console.log([
   //   'sed',
   //   '-i',
@@ -51,7 +51,7 @@ export const replace_cid = async (name, cid, tar_name) => {
     `../builds/manifest.${tar_name}.yaml`
   ]);
   child.stdout.on('data', function(data) {
-    console.log(`stdout: ${data}`);
+    // console.log(`stdout: ${data}`);
   });
   child.stderr.on('data', function(data){
     console.error(`stderr: ${data}`);
