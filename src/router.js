@@ -16,6 +16,7 @@ import ErrandTask from './errand_views/ErrandTask';
 // gov 
 import NodeList from './gov/NodeList';
 import RegisterNodeToLayer1 from './gov/RegisterNodeToLayer1';
+import UpdateManifest from './gov/UpdateManifest';
 
 Vue.use(Router);
 
@@ -84,6 +85,11 @@ if(isGov){
       path: '/register_node',
       name: 'register_node',
       component: RegisterNodeToLayer1
+    },
+    {
+      path: '/update/:tea_id',
+      name: 'update_manifest',
+      component: UpdateManifest
     }
   ];
 }

@@ -15,6 +15,12 @@
     <el-table-column prop="http" label="HTTP(http)"></el-table-column>
     <el-table-column prop="manifest_cid" label="Manifest Cid"></el-table-column>
     <el-table-column prop="status" label="Status"></el-table-column>
+    <el-table-column label="Action">
+      <template slot-scope="scope">
+        <el-link type="primary" @click="gotoUpdate(scope.row)">Update</el-link>
+      </template>
+      
+    </el-table-column>
       
   </el-table>
 
@@ -23,6 +29,7 @@
 <script>
 import gov from './gov';
 import utils from '../tea/utils';
+import _ from 'lodash';
 export default {
   data(){
     return {
@@ -34,6 +41,10 @@ export default {
     handleSelectChange(val) {
       this.select = val;
     },
+    gotoUpdate(item){
+      const tea_id = _.slice(item.tea_id, 2).join('');
+      this.$router.push('/update/'+tea_id);
+    }
   },
   created(){
     this.layer1 = null;

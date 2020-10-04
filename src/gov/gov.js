@@ -29,6 +29,33 @@ const F = {
     return list;
   },
 
+  async updateManifest(layer1, layer1_account, tea_id, cid, cb){
+    const teaId = '0x'+tea_id;
+    // await extension.setSignerForAddress(layer1_account, api);
+    const {api, extension} = layer1;
+    layer1_account = layer1.getDefaultAccount();
+
+    const next = async () => {
+      await api.tx.tea.updateManifest(teaId, cid)
+      .signAndSend(layer1_account, ({ events = [], status }) => {
+        console.log("signAndSend...");
+        if (status.isInBlock) {
+          console.log('Included at block hash', status.asInBlock.toHex())
+          console.log('Events:')
+          events.forEach(({ event: { data, method, section }, phase }) => {
+            console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString())
+          })
+        } else if (status.isFinalized) {
+          console.log('Finalized block hash', status.asFinalized.toHex());
+
+          cb();
+        }
+      });
+    };
+
+    next();
+  },
+
   async addNewNode(layer1, layer1_account, tea_id, cid, cb){
     const teaId = '0x'+tea_id;
     // await extension.setSignerForAddress(layer1_account, api);
