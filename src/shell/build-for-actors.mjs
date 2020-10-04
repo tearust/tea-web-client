@@ -2,14 +2,14 @@ import * as help from './help';
 import _ from 'lodash';
 
 const ACTOR_LIST = [
-  // {
-  //   name: 'delegate',
-  //   url: '../tea-actors/delegate/target/wasm32-unknown-unknown/release/tea_actor_delegate_signed.wasm'
-  // },
-  // {
-  //   name: 'executor',
-  //   url: '../tea-actors/executor/target/wasm32-unknown-unknown/release/tea_actor_executor_signed.wasm'
-  // },
+  {
+    name: 'delegate',
+    url: '../tea-actors/delegate/target/wasm32-unknown-unknown/release/tea_actor_delegate_signed.wasm'
+  },
+  {
+    name: 'executor',
+    url: '../tea-actors/executor/target/wasm32-unknown-unknown/release/tea_actor_executor_signed.wasm'
+  },
   {
     name: 'ra',
     url: '../tea-actors/ra/target/wasm32-unknown-unknown/release/tea_ra_signed.wasm'
