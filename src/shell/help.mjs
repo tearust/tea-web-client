@@ -45,7 +45,7 @@ export const replace_cid = async (name, cid, tar_name) => {
   //   `../builds/manifest.${tar_name}.yaml`
   // ].join(' '))
   const child = spawn('sed', [
-    // '-i',
+    '-i',
     // '""',
     `s/^.*${name}=.*$/  - ${str}/`,
     `../builds/manifest.${tar_name}.yaml`
