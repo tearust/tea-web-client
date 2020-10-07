@@ -11,6 +11,7 @@
     highlight-current-row
     @current-change="handleSelectChange"
     style="width: 100%; margin-top: 40px;">
+    <el-table-column prop="peer_id" label="Peer ID"></el-table-column>
     <el-table-column prop="tea_id" label="TEA ID(tea_id)"></el-table-column>
     <el-table-column prop="http" label="HTTP(http)"></el-table-column>
     <el-table-column prop="manifest_cid" label="Manifest Cid"></el-table-column>
@@ -18,11 +19,31 @@
     <el-table-column label="Action">
       <template slot-scope="scope">
         <el-link type="primary" @click="gotoUpdate(scope.row)">Update</el-link>
+        <span style="margin: 0 10px;">|</span>
+        <el-link type="primary" @click="openDialog(scope.row)">View</el-link>
       </template>
       
     </el-table-column>
       
   </el-table>
+
+
+  <el-dialog
+    title="Details"
+    :visible.sync="dialog.show"
+    width="70%"
+    :before-close="closeDialog">
+    <div v-if="dialog.info">
+      <el-row v-for="(item, i) in dialog.info" :key="i" style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 15px;">
+        <el-col :span="4">{{item.key}}</el-col>
+        <el-col :span="20" v-html="item.value"></el-col>
+      </el-row>
+    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialog.show = false">Close</el-button>
+    </span>
+  </el-dialog>
+
 
 </div>
 </template>
@@ -34,7 +55,11 @@ export default {
   data(){
     return {
       select: null,
-      table: []
+      table: [],
+      dialog: {
+        show: false,
+        info: null,
+      }
     };
   },
   methods: {
@@ -44,6 +69,51 @@ export default {
     gotoUpdate(item){
       const tea_id = _.slice(item.tea_id, 2).join('');
       this.$router.push('/update/'+tea_id);
+    },
+    closeDialog(){
+      this.dialog.show = false;
+      this.dialog.info = null;
+    },
+    openDialog(item){
+      const list = [];
+      list.push({
+        key: 'Peer Id',
+        value: item.peer_id
+      });
+      list.push({
+        key: 'Tea Id',
+        value: item.tea_id
+      });
+      list.push({
+        key: 'Ephemeral Id',
+        value: item.ephemeralId
+      });
+      list.push({
+        key: 'Http',
+        value: item.http
+      });
+      list.push({
+        key: 'Manifest Cid',
+        value: item.manifest_cid
+      });
+      list.push({
+        key: 'Profile Cid',
+        value: item.profileCid ? utils.forge.util.hexToBytes(item.profileCid) : ''
+      });
+      list.push({
+        key: 'Status',
+        value: item.status
+      });
+      list.push({
+        key: 'Ra Nodes',
+        value: _.map(item.raNodes, (arr)=>{
+          return arr.join(' - ');
+        }).join('<br />')
+      });
+
+      this.dialog.info = list;
+      this.dialog.show = true;
+
     }
   },
   created(){

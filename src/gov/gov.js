@@ -23,6 +23,7 @@ const F = {
       t.http = t.urls[0] ? utils.forge.util.hexToBytes(t.urls[0]) : '';
       const cid_obj = await api.query.tea.manifest(t.teaId);
       t.manifest_cid = cid_obj.toJSON() ? utils.forge.util.hexToBytes(cid_obj.toJSON()) : '';
+      t.peer_id = utils.forge.util.hexToBytes(t.peerId);
       list.push(t);
     }
     
