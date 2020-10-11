@@ -12,8 +12,8 @@
     @current-change="handleSelectChange"
     style="width: 100%; margin-top: 40px;">
     <el-table-column prop="peer_id" label="Peer ID"></el-table-column>
-    <el-table-column prop="tea_id" label="TEA ID(tea_id)"></el-table-column>
-    <el-table-column prop="http" label="HTTP(http)"></el-table-column>
+    <el-table-column prop="tea_id" label="TEA ID"></el-table-column>
+    <el-table-column prop="http" label="HTTP"></el-table-column>
     <el-table-column prop="manifest_cid" label="Manifest Cid"></el-table-column>
     <el-table-column prop="status" label="Status"></el-table-column>
     <el-table-column label="Action">
