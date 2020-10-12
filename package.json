@@ -19,7 +19,7 @@
     "deploy-manifest": "node --experimental-modules src/shell/deploy-manifest.mjs"
   },
   "dependencies": {
-    "@polkadot/api": "1.24.1",
+    "@polkadot/api": "2.1.1",
     "@polkadot/extension-dapp": "0.32.0-beta.6",
     "@polkadot/util-crypto": "2.16.1",
     "axios": "^0.19.2",
