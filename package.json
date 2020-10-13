@@ -10,6 +10,8 @@
     "deploy-code": "vue-cli-service serve --mode deploy_code --port 3002",
     "build:dapp": "vue-cli-service build --mode dapp",
     "build:gov": "vue-cli-service build --mode gov",
+    "build:code": "vue-cli-service build --mode deploy_code",
+    "build:data": "vue-cli-service build --mode deploy_data",
     "lint": "vue-cli-service lint",
     "protobuf": "pbjs -t json ../tea-codec/proto/actor-delegate.proto > ./src/protobuf/protobuf.json",
     "deploy:ipfs": "ipfs add -r dist",
