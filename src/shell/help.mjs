@@ -2,6 +2,7 @@
 import axios from 'axios';
 import fs from 'fs';
 import child_process from 'child_process';
+import yaml from 'js-yaml';
 
 export const post_ipfs = async (ipfs_address, file_content) => {
   const _axios = axios.create({
@@ -29,6 +30,28 @@ export const get_json = async (name) => {
 
   return (new Function("return "+json))();
 };
+export const get_yaml = async (name) => {
+  const content = fs.readFileSync('../tea-docker-node/docker-machine/'+name+'.yaml', {
+    encoding: 'utf-8'
+  });
+
+  return yaml.safeLoad(content);
+}
+
+export const copy_file = async (from, to) => {
+  const spawn = child_process.spawn;
+  const child = spawn('cp', [
+    '-r',
+    from,
+    to
+  ]);
+  child.stdout.on('data', function(data) {
+    // console.log(`stdout: ${data}`);
+  });
+  child.stderr.on('data', function(data){
+    console.error(`stderr: ${data}`);
+  });
+}
 
 export const replace_cid = async (name, cid, tar_name) => {
   // console.log("inside replace_cid: ", name, cid, tar_name);

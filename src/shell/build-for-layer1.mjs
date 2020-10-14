@@ -17,7 +17,7 @@ class Deploy {
     this.name = name;
   }
   async init(){
-    this.json = await help.get_json(this.name);
+    this.json = await help.get_yaml(this.name);
     const provider = new WsProvider(this.json.layer1_url);
     const api = await ApiPromise.create({
       provider,
@@ -76,27 +76,37 @@ class Deploy {
     const file_content = fs.readFileSync(`../builds/manifest.${this.name}.yaml`, {
       encoding: 'utf-8'
     });
-    const m_cid = await help.post_ipfs(this.json.ipfs, file_content);
 
-    const item = this.json;
-    await this.updateManifest(item, m_cid, async ()=>{
-      const teaId = '0x'+item.tea_id;
-      const nodeObj = await this.api.query.tea.manifest(teaId);
-    
-      if (nodeObj.isNone) {
-        console.log('No such node found')  
-      }
-      let cid = nodeObj.toJSON();
-      cid = Buffer.from(cid.slice(2), 'hex');
-      console.log('');
-      console.log('layer1 account => '+item.layer1_account);
-      console.log('tea id => '+item.tea_id);
-      console.log('manifest cid => '+cid);
-      console.log('');
+    for (let i=0, len=this.json.target.length; i<len; i++){
+      const item = this.json.target[i];
 
-      cb();
-      process.exit(0);
-    });
+      const m_cid = await help.post_ipfs(item.ipfs_url, file_content);
+      await this.updateManifest({
+        tea_id: item.tea_id,
+        layer1_account: this.json.layer1_account
+      }, m_cid, async ()=>{
+        const teaId = '0x'+item.tea_id;
+        const nodeObj = await this.api.query.tea.manifest(teaId);
+      
+        if (nodeObj.isNone) {
+          console.log('No such node found')  
+        }
+        let cid = nodeObj.toJSON();
+        cid = Buffer.from(cid.slice(2), 'hex');
+        console.log('');
+        console.log('layer1 account => '+this.json.layer1_account);
+        console.log('tea id => '+item.tea_id);
+        console.log('manifest cid => '+cid);
+        console.log('');
+
+        if(i === len-1){
+          cb();
+          process.exit(0);
+        }
+
+      });
+    }
+
   }
 };
 
