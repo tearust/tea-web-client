@@ -6,6 +6,14 @@ import types from './types';
 
 import forge from 'node-forge';
 
+const bootstrapNodesList = ()=>{
+  return [
+    'c9380fde1ba795fc656ab08ab4ef4482cf554790fd3abcd4642418ae8fb5fd52',
+    'bd1c0ec25a96172791fe16c28323ceb0c515f17bcd11da4fb183ffd7e6fbb769',
+    
+  ];
+}
+
 const cache = {
   put(id, data) {
     localStorage.setItem(id, JSON.stringify(data));
