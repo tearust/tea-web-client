@@ -7,17 +7,29 @@
   <h4>Candidate List</h4>
 
   <el-table
+    :data="super_table"
+    stripe
+    border
+    highlight-current-row
+    @current-change="handleSelectChange"
+    style="width: 100%">
+    <el-table-column prop="name" width="70px" label="Name"></el-table-column>
+    <el-table-column prop="tea_id" width="280px" label="TEA ID"></el-table-column>
+    <el-table-column prop="http" label="HTTP"></el-table-column>
+    <el-table-column prop="status" width="70px" label="Status"></el-table-column>
+      
+  </el-table>
+  <el-divider />
+  <el-table
     :data="table"
     stripe
     border
     highlight-current-row
     @current-change="handleSelectChange"
     style="width: 100%">
-    <el-table-column prop="tea_id" label="TEA ID(tea_id)"></el-table-column>
-    <!-- <el-table-column prop="rsa" label="RSA KEY"></el-table-column> -->
-    <el-table-column prop="http" label="HTTP(http)"></el-table-column>
-    <!-- <el-table-column prop="ws" label="Websocket(ws)"></el-table-column> -->
-    <el-table-column prop="status" label="Status"></el-table-column>
+    <el-table-column prop="tea_id" width="350px" label="TEA ID"></el-table-column>
+    <el-table-column prop="http" label="HTTP"></el-table-column>
+    <el-table-column prop="status" width="70px" label="Status"></el-table-column>
       
   </el-table>
 
@@ -43,6 +55,7 @@ export default {
   data() {
     return {
       bootstrap: null,
+      super_table: [],
       table: [],
       select: null,
 
@@ -61,13 +74,28 @@ export default {
 
     const obj = await Layer1.getBootstrapNodes();
 
-    this.table = _.map(obj, x => {
+    const tmp_list = _.map(obj, x => {
       const t = x.toJSON();
       t.tea_id = t.teaId;
       t.http = t.urls[0] ? utils.forge.util.hexToBytes(t.urls[0]) : '';
       return t;
     });
-  console.log(this.table);
+    const list = [];
+    const s_list = [];
+    const xxx = utils.bootstrapNodesList();
+    const txx = _.keys(xxx);
+    _.each(tmp_list, (item)=>{
+      if(_.includes(txx, item.tea_id)){
+        item.name = xxx[item.tea_id];
+        s_list.push(item);
+      }
+      else{
+        list.push(item);
+      }
+    });
+
+    this.table = list;
+    this.super_table = s_list;
     this.$root.loading(false);
   },
   methods: {

@@ -4,6 +4,32 @@
   <h4>Layer1 Node List</h4>
 
   <el-button @click="$router.push('register_node')" style="position:absolute; top:0; right: 0;" type="primary">Add New Node</el-button>
+
+  <el-table
+    :data="super_table"
+    stripe
+    border
+    highlight-current-row
+    @current-change="handleSelectChange"
+    style="width: 100%; margin-top: 40px;">
+    <el-table-column prop="name" width="70px" label="Name"></el-table-column>
+    <el-table-column prop="peer_id" width="130px" label="Peer ID"></el-table-column>
+    <el-table-column prop="tea_id" label="TEA ID"></el-table-column>
+    <el-table-column prop="http" label="HTTP"></el-table-column>
+    <el-table-column prop="manifest_cid" label="Manifest Cid"></el-table-column>
+    <el-table-column prop="status" width="70px" label="Status"></el-table-column>
+    <el-table-column label="Action" width="120px">
+      <template slot-scope="scope">
+        <el-link type="primary" @click="gotoUpdate(scope.row)">Update</el-link>
+        <span style="margin: 0 10px;">|</span>
+        <el-link type="primary" @click="openDialog(scope.row)">View</el-link>
+      </template>
+      
+    </el-table-column>
+      
+  </el-table>
+
+  <el-divider />
   <el-table
     :data="table"
     stripe
@@ -11,12 +37,12 @@
     highlight-current-row
     @current-change="handleSelectChange"
     style="width: 100%; margin-top: 40px;">
-    <el-table-column prop="peer_id" label="Peer ID"></el-table-column>
+    <el-table-column prop="peer_id" width="200px" label="Peer ID"></el-table-column>
     <el-table-column prop="tea_id" label="TEA ID"></el-table-column>
     <el-table-column prop="http" label="HTTP"></el-table-column>
     <el-table-column prop="manifest_cid" label="Manifest Cid"></el-table-column>
-    <el-table-column prop="status" label="Status"></el-table-column>
-    <el-table-column label="Action">
+    <el-table-column prop="status" width="70px" label="Status"></el-table-column>
+    <el-table-column label="Action" width="120px">
       <template slot-scope="scope">
         <el-link type="primary" @click="gotoUpdate(scope.row)">Update</el-link>
         <span style="margin: 0 10px;">|</span>
@@ -55,6 +81,7 @@ export default {
   data(){
     return {
       select: null,
+      super_table: [],
       table: [],
       dialog: {
         show: false,
@@ -122,8 +149,22 @@ export default {
   async mounted(){
     this.$root.loading(true);
     this.layer1 = await gov.buildLayer1();
-    const list = await gov.getLayer1NodeList(this.layer1.api);
-    console.log(list);
+    const tmp_list = await gov.getLayer1NodeList(this.layer1.api);
+
+    const s_list = [];
+    const list = [];
+    const xxx = utils.bootstrapNodesList();
+    const txx = _.keys(xxx);
+    _.each(tmp_list, (item)=>{
+      if(_.includes(txx, item.tea_id)){
+        item.name = xxx[item.tea_id];
+        s_list.push(item);
+      }
+      else{
+        list.push(item);
+      }
+    });
+    this.super_table = s_list;
     this.table = list;
 
     this.$root.loading(false);

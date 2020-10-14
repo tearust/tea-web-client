@@ -34,16 +34,30 @@
   <div v-if="step===1" class="">
     <h2>Select Delegate</h2>
     <el-table
+      :data="S1.super_table"
+      stripe
+      border
+      highlight-current-row
+      @current-change="s1_tableSelectHandler"
+      style="width: 100%">
+      <el-table-column prop="name" width="70px;" label="Name"></el-table-column>
+      <el-table-column prop="tea_id" width="280px;" label="TEA ID"></el-table-column>
+      <el-table-column prop="http" label="HTTP"></el-table-column>
+      <el-table-column prop="status" width="70px;" label="Status"></el-table-column>
+        
+    </el-table>
+
+    <el-divider />
+    <el-table
       :data="S1.table"
       stripe
       border
       highlight-current-row
       @current-change="s1_tableSelectHandler"
       style="width: 100%">
-      <el-table-column prop="tea_id" label="TEA ID(tea_id)"></el-table-column>
-      <!-- <el-table-column prop="rsa" label="RSA KEY"></el-table-column> -->
-      <el-table-column prop="http" label="HTTP(http)"></el-table-column>
-      <el-table-column prop="status" label="Status"></el-table-column>
+      <el-table-column prop="tea_id" width="250px;" label="TEA ID"></el-table-column>
+      <el-table-column prop="http" label="HTTP"></el-table-column>
+      <el-table-column prop="status" width="70px;" label="Status"></el-table-column>
         
     </el-table>
 
@@ -234,6 +248,7 @@ export default {
 
       S1: {
         table: [],
+        super_table: [],
         select: null
       },
       S2: {
@@ -452,13 +467,29 @@ export default {
 
     const obj = await Layer1.getBootstrapNodes();
 
-    this.S1.table = _.map(obj, x => {
+    const tmp_list = _.map(obj, x => {
       const t = x.toJSON();
       t.tea_id = t.teaId;
       t.http = t.urls[0] ? utils.forge.util.hexToBytes(t.urls[0]) : '';
       return t;
     });
-  console.log(this.S1.table);
+    const xxx = utils.bootstrapNodesList();
+    const txx = _.keys(xxx);
+
+    const list = [];
+    const s_list = [];
+    _.each(tmp_list, (item)=>{
+      if(_.includes(txx, item.tea_id)){
+        item.name = xxx[item.tea_id];
+        s_list.push(item);
+      }
+      else{
+        list.push(item);
+      }
+    });
+
+    this.S1.table = list;
+    this.S1.super_table = s_list;
 
     this.er = new Errand();
     await this.er.init();
