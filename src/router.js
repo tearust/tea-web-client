@@ -17,6 +17,7 @@ import ErrandTask from './errand_views/ErrandTask';
 import NodeList from './gov/NodeList';
 import RegisterNodeToLayer1 from './gov/RegisterNodeToLayer1';
 import UpdateManifest from './gov/UpdateManifest';
+import TestForIPFSBlockGet from './gov/TestForIPFSBlockGet';
 
 Vue.use(Router);
 
@@ -90,6 +91,11 @@ if(isGov){
       path: '/update/:tea_id',
       name: 'update_manifest',
       component: UpdateManifest
+    },
+    {
+      path: '/test_block_get',
+      name: 'test_block_get',
+      component: TestForIPFSBlockGet
     }
   ];
 }

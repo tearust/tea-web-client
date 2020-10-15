@@ -1,9 +1,15 @@
 <template>
 <div class="tea-page" style="position:relative">
 
-  <h4>Layer1 Node List</h4>
+  
+  <div class="">
+    <h4>Tools</h4>
+    <el-button @click="$router.push('register_node')" size="small" plain type="primary">Add New Node</el-button>
+    <el-button @click="$router.push('test_block_get')" type="primary" size="small" plain>Trigger IPFS Block Get</el-button>
+  </div>
 
-  <el-button @click="$router.push('register_node')" style="position:absolute; top:0; right: 0;" type="primary">Add New Node</el-button>
+  <el-divider />
+  <h4>Layer1 Node List</h4>
 
   <el-table
     :data="super_table"
@@ -52,6 +58,7 @@
     </el-table-column>
       
   </el-table>
+  
 
 
   <el-dialog
