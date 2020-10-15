@@ -64,11 +64,14 @@ export default {
   },
   methods: {
     async clickSubmit(){
+      console.log("this.cid_list", this.cid_list);
+      console.log("this.url_list", this.url_list);
       if(this.cid_list.length < 1){
         return false;
       }
       this.$root.loading(true);
       _.each(this.url_list, async (url)=>{
+        console.log("posting...", url);
         const res = await this.post(url);
 
         console.log(res);
@@ -83,7 +86,7 @@ export default {
       const _axios = axios.create({
         baseURL: tar
       });
-      const url = '/admin/ipfs?action=layer1.event.layer1.get_res';
+      const url = '/admin/ipfs?action=layer1.event.tea.get_res';
       return await _axios.post(url, JSON.stringify(this.cid_list));
     },
     add_cid(){
