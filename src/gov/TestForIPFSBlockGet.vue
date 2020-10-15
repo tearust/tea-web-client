@@ -68,12 +68,15 @@ export default {
         return false;
       }
       this.$root.loading(true);
-      for(let i=0, len=this.url_list.length; i<len; i++){
-        const url = this.url_list[i];
+      _.each(this.url_list, async (url)=>{
         const res = await this.post(url);
 
         console.log(res);
-      }
+      });
+      // for(let i=0, len=this.url_list.length; i<len; i++){
+      //   const url = this.url_list[i];
+        
+      // }
       this.$root.loading(false);
     },
     async post(tar){
@@ -81,7 +84,7 @@ export default {
         baseURL: tar
       });
       const url = '/admin/ipfs?action=layer1.event.layer1.get_res';
-      return await _axios.post(url, this.cid_list);
+      return await _axios.post(url, JSON.stringify(this.cid_list));
     },
     add_cid(){
       if(!this.input){
