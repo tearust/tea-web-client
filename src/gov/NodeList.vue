@@ -6,6 +6,7 @@
     <h4>Tools</h4>
     <el-button @click="$router.push('register_node')" size="small" plain type="primary">Add New Node</el-button>
     <el-button @click="$router.push('test_block_get')" type="primary" size="small" plain>Trigger IPFS Block Get</el-button>
+    <el-button @click="$router.push('search_node')" type="primary" size="small" plain>Search  Node</el-button>
   </div>
 
   <el-divider />

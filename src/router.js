@@ -18,6 +18,7 @@ import NodeList from './gov/NodeList';
 import RegisterNodeToLayer1 from './gov/RegisterNodeToLayer1';
 import UpdateManifest from './gov/UpdateManifest';
 import TestForIPFSBlockGet from './gov/TestForIPFSBlockGet';
+import SearchNode from './gov/SearchNode';
 
 Vue.use(Router);
 
@@ -96,6 +97,11 @@ if(isGov){
       path: '/test_block_get',
       name: 'test_block_get',
       component: TestForIPFSBlockGet
+    },
+    {
+      path: '/search_node',
+      name: 'search_node',
+      component: SearchNode
     }
   ];
 }

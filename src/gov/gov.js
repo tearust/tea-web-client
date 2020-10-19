@@ -97,6 +97,22 @@ const F = {
     
 
     
+  },
+  async nodeByEphemeralId(layer1, eid, cb){
+    const {api} = layer1;
+    const teaId = await api.query.tea.ephemeralIds('0x'+eid);
+    if (teaId.isNone) {
+      cb(false);
+      return false;
+    }
+
+    const nodeObj = await api.query.tea.nodes(teaId.unwrap());
+    const node = nodeObj.toJSON();
+    console.log(111, node);
+
+    node.http = node.urls[0] ? utils.forge.util.hexToBytes(node.urls[0]) : '';
+
+    cb(true, node);
   }
 };
 
