@@ -210,6 +210,21 @@ class Layer1 {
         }
       });
   }
+
+  async nodeByEphemeralId(eid_0x, cb){
+    const api = this.api;
+    const teaId = await api.query.tea.ephemeralIds(eid_0x);
+    if (teaId.isNone) {
+      throw 'invalid ephemeral id for method layer1=>nodeByEphemeralId';
+    }
+
+    const nodeObj = await api.query.tea.nodes(teaId.unwrap());
+    const node = nodeObj.toJSON();
+
+    node.http = node.urls[0] ? utils.forge.util.hexToBytes(node.urls[0]) : '';
+
+    return node;
+  }
 }
 
 Layer1.getBootstrapNodes = async ()=>{
