@@ -11,55 +11,25 @@
 [US](http://159.203.170.228:8080/ipfs/Qmde5T3LJpNBhNL1CKUJf8f2XCoHdxkTEVrSD5o5iejSzT)
 
 ### Deploy-data
-[China](http://81.70.96.136:8080/ipfs/QmRt6VjBDM6AR3neWDTddBJ4gFj9u1j68kf5WpHeaaau2k)
+[China](http://81.70.96.136:8080/ipfs/QmbDqFnCQXBmLkitcYVtuptwXvWkivM3XwFdpRrMXrJ1Cj)
 
-[US](http://159.203.170.228:8080/ipfs/QmRt6VjBDM6AR3neWDTddBJ4gFj9u1j68kf5WpHeaaau2k)
+[US](http://159.203.170.228:8080/ipfs/QmbDqFnCQXBmLkitcYVtuptwXvWkivM3XwFdpRrMXrJ1Cj)
 
 ### Both deploy code and data Dapp
-[China](http://81.70.96.136:8080/ipfs/QmT5bPeA3CGjKHG1uwRD8WdbeQNrdCc49QC2mcPGPobsHz)
+[China](http://81.70.96.136:8080/ipfs/QmbZ5L2dBPxXr2nm8H8m229ogm9teucKduS2wDd4kMkwRU)
 
-[US](http://159.203.170.228:8080/ipfs/QmT5bPeA3CGjKHG1uwRD8WdbeQNrdCc49QC2mcPGPobsHz)
+[US](http://159.203.170.228:8080/ipfs/QmbZ5L2dBPxXr2nm8H8m229ogm9teucKduS2wDd4kMkwRU)
 
 ### Deploy code Dapp
-[China](http://81.70.96.136:8080/ipfs/QmXrFHLHrpRXAJ5m9iHzBz36xEYbwHfJ5wrnDfMZmiYPHm)
+[China](http://81.70.96.136:8080/ipfs/QmPeXJSE36T2tCqMLRnTiDsv3u74eBgNiEy1fJrAAPR4AL)
 
-[US](http://159.203.170.228:8080/ipfs/QmTAkCtBHzukXVptpVUpuJXw1hN17dwYuLFstaMV66dYZS)
+[US](http://159.203.170.228:8080/ipfs/QmPeXJSE36T2tCqMLRnTiDsv3u74eBgNiEy1fJrAAPR4AL)
 
 ### Deploy data Dapp
-[China](http://81.70.96.136:8080/ipfs/QmWhjP45x7N76nLaCRUdB4MDFL7DMX7KGrAU2hFxgG3vJm)
+[China](http://81.70.96.136:8080/ipfs/QmRG49g2W94deKuarPAqu4XwUvJD5bsq4n4thnKYrQx7h6)
 
-[US](http://159.203.170.228:8080/ipfs/QmWhjP45x7N76nLaCRUdB4MDFL7DMX7KGrAU2hFxgG3vJm)
+[US](http://159.203.170.228:8080/ipfs/QmRG49g2W94deKuarPAqu4XwUvJD5bsq4n4thnKYrQx7h6)
 
 -------
 
 
-
-## Build and Deploy
-
-### Build dapp
-* Copy **.env.dapp.sample** and rename to **.env.dapp** and edit it for your local.
-* Run **npm run build:dapp**
-
-### Deploy dapp
-* Make sure ipfs command was already in your local.
-* Run **npm run deploy:ipfs** and will get as below
-
-```
-added QmYASeUiFkjywQb41bMva8Lwro1Ub1MzK7ZVvPECDyuwXz dist/css/app.7ffe8b50.css
-added QmNWHg1kuBgNQnfyY1H3ogpvrqySmTQnY8w737ChwSk4N3 dist/css/chunk-vendors.5eb4a479.css
-added QmaSyMrhp7Y1bgw5hRDCzwLMgf6piNhawkkVpwUgZ94d3Q dist/favicon.ico
-added QmdW4SyD1nRaTVNDghGuUExaFGfTqo77YkC2BzTaueSZSY dist/fonts/element-icons.535877f5.woff
-added QmTK9ub7Qz1Am6owBKLMEPXEeq9indNLXBqbo1vLraw3Ct dist/fonts/element-icons.732389de.ttf
-added QmbGMWjtG4B1LJvmG7YGr8NzXyTuGRUS81GcUR86pRgfMc dist/index.html
-added QmfW4KzmZrY69epur29zu8DD8ntyXvxrqPstTbUoddGRT5 dist/js/app.js
-added QmPn5Z4i2sHZeUp1RPS9UZfRygGxp47naCPgcwCvyxmFaa dist/js/chunk-vendors.js
-added QmSZMFdUUuJjjN5taXuAkdG9zcmN3ufev6fZpXEv1gMPwB dist/css
-added QmbbYe6zixkBsjVzCPwk9Q78QNQuZnXF8LgNZXfuKiLeFq dist/fonts
-added QmP5zsFSycmbPNw2WGx6LhmsGuPWZkcqcVCFtzzoVUUynm dist/js
-added QmY4jewu1oga5JwhyVJmRvbEcE3WqeGfA7U1WcbRyKxaKV dist
-```
-
-* Use your local ipfs gateway to visit the latest cid.
-e.g. [http://127.0.0.1:8080/ipfs/QmY4jewu1oga5JwhyVJmRvbEcE3WqeGfA7U1WcbRyKxaKV](http://127.0.0.1:8080/ipfs/QmY4jewu1oga5JwhyVJmRvbEcE3WqeGfA7U1WcbRyKxaKV)
-
-/ip4/81.70.96.136/tcp/4001/p2p/12D3KooWSGik59nn8CSXWL2WprsbKbRmYforZ6ZTuhVCWznBJdYF

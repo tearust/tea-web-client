@@ -441,6 +441,10 @@ export default {
 
       const list = [];
       list.push({
+        key: 'Employer',
+        value: json.employer,
+      })
+      list.push({
         key: 'Delegator',
         value: json.delegatorTeaId
       });
@@ -449,10 +453,7 @@ export default {
         key: 'Executer Tea Id',
         value: exec_json.teaId, //_.slice(exec_json.teaId, 2).join('')
       });
-      list.push({
-        key: 'Employer',
-        value: json.employer,
-      })
+      
       list.push({
         key: 'Executer Peer Id',
         value: utils.forge.util.hexToBytes(exec_json.peerId)
