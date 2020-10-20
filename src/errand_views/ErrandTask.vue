@@ -444,14 +444,20 @@ export default {
         key: 'Delegator',
         value: json.delegatorTeaId
       });
-      list.push({
-        key: 'Executer Peer Id',
-        value: utils.forge.util.hexToBytes(exec_json.peerId)
-      });
+      
       list.push({
         key: 'Executer Tea Id',
         value: exec_json.teaId, //_.slice(exec_json.teaId, 2).join('')
       });
+      list.push({
+        key: 'Employer',
+        value: json.employer,
+      })
+      list.push({
+        key: 'Executer Peer Id',
+        value: utils.forge.util.hexToBytes(exec_json.peerId)
+      });
+
       list.push({
         key: 'Executer Status',
         value: exec_json.status
