@@ -447,7 +447,7 @@ export default {
 // json = {"employer":"5FnjDG3j9uVCXuyCd2UgzwHUyT7CpgbR6HquvPdas4ttvErM","delegatorTeaId":"0xc9380fde1ba795fc656ab08ab4ef4482cf554790fd3abcd4642418ae8fb5fd52","delegatorEphemeralId":"0xa0524b6568d6ea70037cc7d4a80157a4732f16b71038b2d782b368e2557a3b91","errandUuid":"0x36313833383330642d316235322d343238302d393735322d616137363261383663666331","errandJsonCid":"0x516d5073667346383170626748514339383457573646514471516336513364786e6a35574a56416d73384c695154","executorEphemeralId":"0xd5558f64fa5f6446e7b253cc19858042e38c29c7dfdbc9e3623f1c92dba9a6e8","expiredTime":10,"resultCid":"0x516d5147767875764a75434237354d555a4b3974326d5354776f6a6766423856776a437a53483154725758513867","bills":[["5E9cvB7ZmxGzM6aMRNsAF6q3taM5ErdpSbzfdqUpDGu9Uew6",3000000000000000],["5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",1000000000000000],["5GRkqRbJErsUsXCTvRR6pyHS8Px6Va36mKzEc5qahPz2BLaM","0x0000000000000000001550f7dca70000"]]}
       try{
         const exec_json = await this.er.layer1.nodeByEphemeralId(json.executorEphemeralId);
-console.log(333, exec_json)
+
         const list = [];
         list.push({
           key: 'Task Id',
