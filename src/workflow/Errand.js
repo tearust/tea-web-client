@@ -67,6 +67,20 @@ export default class {
     await this.initLayer1();
   }
 
+  setDeployCodeAndData(code_id, code_gas, data_id, data_gas){
+    this.deployed_code = {
+      deployment_id: code_id,
+      pay_per_use: code_gas
+    };
+    this.deployed_data = {
+      deployment_id: data_id,
+      pay_per_use: data_gas
+    };
+    console.table({
+      code_id, code_gas, data_id, data_gas
+    });
+  }
+
   async initLayer1() {
     if (!this.layer1) {
       try {
