@@ -207,8 +207,8 @@
         <span>Bills</span>
       </div>
       <el-row v-for="(item, i) in S4.bills" :key="i" style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 15px;">
-        <el-col :span="18">{{item.key}}</el-col>
-        <el-col :span="6" v-html="item.value" style="word-break: break-all;"></el-col>
+        <el-col :span="4">{{item.key}}</el-col>
+        <el-col :span="20" v-html="item.value" style="word-break: break-all;"></el-col>
       </el-row>
     </el-card>
   </div>
@@ -401,11 +401,19 @@ export default {
  
         const error = await this.er.startTask(this.S3.desc_json);
         if(error){
-          alert(error);
+          // alert(error);
           // return false;
         }
         this.er.layer1.buildCallback('SettleAccounts', async (rs)=>{
           console.log("layer1 task result => ", JSON.stringify(rs));
+
+          const tid = utils.forge.util.hexToBytes(rs.errandUuid.toString().substr(2));
+          const task_id = this.S4.task_id;
+          console.log(tid, task_id, tid===task_id)
+          if(tid !== task_id){
+            console.warn('Not this task, ignore...');
+            return false;
+          }
 
           await this.showTaskResultInfo(rs);
           // const cid = utils.forge.util.hexToBytes(_.slice(rs.resultCid.toString(), 2).join(""));
@@ -437,39 +445,51 @@ export default {
 
     async showTaskResultInfo(json){
 // json = {"employer":"5FnjDG3j9uVCXuyCd2UgzwHUyT7CpgbR6HquvPdas4ttvErM","delegatorTeaId":"0xc9380fde1ba795fc656ab08ab4ef4482cf554790fd3abcd4642418ae8fb5fd52","delegatorEphemeralId":"0xa0524b6568d6ea70037cc7d4a80157a4732f16b71038b2d782b368e2557a3b91","errandUuid":"0x36313833383330642d316235322d343238302d393735322d616137363261383663666331","errandJsonCid":"0x516d5073667346383170626748514339383457573646514471516336513364786e6a35574a56416d73384c695154","executorEphemeralId":"0xd5558f64fa5f6446e7b253cc19858042e38c29c7dfdbc9e3623f1c92dba9a6e8","expiredTime":10,"resultCid":"0x516d5147767875764a75434237354d555a4b3974326d5354776f6a6766423856776a437a53483154725758513867","bills":[["5E9cvB7ZmxGzM6aMRNsAF6q3taM5ErdpSbzfdqUpDGu9Uew6",3000000000000000],["5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",1000000000000000],["5GRkqRbJErsUsXCTvRR6pyHS8Px6Va36mKzEc5qahPz2BLaM","0x0000000000000000001550f7dca70000"]]}
-      const exec_json = await this.er.layer1.nodeByEphemeralId(json.executorEphemeralId);
+      try{
+        const exec_json = await this.er.layer1.nodeByEphemeralId(json.executorEphemeralId);
+console.log(333, exec_json)
+        const list = [];
+        list.push({
+          key: 'Task Id',
+          value: utils.forge.util.hexToBytes(json.errandUuid.toString())
+        })
+        list.push({
+          key: 'Employer',
+          value: json.employer,
+        })
+        list.push({
+          key: 'Delegator',
+          value: json.delegatorTeaId
+        });
+        
+        list.push({
+          key: 'Executer Tea Id',
+          value: exec_json.teaId, //_.slice(exec_json.teaId, 2).join('')
+        });
+        
+        list.push({
+          key: 'Executer Peer Id',
+          value: utils.forge.util.hexToBytes(exec_json.peerId)
+        });
 
-      const list = [];
-      list.push({
-        key: 'Employer',
-        value: json.employer,
-      })
-      list.push({
-        key: 'Delegator',
-        value: json.delegatorTeaId
-      });
-      
-      list.push({
-        key: 'Executer Tea Id',
-        value: exec_json.teaId, //_.slice(exec_json.teaId, 2).join('')
-      });
-      
-      list.push({
-        key: 'Executer Peer Id',
-        value: utils.forge.util.hexToBytes(exec_json.peerId)
-      });
+        list.push({
+          key: 'Executer Status',
+          value: exec_json.status
+        });
 
-      list.push({
-        key: 'Executer Status',
-        value: exec_json.status
-      });
-      this.S4.result_info = list;
-      this.S4.bills = _.map(json.bills, (item, i)=>{
-        return {
-          key: item[0],
-          value: (parseInt(item[1]) / this.er.layer1.asUnit()) + ' unit'
-        }
-      })
+        this.S4.result_info = list;
+        const len = json.bills.length;
+        this.S4.bills = _.map(json.bills, (item, i)=>{
+          return {
+            key: (i===len-2) ? 'Delegate Address' : (i===len-1) ? 'Exectuer Address' : ' -- ',
+            value: item[0] + ' => '+(parseInt(item[1]) / this.er.layer1.asUnit()) + ' unit'
+          }
+        });
+
+      }catch(e){
+        this.$message.error(e.toString());
+      }
+      
     },
 
     mock_s4(){
@@ -558,6 +578,7 @@ export default {
     this.layer1_account_list = await this.er.layer1.extension.getAllAccounts();
 
     this.$root.loading(false);
+    // await this.showTaskResultInfo();
   },
 
 }
