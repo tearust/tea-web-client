@@ -14,6 +14,8 @@
     </div>
   </el-form>
 
+  
+
 </div>
 </template>
 <script>
@@ -50,7 +52,10 @@ export default {
 
         this.$root.loading(false);
       });
-    }
+    },
+
+
+    
   }
 }
 </script>

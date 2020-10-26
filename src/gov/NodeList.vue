@@ -73,7 +73,9 @@
         <el-col :span="20" v-html="item.value"></el-col>
       </el-row>
     </div>
+
     <span slot="footer" class="dialog-footer">
+      <el-button style="float:left;" type="danger" @click="shut_down()">Shutdown</el-button>
       <el-button @click="dialog.show = false">Close</el-button>
     </span>
   </el-dialog>
@@ -85,6 +87,7 @@
 import gov from './gov';
 import utils from '../tea/utils';
 import _ from 'lodash';
+import axios from 'axios';
 export default {
   data(){
     return {
@@ -149,6 +152,22 @@ export default {
       this.dialog.info = list;
       this.dialog.show = true;
 
+    },
+    requestShutdownNode(tar){
+      const _axios = axios.create({
+        baseURL: tar
+      });
+      const url = '/admin/ipfs?action=internal.op.node.shutdown';
+      return _axios.post(url, {});
+    },
+    async shut_down(){
+      console.log(this.select);
+      this.$root.loading(true);
+      const res = await this.requestShutdownNode(this.select.http);
+      console.log(11, res);
+
+      this.$root.loading(false);
+      
     }
   },
   created(){
