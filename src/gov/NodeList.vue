@@ -161,12 +161,12 @@ export default {
       return _axios.post(url, {});
     },
     async shut_down(){
-      console.log(this.select);
+      // console.log(this.select);
       this.$root.loading(true);
       const res = await this.requestShutdownNode(this.select.http);
       console.log(11, res);
 
-      this.$root.loading(false);
+      // this.$root.loading(false);
       
     }
   },
