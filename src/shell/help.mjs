@@ -3,8 +3,20 @@ import axios from 'axios';
 import fs from 'fs';
 import child_process from 'child_process';
 import yaml from 'js-yaml';
+import ipfs from 'ipfs';
 
 export const post_ipfs = async (ipfs_address, file_content) => {
+  const local_cid = await get_content_cid(file_content);
+  console.log('file local cid is => ', local_cid);
+
+  // check remote server exist cid or not.
+  const flag = await remote_exist(ipfs_address, local_cid);
+
+  if(flag){
+    console.log('Remote server had this cid, ignore uploaded.');
+    return local_cid;
+  }
+
   const _axios = axios.create({
     maxContentLength: Infinity,
     baseURL: ipfs_address
@@ -14,6 +26,24 @@ export const post_ipfs = async (ipfs_address, file_content) => {
   const cid = res.data.data;
   console.log("uploaded and got the cid", cid);
   return cid;
+
+};
+
+export const remote_exist = async (ipfs_address, cid) => {
+  const _axios = axios.create({
+    baseURL: ipfs_address
+  });
+  const res = await _axios.get('/api/is_block_local?'+cid);
+  const rs = res.data.data;
+  const b = new Function('return '+rs.toString());
+  return b();
+}
+
+export const get_content_cid = async (file_content_u8) => {
+  const hash = await ipfs.multihashing(file_content_u8, 'sha2-256');
+  const cid = new ipfs.CID(0, 'dag-pb', hash);
+
+  return cid.toString();
 };
 
 export const post_file_to_ipfs = async (ipfs_address, url) => {

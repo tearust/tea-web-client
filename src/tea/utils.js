@@ -5,6 +5,7 @@ import proto from './proto';
 import types from './types';
 
 import forge from 'node-forge';
+import ipfs from 'ipfs';
 
 const bootstrapNodesList = ()=>{
   return {
@@ -141,6 +142,7 @@ const F = {
   crypto,
   proto,
   forge,
+  ipfs,
 
   getHttpBaseUrl() {
     if(!_http_base_url){
