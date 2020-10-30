@@ -68,17 +68,24 @@ export default class {
   }
 
   setDeployCodeAndData(code_id, code_gas, data_id, data_gas){
-    this.deployed_code = {
-      deployment_id: code_id,
-      pay_per_use: code_gas
-    };
-    this.deployed_data = {
-      deployment_id: data_id,
-      pay_per_use: data_gas
-    };
     console.table({
       code_id, code_gas, data_id, data_gas
     });
+    if(code_id && code_gas){
+      this.deployed_code = {
+        deployment_id: code_id,
+        pay_per_use: code_gas
+      };
+    }
+    
+    if(data_id && data_gas){
+      this.deployed_data = {
+        deployment_id: data_id,
+        pay_per_use: data_gas
+      };
+    }
+    
+    
   }
 
   async initLayer1() {
@@ -214,7 +221,7 @@ export default class {
     }
 
     const task_json = {};
-    if (this.deployed_code) {
+    if (this.deployed_code && this.deployed_code.deployment_id) {
       _.set(task_json, 'deployed_code', {
         deployment_id_for_code: this.deployed_code.deployment_id,
         pay_per_use: parseInt(this.deployed_code.pay_per_use, 10),
@@ -225,7 +232,7 @@ export default class {
     }
 
 
-    if (this.deployed_data) {
+    if (this.deployed_data && this.deployed_data.deployment_id) {
       _.set(task_json, 'deployed_data', {
         deployment_id_for_data: this.deployed_data.deployment_id,
         pay_per_use: parseInt(this.deployed_data.pay_per_use, 10),
