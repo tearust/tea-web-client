@@ -9,7 +9,7 @@ export const post_ipfs = async (ipfs_address, file_content, type) => {
   const local_cid = await get_content_cid(file_content);
   console.log('file local cid is => ', local_cid);
 
-  if(type === 'provider') return local_cid;
+  // if(type === 'provider') return local_cid;
 
   // check remote server exist cid or not.
   try{
