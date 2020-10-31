@@ -1,7 +1,7 @@
 ## Dapp ipfs cid
 
 ### GOV
-[China](http://81.70.96.136:8080/ipfs/QmTgUT3YDnYJnsUwZBWpUmJT5s2KYZtFgvKmPPDRJKnjNv)
+[China](http://81.70.96.136:8080/ipfs/QmRoqgDddA9h8Eajkw7M1wi6qM7BDiYewkQc2d3iWZEpJC)
 
 [US](http://159.203.170.228:8080/ipfs/QmUaEnSU7zaUjvgubWyEzF1sfmcsn4ak7ckmERyBs8nT6D)
 

@@ -15,8 +15,8 @@
     "lint": "vue-cli-service lint",
     "protobuf": "pbjs -t json ../tea-codec/proto/actor-delegate.proto > ./src/protobuf/protobuf.json",
     "deploy:ipfs": "ipfs add -r dist",
-    "deploy:ipfs_to_jacky": "ipfs add -r dist --api /ip4/64.227.57.97/tcp/5001/p2p/12D3KooWGBSAMDBcH6PfwGRaRiYSebCurSFNT8mYBNPbvoq66YtK",
-    "deploy:ipfs_to_kevin": "ipfs add -r dist --api /ip4/159.203.170.228/tcp/5001/p2p/12D3KooWPbser8bVXoq78EeLfbgBBEkvua3axx5ZSzo5X3BUmyVj",
+    "deploy:ipfs_to_jacky": "ipfs add -r dist --api /ip4/81.70.96.136/tcp/5001/p2p/12D3KooWSGik59nn8CSXWL2WprsbKbRmYforZ6ZTuhVCWznBJdYF",
+    "deploy:ipfs_to_kevin": "ipfs add -r dist --api /ip4/64.227.49.206/tcp/5001/p2p/12D3KooWGBSAMDBcH6PfwGRaRiYSebCurSFNT8mYBNPbvoq66YtK",
     "deploy-manifest": "node --experimental-modules src/shell/deploy-manifest.mjs"
   },
   "dependencies": {
