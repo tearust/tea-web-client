@@ -10,22 +10,30 @@ export const post_ipfs = async (ipfs_address, file_content) => {
   console.log('file local cid is => ', local_cid);
 
   // check remote server exist cid or not.
-  const flag = await remote_exist(ipfs_address, local_cid);
+  try{
+    const flag = await remote_exist(ipfs_address, local_cid);
 
-  if(flag){
-    console.log('Remote server had this cid, ignore uploaded.');
+    if(flag){
+      console.log('Remote server had this cid, ignore uploaded.');
+      return local_cid;
+    }
+
+    const _axios = axios.create({
+      maxContentLength: Infinity,
+      baseURL: ipfs_address
+    });
+    console.log("uploading size: ", file_content.length);
+    const res = await _axios.post('/ipfs-upload', file_content);
+    const cid = res.data.data;
+    console.log("uploaded and got the cid", cid);
+
+    return cid;
+  }catch(e){
+    console.error(e);
     return local_cid;
   }
-
-  const _axios = axios.create({
-    maxContentLength: Infinity,
-    baseURL: ipfs_address
-  });
-  console.log("uploading size: ", file_content.length);
-  const res = await _axios.post('/ipfs-upload', file_content);
-  const cid = res.data.data;
-  console.log("uploaded and got the cid", cid);
-  return cid;
+  
+  
 
 };
 
