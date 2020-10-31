@@ -5,9 +5,11 @@ import child_process from 'child_process';
 import yaml from 'js-yaml';
 import ipfs from 'ipfs';
 
-export const post_ipfs = async (ipfs_address, file_content) => {
+export const post_ipfs = async (ipfs_address, file_content, type) => {
   const local_cid = await get_content_cid(file_content);
   console.log('file local cid is => ', local_cid);
+
+  if(type === 'provider') return local_cid;
 
   // check remote server exist cid or not.
   try{
@@ -50,10 +52,10 @@ export const get_content_cid = async (file_content_u8) => {
   return cid.toString();
 };
 
-export const post_file_to_ipfs = async (ipfs_address, url) => {
+export const post_file_to_ipfs = async (ipfs_address, url, type='actor') => {
   const file_u8 = fs.readFileSync(url, {});
   console.log("Reading file prepare for uploading, ", url, file_u8.length);
-  const cid = await post_ipfs(ipfs_address, file_u8);
+  const cid = await post_ipfs(ipfs_address, file_u8, type);
   return cid;
 };
 

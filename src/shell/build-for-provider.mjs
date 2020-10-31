@@ -25,7 +25,7 @@ const Deploy = class {
         const ipfs_list = _.map(this.json.target, (x)=>x.ipfs_url);
         let cid = null;
         for (let j=0, len=ipfs_list.length; j<len; j++){
-          cid = await help.post_file_to_ipfs(ipfs_list[j], item.url);
+          cid = await help.post_file_to_ipfs(ipfs_list[j], item.url, 'provider');
         }
         console.log("\n*** Tell other nodes to upload their manifest file's cid:\n*    file:", item.name, "\n*    cid:", cid, "\n****\n");
         help.replace_cid(item.name, cid, this.name);
