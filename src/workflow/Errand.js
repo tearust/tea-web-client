@@ -241,6 +241,7 @@ export default class {
     else {
       _.set(task_json, 'adhoc_data', this.adhoc_data);
     }
+
     _.set(task_json, 'deposit_tx_id', this.deposit_tx_id);
     _.set(task_json, 'encrypted_key3', this.last_ekey3);
     _.set(task_json, 'payment', payment);
@@ -326,21 +327,29 @@ export default class {
 
     loop();
   }
-
   async queryTaskResult() {
-    const url = '/api/query_errand_execution_result';
+    const url = '/api/query_errand_execution_result_by_uuid?'+this.last_task_id;
 
-    const pb = new Protobuf("actor_delegate.QueryErrandExecutionResult");
-    pb.payload({
-      errandId: stringToU8(this.last_task_id),
-    });
 
-    const buf = pb.encode();
-    const buf_64 = utils.uint8array_to_base64(buf);
-
-    const res = await http.post(url, buf_64);
-    log.d("queryTaskResult response\n", res);
+    const res = await http.post(url, {});
+    log.d("queryTaskResultByUuid response\n", res);
     return res;
   }
+
+  // async queryTaskResult() {
+  //   const url = '/api/query_errand_execution_result';
+
+  //   const pb = new Protobuf("actor_delegate.QueryErrandExecutionResult");
+  //   pb.payload({
+  //     errandId: stringToU8(this.last_task_id),
+  //   });
+
+  //   const buf = pb.encode();
+  //   const buf_64 = utils.uint8array_to_base64(buf);
+
+  //   const res = await http.post(url, buf_64);
+  //   log.d("queryTaskResult response\n", res);
+  //   return res;
+  // }
 
 }
