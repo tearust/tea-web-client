@@ -76,6 +76,8 @@
 
     <span slot="footer" class="dialog-footer">
       <el-button style="float:left;" type="danger" @click="shut_down()">Shutdown</el-button>
+      <el-button style="float:left;" type="primary" @click="back_up()">Backup</el-button>
+      <el-button style="float:left;" type="primary" @click="restore()">Restore</el-button>
       <el-button @click="dialog.show = false">Close</el-button>
     </span>
   </el-dialog>
@@ -153,21 +155,37 @@ export default {
       this.dialog.show = true;
 
     },
-    requestShutdownNode(tar){
+    requestShutdownNode(tar, action){
       const _axios = axios.create({
         baseURL: tar
       });
-      const url = '/admin/ipfs?action=internal.op.node.shutdown';
+      const url = '/admin/ipfs?action='+action;
       return _axios.post(url, {});
     },
     async shut_down(){
       // console.log(this.select);
       this.$root.loading(true);
-      const res = await this.requestShutdownNode(this.select.http);
-      console.log(11, res);
+      const res = await this.requestShutdownNode(this.select.http, 'internal.op.node.shutdown');
+      console.log('shut_down\n', res);
 
-      // this.$root.loading(false);
+      this.$root.loading(false);
       
+    },
+
+    async back_up(){
+      this.$root.loading(true);
+      const res = await this.requestShutdownNode(this.select.http, 'internal.op.deployment.backup.cache_file');
+      console.log('back_up\n', res.data.data);
+
+      this.$root.loading(false);
+    },
+
+    async restore(){
+      this.$root.loading(true);
+      const res = await this.requestShutdownNode(this.select.http, 'internal.op.deployment.restore.cache_file');
+      console.log('restore\n', res.data.data);
+
+      this.$root.loading(false);
     }
   },
   created(){
