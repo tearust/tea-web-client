@@ -36,12 +36,16 @@ export const post_ipfs = async (ipfs_address, file_content, type) => {
 };
 
 export const remote_exist = async (ipfs_address, cid) => {
+  let tm = setTimeout(()=>{
+    return false;
+  }, 10000);
   const _axios = axios.create({
     baseURL: ipfs_address
   });
   const res = await _axios.get('/api/is_block_local?'+cid);
   const rs = res.data.data;
   const b = new Function('return '+rs.toString());
+  tm && clearTimeout(tm);
   return b();
 }
 

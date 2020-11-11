@@ -78,6 +78,8 @@
       <el-button style="float:left;" type="danger" @click="shut_down()">Shutdown</el-button>
       <el-button style="float:left;" type="primary" @click="back_up()">Backup</el-button>
       <el-button style="float:left;" type="primary" @click="restore()">Restore</el-button>
+
+      <el-button style="float:left;" type="primary" @click="check_is_pinner()">Check_is_pinner</el-button>
       <el-button @click="dialog.show = false">Close</el-button>
     </span>
   </el-dialog>
@@ -184,6 +186,20 @@ export default {
       this.$root.loading(true);
       const res = await this.requestShutdownNode(this.select.http, 'internal.op.deployment.restore.cache_file');
       console.log('restore\n', res.data.data);
+
+      this.$root.loading(false);
+    },
+
+    async check_is_pinner(){
+      const did = await prompt("input deployment id");
+      if(!did){
+        alert('invalid');
+        return false;
+      }
+
+      this.$root.loading(true);
+      const res = await this.requestShutdownNode(this.select.http, 'internal.op.deployment.is_pinner.'+did);
+      console.log('is_pinner\n', res.data.data);
 
       this.$root.loading(false);
     }
