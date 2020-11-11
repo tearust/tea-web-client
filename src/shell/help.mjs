@@ -10,7 +10,6 @@ export const post_ipfs = async (ipfs_address, file_content, type) => {
   console.log('file local cid is => ', local_cid);
 
   if(type === 'provider') return local_cid;
-  // if(type === 'provider') return local_cid;
 
   // check remote server exist cid or not.
   try{
@@ -40,7 +39,7 @@ export const remote_exist = async (ipfs_address, cid) => {
   const _axios = axios.create({
     baseURL: ipfs_address
   });
-  const res = await _axios.get('/api/is_block_local?'+cid, {timeout: 10000});
+  const res = await _axios.get('/api/is_block_local?'+cid, {timeout: 20000});
   const rs = res.data.data;
   const b = new Function('return '+rs.toString());
   return b();
