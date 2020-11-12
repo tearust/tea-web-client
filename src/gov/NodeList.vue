@@ -176,7 +176,7 @@ export default {
 
     async back_up(){
       this.$root.loading(true);
-      const res = await this.requestShutdownNode(this.select.http, 'internal.op.deployment.backup.cache_file');
+      const res = await this.requestShutdownNode(this.select.http, 'internal.op.deployment.backup.');
       console.log('back_up\n', res.data.data);
 
       this.$root.loading(false);
@@ -184,7 +184,7 @@ export default {
 
     async restore(){
       this.$root.loading(true);
-      const res = await this.requestShutdownNode(this.select.http, 'internal.op.deployment.restore.cache_file');
+      const res = await this.requestShutdownNode(this.select.http, 'internal.op.deployment.restore.');
       console.log('restore\n', res.data.data);
 
       this.$root.loading(false);

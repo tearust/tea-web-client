@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm run dapp",
     "dapp": "vue-cli-service serve --mode dapp",
-    "gov": "vue-cli-service serve --mode gov",
+    "gov": "vue-cli-service serve --mode gov --port 3003",
     "deploy-data": "vue-cli-service serve --mode deploy_data --port 3001",
     "deploy-code": "vue-cli-service serve --mode deploy_code --port 3002",
     "build:dapp": "vue-cli-service build --mode dapp",
