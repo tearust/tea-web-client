@@ -1,11 +1,16 @@
 <template>
-<div class="tea-page">
+<div class="tea-page" style="padding-top: 10px;">
+  <el-row style="margin-bottom: 4px;">
+    <el-col v-if="step===1" style="font-size: 15px; color: #666;">
+      Please select layer1 address first to continue.
+    </el-col>
+  </el-row>
   <el-row>
     <!-- <el-col :span="6">
       <strong style="line-height:40px;">Layer1 Account</strong>
     </el-col> -->
     <el-col :span="6">
-      <el-select :disabled="step!==1" v-model="layer1_account" placeholder="Please select account">
+      <el-select style="width: 100%;" :disabled="step!==1" v-model="layer1_account" placeholder="Please select account">
         <el-option
           v-for="(item, i) in layer1_account_list"
           :key="i"
@@ -14,7 +19,7 @@
         </el-option>
       </el-select>
     </el-col>
-    <el-col :span="12" v-if="layer1_balance" style="
+    <el-col :span="11" :offset="1" v-if="layer1_balance" style="
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -29,7 +34,7 @@
     </el-col>
   </el-row>
 
-  <hr/>
+  <el-divider />
 
   <div v-if="step===1" class="">
     <h2>Select Delegate</h2>
@@ -40,6 +45,7 @@
       highlight-current-row
       @current-change="s1_tableSelectHandler"
       style="width: 100%">
+
       <el-table-column prop="name" width="70px;" label="Name"></el-table-column>
       <el-table-column prop="tea_id" width="280px;" label="TEA ID"></el-table-column>
       <el-table-column prop="http" label="HTTP"></el-table-column>
@@ -48,7 +54,7 @@
     </el-table>
 
     <el-divider />
-    <el-table
+    <!-- <el-table
       :data="S1.table"
       stripe
       border
@@ -59,7 +65,7 @@
       <el-table-column prop="http" label="HTTP"></el-table-column>
       <el-table-column prop="status" width="70px;" label="Status"></el-table-column>
         
-    </el-table>
+    </el-table> -->
 
     <div style="display:flex; justify-content: flex-end;">
       <el-button :disabled="!S1.select || !layer1_account" style="width:40%;margin-top: 40px;" type="primary" round @click="s1_next()">Next Step</el-button>
@@ -198,7 +204,10 @@
       <h4>{{S4.task_id}}</h4>
 
       <p>
-        <span v-if="!S4.result && !S4.error">Loading...</span>
+        <span v-if="!S4.result && !S4.error">
+          <i class="el-icon-loading"></i>
+          Loading...
+        </span>
         <b v-if="S4.result">Result: <font style="color:#f0f; margin-left: 10px;">{{S4.result}}</font></b>
         <b v-if="S4.error" style="color:#f00;">{{S4.error}}</b>
       </p>
@@ -344,6 +353,12 @@ export default {
       this.S1.select = v;
     },
     async s1_next(){
+      // check layer1 balance
+      const b = await this.er.layer1.getAccountBalance(this.layer1_account);
+      if(b < 1){
+        this.$message.error("Not enough account balance, please recharge with the faucet link in top.");
+        return false;
+      }
 
       this.step = 2;
 
@@ -360,6 +375,13 @@ export default {
     },
 
     async s2_next(){
+      console.log(111, this.layer1_balance);
+      // check
+      if(this.layer1_balance.amount < 10){
+        this.$message.error('Not sufficient money in this delegator, please deposit first and continue.');
+        return false;
+      }
+
       this.step = 3;
 
       const {deployed_code, deployed_data} = this.er;
@@ -466,7 +488,6 @@ export default {
     },
 
     async showTaskResultInfo(json){
-// json = {"employer":"5FnjDG3j9uVCXuyCd2UgzwHUyT7CpgbR6HquvPdas4ttvErM","delegatorTeaId":"0xc9380fde1ba795fc656ab08ab4ef4482cf554790fd3abcd4642418ae8fb5fd52","delegatorEphemeralId":"0xa0524b6568d6ea70037cc7d4a80157a4732f16b71038b2d782b368e2557a3b91","errandUuid":"0x36313833383330642d316235322d343238302d393735322d616137363261383663666331","errandJsonCid":"0x516d5073667346383170626748514339383457573646514471516336513364786e6a35574a56416d73384c695154","executorEphemeralId":"0xd5558f64fa5f6446e7b253cc19858042e38c29c7dfdbc9e3623f1c92dba9a6e8","expiredTime":10,"resultCid":"0x516d5147767875764a75434237354d555a4b3974326d5354776f6a6766423856776a437a53483154725758513867","bills":[["5E9cvB7ZmxGzM6aMRNsAF6q3taM5ErdpSbzfdqUpDGu9Uew6",3000000000000000],["5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",1000000000000000],["5GRkqRbJErsUsXCTvRR6pyHS8Px6Va36mKzEc5qahPz2BLaM","0x0000000000000000001550f7dca70000"]]}
       try{
         const exec_json = await this.er.layer1.nodeByEphemeralId(json.executorEphemeralId);
 
@@ -588,16 +609,26 @@ export default {
         s_list.push(item);
       }
       else{
+        item.name = '';
         list.push(item);
       }
     });
 
-    this.S1.table = list;
-    this.S1.super_table = s_list;
+    const x_tmp = _.filter(list, (x)=>x.status === 'Active');
+    this.S1.super_table = _.concat(s_list, x_tmp);
 
     this.er = new Errand();
     await this.er.init();
-    this.layer1_account_list = await this.er.layer1.extension.getAllAccounts();
+
+    let tmp = await this.er.layer1.extension.getAllAccounts();
+    tmp = _.map(tmp, (item)=>{
+      (async ()=>{
+        item.balance = await this.er.layer1.getAccountBalance(item.address);
+        item.name = item.name + '  -  ' + item.balance;
+      })();
+      return item;
+    });
+    this.layer1_account_list = await tmp;
 
     this.$root.loading(false);
 

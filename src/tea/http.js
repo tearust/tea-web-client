@@ -15,7 +15,6 @@ const init = ()=>{
     console.log('[http response]', res.data);
     if(res.data){
       if(res.data.data){
-        console.log(111, res.data);
         try{
           return Promise.resolve(JSON.parse(res.data.data));
         }catch(e){

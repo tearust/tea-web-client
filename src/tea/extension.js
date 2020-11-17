@@ -22,7 +22,6 @@ class Extension {
 
   async setSignerForAddress(address, api){
     const injector = await web3FromAddress(address);
-    console.log(111, injector)
     api.setSigner(injector.signer);
     return injector;
   }

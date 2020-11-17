@@ -270,7 +270,8 @@ export default class {
 
     const task_id = utils.uuid();
     this.last_task_id = task_id;
-    const sig = await this.layer1.sign(this.layer1_account, `${task_id}${cid}`);
+
+    let sig = await this.layer1.sign(this.layer1_account, `${task_id}${cid}`);
     if (!sig) {
       alert('Sign error');
       return false;
