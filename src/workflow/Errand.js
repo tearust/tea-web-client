@@ -253,7 +253,7 @@ export default class {
     return task_json;
   }
 
-  async startTask(desc_json) {
+  async startTask(desc_json, loadingFn) {
 
     log.d('Start Task');
     const json = this.buildTaskJson(desc_json);
@@ -279,6 +279,8 @@ export default class {
     const proof_of_delegate = sig;
     const url = `/api/service/${this.layer1_account}/${task_id}/${proof_of_delegate}`;
     // const res = await http.requestErrandTask(url, json_b64);
+
+    loadingFn();
     const res = await http.requestErrandTask(url, cid);
 
     log.d('requestErrandTask response', res);

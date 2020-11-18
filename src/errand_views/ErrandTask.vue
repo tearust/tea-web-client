@@ -435,7 +435,7 @@ export default {
       }
 
       try{
-        this.$root.loading(true);
+        
  
         this.er.setDeployCodeAndData(
           this.S3.deployment_id_for_code,
@@ -443,7 +443,9 @@ export default {
           this.S3.deployment_id_for_data,
           this.S3.data_pay_per_use,
         );
-        const error = await this.er.startTask(this.S3.desc_json);
+        const error = await this.er.startTask(this.S3.desc_json, ()=>{
+          this.$root.loading(true);
+        });
         if(error){
           // alert(error);
           // return false;
