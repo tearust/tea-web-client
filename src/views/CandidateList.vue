@@ -20,7 +20,7 @@
       
   </el-table>
   <el-divider />
-  <el-table
+  <!-- <el-table
     :data="table"
     stripe
     border
@@ -31,7 +31,7 @@
     <el-table-column prop="http" label="HTTP"></el-table-column>
     <el-table-column prop="status" width="70px" label="Status"></el-table-column>
       
-  </el-table>
+  </el-table> -->
 
   <div style="display:flex; justify-content: flex-end;">
     <el-button style="width:40%;margin-top: 40px;" type="primary" round @click="clickNext()">Next Step</el-button>
@@ -94,8 +94,8 @@ export default {
       }
     });
 
-    this.table = list;
-    this.super_table = s_list;
+    const x_tmp = _.filter(list, (x)=>x.status === 'Active');
+    this.super_table = _.concat(s_list, x_tmp);
     this.$root.loading(false);
   },
   methods: {

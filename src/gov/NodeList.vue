@@ -16,7 +16,7 @@
     :data="super_table"
     stripe
     border
-    highlight-current-row
+    
     @current-change="handleSelectChange"
     style="width: 100%; margin-top: 40px;">
     <el-table-column prop="name" width="70px" label="Name"></el-table-column>
@@ -41,7 +41,7 @@
     :data="table"
     stripe
     border
-    highlight-current-row
+    
     @current-change="handleSelectChange"
     style="width: 100%; margin-top: 40px;">
     <el-table-column prop="peer_id" width="200px" label="Peer ID"></el-table-column>
