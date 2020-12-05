@@ -80,6 +80,9 @@
       <el-button style="float:left;" type="primary" @click="restore()">Restore</el-button>
 
       <el-button style="float:left;" type="primary" @click="check_is_pinner()">Check_is_pinner</el-button>
+      <el-button style="float:left;" type="primary" @click="list_delegated_tasks()">List_delegated_tasks</el-button>
+      <el-button style="float:left;" type="primary" @click="list_executed_tasks()">List_executed_tasks</el-button>
+      <el-button style="float:left;" type="primary" @click="list_pinned_resources()">List_pinned_resources</el-button>
       <el-button @click="dialog.show = false">Close</el-button>
     </span>
   </el-dialog>
@@ -186,6 +189,30 @@ export default {
       this.$root.loading(true);
       const res = await this.requestShutdownNode(this.select.http, 'internal.op.deployment.restore.');
       console.log('restore\n', res.data.data);
+
+      this.$root.loading(false);
+    },
+
+    async list_delegated_tasks(){
+      this.$root.loading(true);
+      const res = await this.requestShutdownNode(this.select.http, 'internal.op.debug.list_delegated_tasks');
+      console.log('list_delegated_tasks\n', res.data.data);
+
+      this.$root.loading(false);
+    },
+
+    async list_executed_tasks(){
+      this.$root.loading(true);
+      const res = await this.requestShutdownNode(this.select.http, 'internal.op.debug.list_executed_tasks');
+      console.log('list_executed_tasks\n', res.data.data);
+
+      this.$root.loading(false);
+    },
+
+    async list_pinned_resources(){
+      this.$root.loading(true);
+      const res = await this.requestShutdownNode(this.select.http, 'internal.op.debug.list_pinned_resources');
+      console.log('list_pinned_resources\n', res.data.data);
 
       this.$root.loading(false);
     },
