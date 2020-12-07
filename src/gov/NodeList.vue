@@ -83,6 +83,7 @@
       <el-button style="float:left;" type="primary" @click="list_delegated_tasks()">List_delegated_tasks</el-button>
       <el-button style="float:left;" type="primary" @click="list_executed_tasks()">List_executed_tasks</el-button>
       <el-button style="float:left;" type="primary" @click="list_pinned_resources()">List_pinned_resources</el-button>
+      <el-button style="float:left;" type="primary" @click="list_ipfs_p2p_connections()">list_ipfs_p2p_connections</el-button>
       <el-button @click="dialog.show = false">Close</el-button>
     </span>
   </el-dialog>
@@ -167,6 +168,14 @@ export default {
       const url = '/admin/ipfs?action='+action;
       return _axios.post(url, {});
     },
+    requestAdapterDump(tar, sub_url){
+      const _axios = axios.create({
+        baseURL: tar
+      });
+      const url = '/dump/'+sub_url;
+      return _axios.post(url, {});
+
+    },
     async shut_down(){
       // console.log(this.select);
       this.$root.loading(true);
@@ -213,6 +222,14 @@ export default {
       this.$root.loading(true);
       const res = await this.requestShutdownNode(this.select.http, 'internal.op.debug.list_pinned_resources');
       console.log('list_pinned_resources\n', res.data.data);
+
+      this.$root.loading(false);
+    },
+
+    async list_ipfs_p2p_connections(){
+      this.$root.loading(true);
+      const res = await this.requestAdapterDump(this.select.http, 'ipfs/p2p/connections');
+      console.log('list_ipfs_p2p_connections\n', res.data.data);
 
       this.$root.loading(false);
     },
