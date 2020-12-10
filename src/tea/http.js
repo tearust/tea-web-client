@@ -77,6 +77,10 @@ const F = {
     return _axios.post('/api/be_my_delegate', proto_buf_b64);
   },
 
+  repinDeployment(proto_buf_b64) {
+    return _axios.post('/api/repin_deployment', proto_buf_b64);
+  },
+
   requestErrandTask(url, json_b64){
     return _axios.post(url, json_b64);
   },

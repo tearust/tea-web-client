@@ -712,17 +712,26 @@
             }
           }
         },
-        "TeaNodeProfile": {
+        "RepinDeploymentRequest": {
           "fields": {
-            "profileVersion": {
+            "deploymentId": {
               "rule": "required",
-              "type": "uint32",
+              "type": "string",
               "id": 1
             },
-            "body": {
+            "dataCid": {
               "rule": "required",
-              "type": "bytes",
+              "type": "string",
               "id": 2
+            },
+            "descriptionCid": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "capCid": {
+              "type": "string",
+              "id": 4
             }
           }
         }

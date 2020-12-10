@@ -84,6 +84,7 @@
       <el-button style="float:left;" type="primary" @click="list_executed_tasks()">List_executed_tasks</el-button>
       <el-button style="float:left;" type="primary" @click="list_pinned_resources()">List_pinned_resources</el-button>
       <el-button style="float:left;" type="primary" @click="list_ipfs_p2p_connections()">list_ipfs_p2p_connections</el-button>
+      <el-button style="float:left;" type="primary" @click="repin_all_from_local()">repin_all_from_local</el-button>
       <el-button @click="dialog.show = false">Close</el-button>
     </span>
   </el-dialog>
@@ -94,6 +95,7 @@
 <script>
 import gov from './gov';
 import utils from '../tea/utils';
+import proto from '../tea/proto';
 import _ from 'lodash';
 import axios from 'axios';
 export default {
@@ -168,13 +170,45 @@ export default {
       const url = '/admin/ipfs?action='+action;
       return _axios.post(url, {});
     },
+    repinDeployment(tar, proto_buf_b64) {
+      const _axios = axios.create({
+        baseURL: tar
+      });
+      return _axios.post('/api/repin_deployment', proto_buf_b64);
+    },
     requestAdapterDump(tar, sub_url){
       const _axios = axios.create({
         baseURL: tar
       });
       const url = '/dump/'+sub_url;
       return _axios.post(url, {});
+    },
+    requestListDeploymentResource(tar, sub_url) {
+      const _axios = axios.create({
+        baseURL: tar
+      });
+      const url = '/'+sub_url;
+      return _axios.post(url, {});
+    },
+    repinSingleDeployment(element) {
+        var payload = {
+          deploymentId: element.deployment_id,
+          dataCid: element.cid,
+          descriptionCid: element.description,
+        };
 
+        if (!element.cap_checker && element.cap_checker.length > 0) {
+          payload.capCid = element.cap_checker;
+        }
+
+        const p = new proto.Protobuf('actor_delegate.RepinDeploymentRequest');
+        console.log('payload', payload);
+        p.payload(payload);
+        const buf = p.encode();
+        const buf_64 = utils.uint8array_to_base64(buf);
+        console.log('RepinDeploymentRequest base64 = ', buf_64);
+
+        return this.repinDeployment(this.select.http, buf_64);
     },
     async shut_down(){
       // console.log(this.select);
@@ -230,6 +264,19 @@ export default {
       this.$root.loading(true);
       const res = await this.requestAdapterDump(this.select.http, 'ipfs/p2p/connections');
       console.log('list_ipfs_p2p_connections\n', res.data.data);
+
+      this.$root.loading(false);
+    },
+
+    async repin_all_from_local(){
+      this.$root.loading(true);
+      const res = await this.requestListDeploymentResource('http://localhost:8877', 'list_deployment_resources');
+      console.log('list_deployment_resources\n', res.data);
+
+      res.data.forEach(async element => {
+        let dep_res = await this.repinSingleDeployment(element);   
+        console.log('repin ', element.deployment_id, ' result: ', dep_res);
+      });
 
       this.$root.loading(false);
     },
